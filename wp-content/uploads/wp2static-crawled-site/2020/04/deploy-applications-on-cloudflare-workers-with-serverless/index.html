@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>初探Serverless与尝试在Cloudflare Workers上部署应用 – 翰林木子的笔记本</title>
+<meta name="description" content="注:本文部分内容编辑自文章尾部的文章,感谢他们的文字! Serverless 几种即服务 IaaS (Infrastructure as a Service) 基础设施即服务:服务商提供底层/物理层基础设施资源（服务器，数据中心，环境控制，电源 …">
+<meta name="keywords" content="Cloudflare,Serverless">
+<meta name="robots" content="max-image-preview:large">
+<link rel="dns-prefetch" href="//cdn.staticfile.org">
+<link rel="dns-prefetch" href="//cdn.jsdelivr.net">
+<link rel="dns-prefetch" href="//zz.bdstatic.com">
+<link rel="stylesheet" id="wp-block-library-css" href="https://wp.ytlee.cn/wp-includes/css/dist/block-library/style.min.css" type="text/css" media="all">
+<style id="md-style-inline-css" type="text/css">
+ .copy-button { cursor: pointer; border: 0; font-size: 12px; text-transform: uppercase; font-weight: 500; padding: 3px 6px 3px 6px; background-color: rgba(255, 255, 255, 0.6); position: absolute; overflow: hidden; top: 5px; right: 5px; border-radius: 3px; } .copy-button:before { content: ""; display: inline-block; width: 16px; height: 16px; margin-right: 3px; background-size: contain; background-image: url("data:image/svg+xml,%3Csvg version=\'1.1\' xmlns=\'http://www.w3.org/2000/svg\' xmlns:xlink=\'http://www.w3.org/1999/xlink\' x=\'0px\' y=\'0px\' width=\'16px\' height=\'16px\' viewBox=\'888 888 16 16\' enable-background=\'new 888 888 16 16\' xml:space=\'preserve\'%3E %3Cpath fill=\'%23333333\' d=\'M903.143,891.429c0.238,0,0.44,0.083,0.607,0.25c0.167,0.167,0.25,0.369,0.25,0.607v10.857 c0,0.238-0.083,0.44-0.25,0.607s-0.369,0.25-0.607,0.25h-8.571c-0.238,0-0.44-0.083-0.607-0.25s-0.25-0.369-0.25-0.607v-2.571 h-4.857c-0.238,0-0.44-0.083-0.607-0.25s-0.25-0.369-0.25-0.607v-6c0-0.238,0.06-0.5,0.179-0.786s0.262-0.512,0.428-0.679 l3.643-3.643c0.167-0.167,0.393-0.309,0.679-0.428s0.547-0.179,0.786-0.179h3.714c0.238,0,0.44,0.083,0.607,0.25 c0.166,0.167,0.25,0.369,0.25,0.607v2.929c0.404-0.238,0.785-0.357,1.143-0.357H903.143z M898.286,893.331l-2.67,2.669h2.67V893.331 z M892.571,889.902l-2.669,2.669h2.669V889.902z M894.321,895.679l2.821-2.822v-3.714h-3.428v3.714c0,0.238-0.083,0.441-0.25,0.607 s-0.369,0.25-0.607,0.25h-3.714v5.714h4.571v-2.286c0-0.238,0.06-0.5,0.179-0.786C894.012,896.071,894.155,895.845,894.321,895.679z M902.857,902.857v-10.286h-3.429v3.714c0,0.238-0.083,0.441-0.25,0.607c-0.167,0.167-0.369,0.25-0.607,0.25h-3.714v5.715H902.857z\' /%3E %3C/svg%3E"); background-repeat: no-repeat; position: relative; top: 3px; } pre { position: relative; } pre:hover .copy-button { background-color: rgba(255, 255, 255, 0.9); } 
+</style>
+<link rel="stylesheet" id="fancybox-css" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css?ver=5.7.2" type="text/css" media="all">
+<link rel="stylesheet" id="style-css" href="https://wp.ytlee.cn/wp-content/themes/sweet/static/css/sweet.css" type="text/css" media="all">
+<link rel="stylesheet" id="emojify-css" href="https://cdn.jsdelivr.net/npm/emojify.js@1.1.0/dist/css/basic/emojify.min.css?ver=1.1.0" type="text/css" media="all">
+<script type="text/javascript" src="https://wp.ytlee.cn/wp-includes/js/jquery/jquery.min.js" id="jquery-core-js"></script>
+<script type="text/javascript" src="https://wp.ytlee.cn/wp-includes/js/jquery/jquery-migrate.min.js" id="jquery-migrate-js"></script>
+<script type="text/javascript" src="https://wp.ytlee.cn/wp-content/themes/sweet/static/js/sweet.js" id="sweet-js"></script>
+<script type="text/javascript" src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js?ver=5.7.2" id="fancybox-js"></script>
+
+<link href="https://wp.ytlee.cn/wp-content/uploads/2021/07/1617196601-favicon-32x32-1.png" rel="shortcut icon" type="image/x-icon"><link href="https://wp.ytlee.cn/wp-content/uploads/2021/07/1617196599-apple-touch-icon.png" rel="apple-touch-icon"><script type="text/javascript">
+
+</script>
+<style type="text/css">
+
+</style>
+	
+	</head>
+
+<body class="post-template-default single single-post postid-77 single-format-standard">
+
+
+<div class="navbar w-nav">
+	<div class="container w-container">
+				<a class="logo-block w-inline-block" href="https://ytlee.cn">
+			<img class="logo" src="https://wp.ytlee.cn/wp-content/uploads/2021/07/1617196599-apple-touch-icon.png">
+		</a>
+				<nav class="nav-menu w-nav-menu">
+			<li id="menu-item-97" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-97"><a href="https://ytlee.cn/">首页</a></li>
+<li id="menu-item-99" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-99"><a href="https://ytlee.cn/category/note/">笔记本</a></li>
+<li id="menu-item-100" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-100"><a href="https://ytlee.cn/category/draft/">草稿本</a></li>
+<li id="menu-item-103" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-103"><a href="https://ytlee.cn/about-me/">关于我</a></li>
+					</nav>
+		<div class="menu-button w-nav-button">
+			<div class="w-icon-nav-menu right">
+			</div>
+		</div>
+		<div class="rightNav">
+			<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-97"><a href="https://ytlee.cn/">首页</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-99"><a href="https://ytlee.cn/category/note/">笔记本</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-100"><a href="https://ytlee.cn/category/draft/">草稿本</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-103"><a href="https://ytlee.cn/about-me/">关于我</a></li>
+		</div>
+	</div>
+</div>
+<div class="bgDiv"></div>
+
+<div class="blog-header">
+	<div class="blog-header-overlay"></div>
+	<div class="header-image-block" style="background-image: url('https://wp.ytlee.cn/wp-content/uploads/2021/07/v2-9d4a482ca07bee2690831a6cf1b8660b_720w.jpg.pagespeed.ce_.9Lx8ee8rNM.jpg');"></div>
+</div>
+<div class="blog-post-section section">
+	<div class="blog-post-container container w-container">
+		<div class="white-content-block">
+			<div class="blog-post-image-block" style="background-image: url('https://wp.ytlee.cn/wp-content/uploads/2021/07/1586231926-thumb-40.jpg.pagespeed.ce_.0mYnnbmrIH.jpg');">
+				<a href="https://ytlee.cn/category/draft/" rel="category tag">草稿本</a>				<div class="blog-post-header">
+					<div class="blog-header-title-wrapper">
+						<div class="blog-post-date">2020-04-01</div>
+						<h1 class="blog-post-title">初探Serverless与尝试在Cloudflare Workers上部署应用</h1>
+					</div>
+				</div>
+			</div>
+			<div class="align-left white-content-block-content-wrapper">
+				<div class="rich-text-block w-richtext">
+					<ul>
+<li><a href="#toc-1">Serverless</a><ul>
+<li><a href="#toc-2">几种即服务</a><ul>
+<li><a href="#toc-3">IaaS (Infrastructure as a Service)</a></li>
+<li><a href="#toc-4">PaaS (Platform as a Service)</a></li>
+<li><a href="#toc-5">SaaS (Software as a Service)</a></li>
+<li><a href="#toc-6">FaaS(Function as a service)</a></li>
+</ul>
+</li><li><a href="#toc-7">什么是Serverless</a></li>
+<li><a href="#toc-8">容器</a></li>
+<li><a href="#toc-9">Serverless与FaaS</a></li>
+</ul>
+</li><li><a href="#toc-10">Cloudflare Workers</a><ul>
+<li><a href="#toc-11">略过的内容</a></li>
+<li><a href="#toc-12">获取CF Workers代码</a></li>
+<li><a href="#toc-13">部署到Workers</a></li>
+<li><a href="#toc-14">绑定域名</a></li>
+<li><a href="#toc-15">Google Drive另外的部署方式</a></li>
+<li><a href="#toc-16">奇葩的姿势</a></li>
+</ul>
+</li><li><a href="#toc-17">致谢</a></li>
+</ul>
+
+<p>注:本文部分内容编辑自文章尾部的文章,感谢他们的文字!</p>
+<h2><a name="toc-1"></a>Serverless</h2>
+<h3><a name="toc-2"></a>几种即服务</h3>
+<p><img src="https://i.loli.net/2018/03/15/5aaa4e8ab5fa1.jpg" alt="As a Service"></p>
+<ul>
+<li>
+<h4><a name="toc-3"></a>IaaS (Infrastructure as a Service)</h4>
+<p><a href="https://zh.wikipedia.org/wiki/%E5%9F%BA%E7%A4%8E%E8%A8%AD%E6%96%BD%E5%8D%B3%E6%9C%8D%E5%8B%99">基础设施即服务</a>:服务商提供底层/物理层基础设施资源（服务器，数据中心，环境控制，电源，服务器机房），客户自己部署和执行操作系统或应用程序等各种软件。</p>
+</li>
+<li>
+<h4><a name="toc-4"></a>PaaS (Platform as a Service)</h4>
+<p><a href="https://zh.wikipedia.org/wiki/%E5%B9%B3%E5%8F%B0%E5%8D%B3%E6%9C%8D%E5%8A%A1">平台即服务</a>:服务商提供基础设施底层服务，提供操作系统（Windows，Linux）、数据库服务器、Web服务器、域控制器和其他中间件，以及服务模型中的备份服务等中件层服务。例如IIS，.NET，Apache，MySQL …，客户自己控制上层的应用程序部署与应用托管的环境。</p>
+</li>
+<li>
+<h4><a name="toc-5"></a>SaaS (Software as a Service)</h4>
+<p><a href="https://zh.wikipedia.org/wiki/%E8%BD%AF%E4%BB%B6%E5%8D%B3%E6%9C%8D%E5%8A%A1">软件即服务</a>:服务商提供基于软件的解决方案，满足客户最终需求；如OA、CRM、MIS、ERP、HRM、CM、Office 365、iCloud等应用，客户不需考虑任何形式的专业技术知识，获得完整的软件包，使他们的日常工作和生活变得更轻松。</p>
+</li>
+<li>
+<h4><a name="toc-6"></a>FaaS(Function as a service)</h4>
+<p>无服务器计算，当前使用最广泛的是AWS的Lambada。</p>
+<p>服务商提供一个平台，允许客户开发、运行和管理应用程序功能，而无需构建和维护通常与开发和启动应用程序相关的基础架构的复杂性。 按照此模型构建应用程序是实现“无服务器”体系结构的一种方式，通常在构建微服务应用程序时使用。</p>
+</li>
+</ul>
+<h3><a name="toc-7"></a>什么是Serverless</h3>
+<p>无服务器计算是一种按需提供后端服务的方法。无服务器提供程序使用户可以编写和部署代码，而不必担心底层基础结构。<strong>请注意，尽管称为无服务器，但仍使用物理服务器，但开发人员无需注意它们。</strong></p>
+<p>在Web的发展过程中,首先经历了繁琐复杂物理服务器,然后有了云,接着有了容器,现在又有了无服务.</p>
+<p><img src="https://s3.cn-north-1.amazonaws.com.cn/images-bjs/0118-faas-01.jpg" alt="img"></p>
+<p>(图片来自AWS)</p>
+<p>“无服务器”一词在某种程度上具有误导性，因为仍然有服务器提供这些后端服务，但是所有服务器空间和基础架构问题都由供应商处理。无服务意味着开发人员可以完全不用担心服务器给开发带来的问题。</p>
+<h3><a name="toc-8"></a>容器</h3>
+<p>容器既包含应用程序，又包含应用程序正常运行所需的所有元素，包括系统库，系统设置和其他依赖项。任何类型的应用程序都可以在容器中运行。无论在何处托管，容器化应用程序都将以相同的方式运行。</p>
+<p><strong><img src="https://www.cloudflare.com/resources/images/slt3lc6tev37/1gvXz5W1hmZwwcpIDy2LFF/6c9df86d9642b53b9ab1646d3cf9ae16/how-containers-work.svg" alt="容器架构"></strong></p>
+<p>容器是将机器或服务器划分为单独的用户空间环境的一种方式，这样，每个环境仅运行一个应用程序，并且不会与机器上任何其他分区的部分进行交互。每个容器与其他容器共享计算机的内核（内核是操作系统的基础，并且它与计算机的硬件进行交互），但是它的运行就像是计算机上唯一的系统一样。</p>
+<h3><a name="toc-9"></a>Serverless与FaaS</h3>
+<p>微服务（MicroService）是软件架构领域业另一个热门的话题。如果说微服务是以专注于单一责任与功能的小型功能块为基础，利用模组化的方式组合出复杂的大型应用程序，那么我们还可以进一步认为Serverless架构可以提供一种更加“代码碎片化”的软件架构范式，我们称之为Function as a Services（FaaS）。而所谓的“函数”（Function）提供的是相比微服务更加细小的程序单元。例如，可以通过微服务代表为某个客户执行所有CRUD操作所需的代码，而FaaS中的“函数”可以代表客户所要执行的每个操作：创建、读取、更新，以及删除。当触发“创建账户”事件后，将通过AWS Lambda函数的方式执行相应的“函数”。从这一层意思来说，我们可以简单地将Serverless架构与FaaS概念等同起来。</p>
+<p><img src="https://www.cloudflare.com/img/learning/serverless/glossary/function-as-a-service-faas/monolithic-application-microservice-faas.svg" alt="微服务与整体架构"></p>
+<h2><a name="toc-10"></a>Cloudflare Workers</h2>
+<p>在CF Workers的首页是这样写的:The Network is the Computer. CF Workers使得开发人员可以在CF的全球节点上部署JS应用程序,至于这个中间提到的边缘计算,抱歉,还不大懂.</p>
+<p>下面,我将在Cloudflare上面部署一个GoIndex(Google drive目录索引程序).</p>
+<h3><a name="toc-11"></a>略过的内容</h3>
+<ul>
+<li>Cloudflare的注册</li>
+<li>域名的注册,解析</li>
+<li>Google Drive的注册</li>
+</ul>
+<p>如果不会,emm,天转到文章[致谢]部分,去跟着教程做.</p>
+<h3><a name="toc-12"></a>获取CF Workers代码</h3>
+<ul>
+<li>
+<p>访问网站https://installen.gd.workers.dev/点击<code>GET AUTH CODE</code>，验证你的谷歌账号获取<code>Auth code</code>。</p>
+</li>
+<li>
+<p>然后开始输入你的<code>Auth code</code>，其它可以先默认，然后点击<code>BUILD</code>获取你的代码。</p>
+</li>
+<li>
+<p>可以自行修改获取到的代码的头部的以下信息:</p>
+<pre><code>var authConfig = {
+"siteName": "GoIndex", // 网站名称
+"root_pass": "index",  // 根目录密码，优先于.password
+"version" : "1.0.6", // 程序版本
+"root": "root" // 根目录ID
+};</code></pre>
+</li>
+</ul>
+<h3><a name="toc-13"></a>部署到Workers</h3>
+<ul>
+<li>登录Cloudflare,在右侧可以看到<code>Workers</code>入口。</li>
+<li>新建一个Workers子域名,填写确认后就改不了了,emm,请思考好!</li>
+<li>创建一个Workers</li>
+<li>将之前步骤获取的Workers代码复制进去,然后点击<code>Save and Deploy</code>即可.[Tips:如果你想自定义这个应用程序的域名,双击左上角,填入子域名.右侧可以查看效果]</li>
+</ul>
+<h3><a name="toc-14"></a>绑定域名</h3>
+<ul>
+<li>先将你的域名转到Cloudflare,CF默认用NS,你可以也采用CNAME方式接入,你需要了解CLoudflare Partner计划.我用过https://cdn.wzfou.com/</li>
+<li>然后在Cloudflare官网的导航栏找到Workers,选择吼,点击页面下的<code>Add route</code>,进行如下设置.</li>
+<li>按照图中的格式,填入域名,并选择对应的Workers程序即可!(Tips:如你所见,这部分内容我参考的https://moerats.com的文章,做了一定的修改)</li>
+<li>然后在DNS功能里,添加一个Cname解析,解析到上述步骤填写的Workers地址.这样就OK了!</li>
+</ul>
+<h3><a name="toc-15"></a>Google Drive另外的部署方式</h3>
+<p><a href="https://www.moerats.com/archives/1001/">详细请参看Rat`s Blog的文章</a></p>
+<h3><a name="toc-16"></a>奇葩的姿势</h3>
+<p>基于CF和GFW的微妙关系,以及JavaScript的强大,我寻思,能不能有一个足够奇葩的姿势访问谷歌学术和维基百科.答案看来是可以的,当我在Gayhub上面找到了下面这两个项目:</p>
+<p><a href="https://github.com/EtherDream/jsproxy">jsproxy</a></p>
+<p><a href="https://github.com/FireOOO/WorkersProxy">WorkersProxy</a></p>
+<p>当然Cloudflare Workers还有一个CLI,我没去玩儿,感兴趣的朋友可以自己去看一下!</p>
+<h2><a name="toc-17"></a>致谢</h2>
+<p><a href="https://www.cloudflare.com/learning/serverless/what-is-serverless/">什么是无服务器计算？</a></p>
+<p><a href="https://www.cloudflare.com/learning/serverless/glossary/function-as-a-service-faas/">什么是FaaS服务?</a></p>
+<p><a href="https://www.cloudflare.com/learning/serverless/serverless-vs-containers/">无服务和容器</a></p>
+<p><a href="https://aws.amazon.com/cn/blogs/china/iaas-faas-serverless/">从IaaS到Faas</a></p>
+<p><a href="https://blog.csdn.net/xianghongai/article/details/79572220">IaaS, PaaS, SaaS, BaaS, Faas</a></p>
+<p><a href="https://www.moerats.com/archives/1001/">GoIndex：一个无需服务器的Google Drive目录索引程序</a></p>
+<p><a href="https://developers.cloudflare.com/workers/tutorials/">Cloudflare更详细的教程</a></p>
+									</div>
+				<div class="blog-author-block w-clearfix">
+					<div class="blog-author-image" style="background-image: url('https://cdn.v2ex.com/gravatar/90418ca09c90fa30b5fceaf7bae4ac31?s=200&d=mm&r=g');"></div>
+					<div class="blog-author-title name">tangger</div>
+					<div class="blog-author-title">
+						我还没有学会写个人说明！					</div>
+					<a href="https://ytlee.cn/author/tangger/" style="font-size: 14px">查看“tangger”的所有文章 →</a>
+				</div>
+			</div>
+		</div>
+		
+<div id="comments" class="comments-area">
+
+		
+	
+	
+		<div id="respond" class="comment-respond">
+		<h3 id="reply-title" class="comment-reply-title">Leave a Reply <small><a rel="nofollow" id="cancel-comment-reply-link" href="/2020/04/deploy-applications-on-cloudflare-workers-with-serverless/#respond" style="display:none;">Cancel reply</a></small></h3><form action="https://wp.ytlee.cn/wp-comments-post.php" method="post" id="commentform" class="comment-form"><p class="comment-notes"><span id="email-notes">Your email address will not be published.</span> Required fields are marked <span class="required">*</span></p><p class="comment-form-comment"><label for="comment">Comment</label> <textarea id="comment" name="comment" cols="45" rows="8" maxlength="65525" required="required"></textarea></p><p class="comment-form-author"><label for="author">Name <span class="required">*</span></label> <input id="author" name="author" type="text" value="" size="30" maxlength="245" required="required"></p>
+<p class="comment-form-email"><label for="email">Email <span class="required">*</span></label> <input id="email" name="email" type="text" value="" size="30" maxlength="100" aria-describedby="email-notes" required="required"></p>
+<p class="comment-form-url"><label for="url">Website</label> <input id="url" name="url" type="text" value="" size="30" maxlength="200"></p>
+<p class="comment-form-cookies-consent"><input id="wp-comment-cookies-consent" name="wp-comment-cookies-consent" type="checkbox" value="yes"> <label for="wp-comment-cookies-consent">Save my name, email, and website in this browser for the next time I comment.</label></p>
+<p class="form-submit"><input name="submit" type="submit" id="submit" class="submit" value="Post Comment"> <input type="hidden" name="comment_post_ID" value="77" id="comment_post_ID">
+<input type="hidden" name="comment_parent" id="comment_parent" value="0">
+</p></form>	</div>
+	
+</div>	</div>
+</div>
+
+
+<div class="light-tint section">
+	<div class="container w-container">
+		<div class="section-title-wrapper">
+			<h2 class="section-title">相关推荐</h2>
+		</div>
+		<div class="blog-list-wrapper w-dyn-list">
+			<div class="blog-posts-list w-clearfix w-dyn-items w-row">
+				
+				
+				<div class="blog-post-item w-col w-col-4 w-dyn-item">
+					<a class="blog-post-image-link-block small w-inline-block" title="Clash For Linux自动更新订阅配置" href="https://ytlee.cn/2021/04/clash-for-linux-automatically-renews-the-subscription-link/" style="background-image: url('https://wp.ytlee.cn/wp-content/uploads/2021/07/1617199369-c1.jpeg');">
+						<div class="blog-author-wrapper small w-clearfix">
+														<div class="blog-date small">2021-04-28</div>
+						</div>
+					</a>
+					<a class="blog-title-link" title="Clash For Linux自动更新订阅配置" href="https://ytlee.cn/2021/04/clash-for-linux-automatically-renews-the-subscription-link/">Clash For Linux自动更新订阅配置</a>
+				</div>
+
+				
+				<div class="blog-post-item w-col w-col-4 w-dyn-item">
+					<a class="blog-post-image-link-block small w-inline-block" title="使用Github Actions实现静态博客自动发布到腾讯云静态网站托管" href="https://ytlee.cn/2021/03/use-github-actions-to-automatically-publish-static-blogs-to-tencent-cloud-static-website/" style="background-image: url('https://wp.ytlee.cn/wp-content/uploads/2021/07/1586231988-thumb-42.jpg.pagespeed.ce_.-tW6B8qo4n.jpg');">
+						<div class="blog-author-wrapper small w-clearfix">
+														<div class="blog-date small">2021-03-30</div>
+						</div>
+					</a>
+					<a class="blog-title-link" title="使用Github Actions实现静态博客自动发布到腾讯云静态网站托管" href="https://ytlee.cn/2021/03/use-github-actions-to-automatically-publish-static-blogs-to-tencent-cloud-static-website/">使用Github Actions实现静态博客自动发布到腾讯云静态网站托管</a>
+				</div>
+
+				
+				<div class="blog-post-item w-col w-col-4 w-dyn-item">
+					<a class="blog-post-image-link-block small w-inline-block" title="考研数学——函数的极限" href="https://ytlee.cn/2021/03/limits-of-math/" style="background-image: url('https://wp.ytlee.cn/wp-content/uploads/2021/07/1586231926-thumb-40.jpg.pagespeed.ce_.0mYnnbmrIH.jpg');">
+						<div class="blog-author-wrapper small w-clearfix">
+														<div class="blog-date small">2021-03-09</div>
+						</div>
+					</a>
+					<a class="blog-title-link" title="考研数学——函数的极限" href="https://ytlee.cn/2021/03/limits-of-math/">考研数学——函数的极限</a>
+				</div>
+
+								
+			</div>
+		</div>
+	</div>
+</div>
+<div class="footer">
+	<div class="container w-container">
+		<div class="footer-text">
+			Copyright2021. All Rights Reserved. 			
+						
+			
+				 <a rel="nofollow" target="_blank" href="https://beian.miit.gov.cn/">渝ICP备19011860号-2</a>
+
+					</div>
+		
+		<div class="_2 footer-text">
+			Powered by
+			<a href="http://www.xintheme.com" target="_blank">XinTheme</a> + 
+			<a href="https://blog.wpjam.com/" target="_blank">WordPress 果酱</a>
+		</div>
+		<script type="text/javascript" src="https://wp.ytlee.cn/wp-includes/js/clipboard.min.js" id="clipboard-js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/emojify.js@1.1.0/dist/js/emojify.min.js?ver=1.1.0" id="emojify-js"></script>
+<script type="text/javascript" src="https://zz.bdstatic.com/linksubmit/push.js?ver=5.7.2" id="baidu_zz_push-js"></script>
+ <script id="module-prism-line-number"> (function($) { $(function() { $("code").each(function() { var parent_div = $(this).parent("pre"); var pre_css = $(this).attr("class"); if (typeof pre_css !== "undefined" && -1 !== pre_css.indexOf("language-")) { parent_div.addClass("line-numbers"); } }); }); })(jQuery); </script>  <script id="module-clipboard"> (function($) { $(function() { var pre = document.getElementsByTagName("pre"); var pasteContent = document.getElementById("paste-content"); var hasLanguage = false; for (var i = 0; i < pre.length; i++) { var codeClass = pre[i].children[0].className; var isLanguage = codeClass.indexOf("language-"); var excludedCodeClassNames = [ "language-katex", "language-seq", "language-sequence", "language-flow", "language-flowchart", "language-mermaid", ]; var isExcluded = excludedCodeClassNames.indexOf(codeClass); if (isExcluded !== -1) { isLanguage = -1; } if (isLanguage !== -1) { var button = document.createElement("button"); button.className = "copy-button"; button.textContent = "Copy"; pre[i].appendChild(button); hasLanguage = true; } }; if (hasLanguage) { var copyCode = new ClipboardJS(".copy-button", { target: function(trigger) { return trigger.previousElementSibling; } }); copyCode.on("success", function(event) { event.clearSelection(); event.trigger.textContent = "Copied"; window.setTimeout(function() { event.trigger.textContent = "Copy"; }, 2000); }); } }); })(jQuery); </script> 
+			<script id="module-emojify">
+				(function($) {
+					$(function() {
+						if (typeof emojify !== "undefined") {
+							emojify.setConfig({
+								img_dir: "https://cdn.jsdelivr.net/npm/emojify.js@1.1.0/dist/images/basic",
+								blacklist: {
+									"classes": ["no-emojify"],
+									"elements": ["script", "textarea", "pre", "code"]
+								}
+							});
+							emojify.run();
+						} else {
+							console.log("[wp-githuber-md] emogify is undefined.");
+						}
+					});
+				})(jQuery);
+			</script>
+			</div>
+</div>
+<div class="gotop-wrapper">
+	<a href="javascript:;" class="fixed-gotop gotop"></a>
+</div>
+</body>
+</html>

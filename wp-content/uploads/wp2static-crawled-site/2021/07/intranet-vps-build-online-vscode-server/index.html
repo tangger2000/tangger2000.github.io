@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>内网VPS搭建在线VSCode Server – 翰林木子的笔记本</title>
+<meta name="description" content="介绍 code-server是一款基于VScode的在线编辑器,主要用于在Linux服务器环境下,实现任何设备通过浏览器即可访问VScode, 进而实现在远程编程。 安装 如果在本地，自然是无需搭建这个server的，我在学校内网有 …">
+<meta name="keywords" content="Linux">
+<meta name="robots" content="max-image-preview:large">
+<link rel="dns-prefetch" href="//cdn.staticfile.org">
+<link rel="dns-prefetch" href="//cdn.jsdelivr.net">
+<link rel="dns-prefetch" href="//zz.bdstatic.com">
+<link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+<link rel="stylesheet" id="wp-block-library-css" href="https://wp.ytlee.cn/wp-includes/css/dist/block-library/style.min.css" type="text/css" media="all">
+<style id="md-style-inline-css" type="text/css">
+ .copy-button { cursor: pointer; border: 0; font-size: 12px; text-transform: uppercase; font-weight: 500; padding: 3px 6px 3px 6px; background-color: rgba(255, 255, 255, 0.6); position: absolute; overflow: hidden; top: 5px; right: 5px; border-radius: 3px; } .copy-button:before { content: ""; display: inline-block; width: 16px; height: 16px; margin-right: 3px; background-size: contain; background-image: url("data:image/svg+xml,%3Csvg version=\'1.1\' xmlns=\'http://www.w3.org/2000/svg\' xmlns:xlink=\'http://www.w3.org/1999/xlink\' x=\'0px\' y=\'0px\' width=\'16px\' height=\'16px\' viewBox=\'888 888 16 16\' enable-background=\'new 888 888 16 16\' xml:space=\'preserve\'%3E %3Cpath fill=\'%23333333\' d=\'M903.143,891.429c0.238,0,0.44,0.083,0.607,0.25c0.167,0.167,0.25,0.369,0.25,0.607v10.857 c0,0.238-0.083,0.44-0.25,0.607s-0.369,0.25-0.607,0.25h-8.571c-0.238,0-0.44-0.083-0.607-0.25s-0.25-0.369-0.25-0.607v-2.571 h-4.857c-0.238,0-0.44-0.083-0.607-0.25s-0.25-0.369-0.25-0.607v-6c0-0.238,0.06-0.5,0.179-0.786s0.262-0.512,0.428-0.679 l3.643-3.643c0.167-0.167,0.393-0.309,0.679-0.428s0.547-0.179,0.786-0.179h3.714c0.238,0,0.44,0.083,0.607,0.25 c0.166,0.167,0.25,0.369,0.25,0.607v2.929c0.404-0.238,0.785-0.357,1.143-0.357H903.143z M898.286,893.331l-2.67,2.669h2.67V893.331 z M892.571,889.902l-2.669,2.669h2.669V889.902z M894.321,895.679l2.821-2.822v-3.714h-3.428v3.714c0,0.238-0.083,0.441-0.25,0.607 s-0.369,0.25-0.607,0.25h-3.714v5.714h4.571v-2.286c0-0.238,0.06-0.5,0.179-0.786C894.012,896.071,894.155,895.845,894.321,895.679z M902.857,902.857v-10.286h-3.429v3.714c0,0.238-0.083,0.441-0.25,0.607c-0.167,0.167-0.369,0.25-0.607,0.25h-3.714v5.715H902.857z\' /%3E %3C/svg%3E"); background-repeat: no-repeat; position: relative; top: 3px; } pre { position: relative; } pre:hover .copy-button { background-color: rgba(255, 255, 255, 0.9); } 
+</style>
+<link rel="stylesheet" id="fancybox-css" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css?ver=5.7.2" type="text/css" media="all">
+<link rel="stylesheet" id="style-css" href="https://wp.ytlee.cn/wp-content/themes/sweet/static/css/sweet.css" type="text/css" media="all">
+<link rel="stylesheet" id="prism-css-0-css" href="https://cdn.jsdelivr.net/npm/prismjs@1.15.0/themes/prism.css?ver=1.15.0" type="text/css" media="all">
+<link rel="stylesheet" id="prism-css-1-css" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/plugins/line-numbers/prism-line-numbers.css?ver=1.15.0" type="text/css" media="all">
+<link rel="stylesheet" id="emojify-css" href="https://cdn.jsdelivr.net/npm/emojify.js@1.1.0/dist/css/basic/emojify.min.css?ver=1.1.0" type="text/css" media="all">
+<script type="text/javascript" src="https://wp.ytlee.cn/wp-includes/js/jquery/jquery.min.js" id="jquery-core-js"></script>
+<script type="text/javascript" src="https://wp.ytlee.cn/wp-includes/js/jquery/jquery-migrate.min.js" id="jquery-migrate-js"></script>
+<script type="text/javascript" src="https://wp.ytlee.cn/wp-content/themes/sweet/static/js/sweet.js" id="sweet-js"></script>
+<script type="text/javascript" src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js?ver=5.7.2" id="fancybox-js"></script>
+
+<link href="https://wp.ytlee.cn/wp-content/uploads/2021/07/1617196601-favicon-32x32-1.png" rel="shortcut icon" type="image/x-icon"><link href="https://wp.ytlee.cn/wp-content/uploads/2021/07/1617196599-apple-touch-icon.png" rel="apple-touch-icon"><script type="text/javascript">
+
+</script>
+<style type="text/css">
+
+</style>
+	
+	</head>
+
+<body class="post-template-default single single-post postid-95 single-format-standard">
+
+
+<div class="navbar w-nav">
+	<div class="container w-container">
+				<a class="logo-block w-inline-block" href="https://ytlee.cn">
+			<img class="logo" src="https://wp.ytlee.cn/wp-content/uploads/2021/07/1617196599-apple-touch-icon.png">
+		</a>
+				<nav class="nav-menu w-nav-menu">
+			<li id="menu-item-97" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-97"><a href="https://ytlee.cn/">首页</a></li>
+<li id="menu-item-99" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-99"><a href="https://ytlee.cn/category/note/">笔记本</a></li>
+<li id="menu-item-100" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-100"><a href="https://ytlee.cn/category/draft/">草稿本</a></li>
+<li id="menu-item-103" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-103"><a href="https://ytlee.cn/about-me/">关于我</a></li>
+					</nav>
+		<div class="menu-button w-nav-button">
+			<div class="w-icon-nav-menu right">
+			</div>
+		</div>
+		<div class="rightNav">
+			<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-97"><a href="https://ytlee.cn/">首页</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-99"><a href="https://ytlee.cn/category/note/">笔记本</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-100"><a href="https://ytlee.cn/category/draft/">草稿本</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-103"><a href="https://ytlee.cn/about-me/">关于我</a></li>
+		</div>
+	</div>
+</div>
+<div class="bgDiv"></div>
+
+<div class="blog-header">
+	<div class="blog-header-overlay"></div>
+	<div class="header-image-block" style="background-image: url('https://wp.ytlee.cn/wp-content/uploads/2021/07/1617196075-a7.jpeg');"></div>
+</div>
+<div class="blog-post-section section">
+	<div class="blog-post-container container w-container">
+		<div class="white-content-block">
+			<div class="blog-post-image-block" style="background-image: url('https://wp.ytlee.cn/wp-content/uploads/2021/07/1617196079-a9.jpeg');">
+				<a href="https://ytlee.cn/category/note/" rel="category tag">笔记本</a>				<div class="blog-post-header">
+					<div class="blog-header-title-wrapper">
+						<div class="blog-post-date">2021-07-08</div>
+						<h1 class="blog-post-title">内网VPS搭建在线VSCode Server</h1>
+					</div>
+				</div>
+			</div>
+			<div class="align-left white-content-block-content-wrapper">
+				<div class="rich-text-block w-richtext">
+					<ul>
+<li><a href="#toc-1">介绍</a></li>
+<li><a href="#toc-2">安装</a></li>
+<li><a href="#toc-3">运行</a></li>
+<li><a href="#toc-4">配置</a></li>
+<li><a href="#toc-5">内网穿透</a></li>
+<li><a href="#toc-6">卸载</a></li>
+</ul>
+
+<h2><a name="toc-1"></a>介绍</h2>
+<p>code-server是一款基于VScode的在线编辑器,主要用于在Linux服务器环境下,实现任何设备通过浏览器即可访问VScode, 进而实现在远程编程。</p>
+<h2><a name="toc-2"></a>安装</h2>
+<p>如果在本地，自然是无需搭建这个server的，我在学校内网有台NAT的Ubuntu服务器，寻思着没怎么用。就用来搭建一个VScode Server了，以后抱个平板估计处理一下简单的代码是可以的。</p>
+<p>有三种方法可以开始：</p>
+<ol>
+<li>使用<a href="https://github.com/cdr/code-server/blob/main/install.sh">安装脚本</a>快速安装</li>
+<li>手动安装，请参阅<a href="https://github.com/cdr/code-server/blob/main/docs/install.md">官方文档</a></li>
+</ol>
+<p>如果您选择使用安装脚本，您可以预览安装过程中发生的情况：</p>
+<pre><code class="language-bash">curl -fsSL https://code-server.dev/install.sh | sh -s -- --dry-run</code></pre>
+<p>要安装，运行：</p>
+<pre><code class="language-bash">curl -fsSL https://code-server.dev/install.sh | sh</code></pre>
+<p>完成后，安装脚本打印出运行和启动代码服务器的说明。</p>
+<p>该项目还有一个深入的<a href="https://github.com/cdr/code-server/blob/main/docs/guide.md">设置和配置</a>指南。</p>
+<h2><a name="toc-3"></a>运行</h2>
+<p>使用<code>systemctl</code>启动服务，并保证系统重启可以自启动服务，可以执行以下指令：</p>
+<pre><code class="language-shell">sudo systemctl enable --now code-server@$USER</code></pre>
+<h2><a name="toc-4"></a>配置</h2>
+<p>VSCode服务有一个配置文件<code>~/.config/code-server/config.yaml</code>，默认配置包含：</p>
+<pre><code class="language-yaml">bind-addr: 127.0.0.1:8080
+auth: password
+password: somerandominfo
+cert: false</code></pre>
+<p>默认情况下开启了密码认证，同时给了一个初始密码。我们可以将端口号和密码都修改成自己想要的。<strong>上面的<code>127.0.0.1</code>只是针对本地地址，无法被外部网络访问，因此，如果需要外部访问则需要将<code>127.0.0.1</code>改为<code>0.0.0.0</code>，然后重启服务。</strong></p>
+<p>修改完成以后，记得重启服务。</p>
+<pre><code class="language-shell">sudo systemctl restart code-server@$USER.service</code></pre>
+<p>然后就可以内网访问了，但是我寻思我还想任何地方接入网络就能访问呢！那就内网穿透咯。</p>
+<h2><a name="toc-5"></a>内网穿透</h2>
+<ul>
+<li>自行搭建FRP穿透隧道</li>
+<li>SakuraFrp</li>
+<li>网云穿</li>
+<li>花生壳</li>
+</ul>
+<h2><a name="toc-6"></a>卸载</h2>
+<p>首先停止 code-server 服务</p>
+<pre><code class="language-shell">sudo systemctl stop code-server@$USER</code></pre>
+<p>执行如下命令将相关文件全部删除即可完成卸载</p>
+<pre><code class="language-shell">sudo rm -rf /usr/lib/code-server
+sudo rm -rf ~/.local/share/code-server
+sudo rm -rf ~/.config/code-server</code></pre>
+									</div>
+				<div class="blog-author-block w-clearfix">
+					<div class="blog-author-image" style="background-image: url('https://cdn.v2ex.com/gravatar/90418ca09c90fa30b5fceaf7bae4ac31?s=200&d=mm&r=g');"></div>
+					<div class="blog-author-title name">tangger</div>
+					<div class="blog-author-title">
+						我还没有学会写个人说明！					</div>
+					<a href="https://ytlee.cn/author/tangger/" style="font-size: 14px">查看“tangger”的所有文章 →</a>
+				</div>
+			</div>
+		</div>
+		
+<div id="comments" class="comments-area">
+
+		
+	
+	
+		<div id="respond" class="comment-respond">
+		<h3 id="reply-title" class="comment-reply-title">Leave a Reply <small><a rel="nofollow" id="cancel-comment-reply-link" href="/2021/07/intranet-vps-build-online-vscode-server/#respond" style="display:none;">Cancel reply</a></small></h3><form action="https://wp.ytlee.cn/wp-comments-post.php" method="post" id="commentform" class="comment-form"><p class="comment-notes"><span id="email-notes">Your email address will not be published.</span> Required fields are marked <span class="required">*</span></p><p class="comment-form-comment"><label for="comment">Comment</label> <textarea id="comment" name="comment" cols="45" rows="8" maxlength="65525" required="required"></textarea></p><p class="comment-form-author"><label for="author">Name <span class="required">*</span></label> <input id="author" name="author" type="text" value="" size="30" maxlength="245" required="required"></p>
+<p class="comment-form-email"><label for="email">Email <span class="required">*</span></label> <input id="email" name="email" type="text" value="" size="30" maxlength="100" aria-describedby="email-notes" required="required"></p>
+<p class="comment-form-url"><label for="url">Website</label> <input id="url" name="url" type="text" value="" size="30" maxlength="200"></p>
+<p class="comment-form-cookies-consent"><input id="wp-comment-cookies-consent" name="wp-comment-cookies-consent" type="checkbox" value="yes"> <label for="wp-comment-cookies-consent">Save my name, email, and website in this browser for the next time I comment.</label></p>
+<p class="form-submit"><input name="submit" type="submit" id="submit" class="submit" value="Post Comment"> <input type="hidden" name="comment_post_ID" value="95" id="comment_post_ID">
+<input type="hidden" name="comment_parent" id="comment_parent" value="0">
+</p></form>	</div>
+	
+</div>	</div>
+</div>
+
+
+<div class="light-tint section">
+	<div class="container w-container">
+		<div class="section-title-wrapper">
+			<h2 class="section-title">相关推荐</h2>
+		</div>
+		<div class="blog-list-wrapper w-dyn-list">
+			<div class="blog-posts-list w-clearfix w-dyn-items w-row">
+				
+				
+				<div class="blog-post-item w-col w-col-4 w-dyn-item">
+					<a class="blog-post-image-link-block small w-inline-block" title="NGINX反代配置挡掉WordPress的后台请求并开启NGINX缓存" href="https://ytlee.cn/2021/02/enable-nginx-cache-and-prohibit-background-requests/" style="background-image: url('https://wp.ytlee.cn/wp-content/uploads/2021/07/1617199373-c4.jpeg');">
+						<div class="blog-author-wrapper small w-clearfix">
+														<div class="blog-date small">2021-02-20</div>
+						</div>
+					</a>
+					<a class="blog-title-link" title="NGINX反代配置挡掉WordPress的后台请求并开启NGINX缓存" href="https://ytlee.cn/2021/02/enable-nginx-cache-and-prohibit-background-requests/">NGINX反代配置挡掉WordPress的后台请求并开启NGINX缓存</a>
+				</div>
+
+				
+				<div class="blog-post-item w-col w-col-4 w-dyn-item">
+					<a class="blog-post-image-link-block small w-inline-block" title="使用Qemu模拟Cortex-A9运行U-boot和Linux" href="https://ytlee.cn/2021/01/use-qemu-to-simulate-cortex-a9-to-run-u-boot-and-linux/" style="background-image: url('https://wp.ytlee.cn/wp-content/uploads/2021/07/1586231902-thumb-39.jpg.pagespeed.ce_.7Q3cRoveKH.jpg');">
+						<div class="blog-author-wrapper small w-clearfix">
+														<div class="blog-date small">2021-01-08</div>
+						</div>
+					</a>
+					<a class="blog-title-link" title="使用Qemu模拟Cortex-A9运行U-boot和Linux" href="https://ytlee.cn/2021/01/use-qemu-to-simulate-cortex-a9-to-run-u-boot-and-linux/">使用Qemu模拟Cortex-A9运行U-boot和Linux</a>
+				</div>
+
+				
+				<div class="blog-post-item w-col w-col-4 w-dyn-item">
+					<a class="blog-post-image-link-block small w-inline-block" title="记录——守护进程与后台进程的区别" href="https://ytlee.cn/2020/05/the-difference-between-daemon-and-background-process/" style="background-image: url('https://wp.ytlee.cn/wp-content/uploads/2021/07/x8b30c64c2b53bb710cbb21f8e24de333-ld.jpg.pagespeed.ic_.a0OWHrxdK7.jpg');">
+						<div class="blog-author-wrapper small w-clearfix">
+														<div class="blog-date small">2020-05-09</div>
+						</div>
+					</a>
+					<a class="blog-title-link" title="记录——守护进程与后台进程的区别" href="https://ytlee.cn/2020/05/the-difference-between-daemon-and-background-process/">记录——守护进程与后台进程的区别</a>
+				</div>
+
+								
+			</div>
+		</div>
+	</div>
+</div>
+<div class="footer">
+	<div class="container w-container">
+		<div class="footer-text">
+			Copyright2021. All Rights Reserved. 			
+						
+			
+				 <a rel="nofollow" target="_blank" href="https://beian.miit.gov.cn/">渝ICP备19011860号-2</a>
+
+					</div>
+		
+		<div class="_2 footer-text">
+			Powered by
+			<a href="http://www.xintheme.com" target="_blank">XinTheme</a> + 
+			<a href="https://blog.wpjam.com/" target="_blank">WordPress 果酱</a>
+		</div>
+		<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/prismjs@1.15.0/components/prism-core.min.js?ver=1.15.0" id="prism-js-0-js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/prismjs@1.15.0/prism.min.js?ver=1.15.0" id="prism-js-1-js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/prismjs@1.15.0/plugins/line-numbers/prism-line-numbers.min.js?ver=1.15.0" id="prism-js-2-js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/prismjs@1.15.0/plugins/autoloader/prism-autoloader.min.js?ver=1.15.0" id="prism-js-3-js"></script>
+<script type="text/javascript" src="https://wp.ytlee.cn/wp-includes/js/clipboard.min.js" id="clipboard-js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/emojify.js@1.1.0/dist/js/emojify.min.js?ver=1.1.0" id="emojify-js"></script>
+<script type="text/javascript" src="https://zz.bdstatic.com/linksubmit/push.js?ver=5.7.2" id="baidu_zz_push-js"></script>
+ <script id="auto_loader_config_scripts"> Prism.plugins.autoloader.languages_path = "https://cdn.jsdelivr.net/npm/prismjs@1.15.0/components/"; </script>  <script id="module-prism-line-number"> (function($) { $(function() { $("code").each(function() { var parent_div = $(this).parent("pre"); var pre_css = $(this).attr("class"); if (typeof pre_css !== "undefined" && -1 !== pre_css.indexOf("language-")) { parent_div.addClass("line-numbers"); } }); }); })(jQuery); </script>  <script id="module-clipboard"> (function($) { $(function() { var pre = document.getElementsByTagName("pre"); var pasteContent = document.getElementById("paste-content"); var hasLanguage = false; for (var i = 0; i < pre.length; i++) { var codeClass = pre[i].children[0].className; var isLanguage = codeClass.indexOf("language-"); var excludedCodeClassNames = [ "language-katex", "language-seq", "language-sequence", "language-flow", "language-flowchart", "language-mermaid", ]; var isExcluded = excludedCodeClassNames.indexOf(codeClass); if (isExcluded !== -1) { isLanguage = -1; } if (isLanguage !== -1) { var button = document.createElement("button"); button.className = "copy-button"; button.textContent = "Copy"; pre[i].appendChild(button); hasLanguage = true; } }; if (hasLanguage) { var copyCode = new ClipboardJS(".copy-button", { target: function(trigger) { return trigger.previousElementSibling; } }); copyCode.on("success", function(event) { event.clearSelection(); event.trigger.textContent = "Copied"; window.setTimeout(function() { event.trigger.textContent = "Copy"; }, 2000); }); } }); })(jQuery); </script> 
+			<script id="module-emojify">
+				(function($) {
+					$(function() {
+						if (typeof emojify !== "undefined") {
+							emojify.setConfig({
+								img_dir: "https://cdn.jsdelivr.net/npm/emojify.js@1.1.0/dist/images/basic",
+								blacklist: {
+									"classes": ["no-emojify"],
+									"elements": ["script", "textarea", "pre", "code"]
+								}
+							});
+							emojify.run();
+						} else {
+							console.log("[wp-githuber-md] emogify is undefined.");
+						}
+					});
+				})(jQuery);
+			</script>
+			</div>
+</div>
+<div class="gotop-wrapper">
+	<a href="javascript:;" class="fixed-gotop gotop"></a>
+</div>
+</body>
+</html>

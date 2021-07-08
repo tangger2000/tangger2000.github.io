@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>博客优化简记 – 翰林木子的笔记本</title>
+<meta name="description" content="前言 ​ 博客之前是放在腾讯云上的，由上海节点存储网站文件，成都节点存储数据库。现在本地有台性能更好的服务器，主要在于其带宽更高，且数据完全在我自己的raid5阵列中...（主要是想折腾一下了）。所以将 …">
+<meta name="keywords" content="WordPress">
+<meta name="robots" content="max-image-preview:large">
+<link rel="dns-prefetch" href="//cdn.staticfile.org">
+<link rel="dns-prefetch" href="//cdn.jsdelivr.net">
+<link rel="dns-prefetch" href="//zz.bdstatic.com">
+<link rel="stylesheet" id="wp-block-library-css" href="https://wp.ytlee.cn/wp-includes/css/dist/block-library/style.min.css" type="text/css" media="all">
+<style id="md-style-inline-css" type="text/css">
+ .copy-button { cursor: pointer; border: 0; font-size: 12px; text-transform: uppercase; font-weight: 500; padding: 3px 6px 3px 6px; background-color: rgba(255, 255, 255, 0.6); position: absolute; overflow: hidden; top: 5px; right: 5px; border-radius: 3px; } .copy-button:before { content: ""; display: inline-block; width: 16px; height: 16px; margin-right: 3px; background-size: contain; background-image: url("data:image/svg+xml,%3Csvg version=\'1.1\' xmlns=\'http://www.w3.org/2000/svg\' xmlns:xlink=\'http://www.w3.org/1999/xlink\' x=\'0px\' y=\'0px\' width=\'16px\' height=\'16px\' viewBox=\'888 888 16 16\' enable-background=\'new 888 888 16 16\' xml:space=\'preserve\'%3E %3Cpath fill=\'%23333333\' d=\'M903.143,891.429c0.238,0,0.44,0.083,0.607,0.25c0.167,0.167,0.25,0.369,0.25,0.607v10.857 c0,0.238-0.083,0.44-0.25,0.607s-0.369,0.25-0.607,0.25h-8.571c-0.238,0-0.44-0.083-0.607-0.25s-0.25-0.369-0.25-0.607v-2.571 h-4.857c-0.238,0-0.44-0.083-0.607-0.25s-0.25-0.369-0.25-0.607v-6c0-0.238,0.06-0.5,0.179-0.786s0.262-0.512,0.428-0.679 l3.643-3.643c0.167-0.167,0.393-0.309,0.679-0.428s0.547-0.179,0.786-0.179h3.714c0.238,0,0.44,0.083,0.607,0.25 c0.166,0.167,0.25,0.369,0.25,0.607v2.929c0.404-0.238,0.785-0.357,1.143-0.357H903.143z M898.286,893.331l-2.67,2.669h2.67V893.331 z M892.571,889.902l-2.669,2.669h2.669V889.902z M894.321,895.679l2.821-2.822v-3.714h-3.428v3.714c0,0.238-0.083,0.441-0.25,0.607 s-0.369,0.25-0.607,0.25h-3.714v5.714h4.571v-2.286c0-0.238,0.06-0.5,0.179-0.786C894.012,896.071,894.155,895.845,894.321,895.679z M902.857,902.857v-10.286h-3.429v3.714c0,0.238-0.083,0.441-0.25,0.607c-0.167,0.167-0.369,0.25-0.607,0.25h-3.714v5.715H902.857z\' /%3E %3C/svg%3E"); background-repeat: no-repeat; position: relative; top: 3px; } pre { position: relative; } pre:hover .copy-button { background-color: rgba(255, 255, 255, 0.9); } 
+</style>
+<link rel="stylesheet" id="fancybox-css" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css?ver=5.7.2" type="text/css" media="all">
+<link rel="stylesheet" id="style-css" href="https://wp.ytlee.cn/wp-content/themes/sweet/static/css/sweet.css" type="text/css" media="all">
+<link rel="stylesheet" id="emojify-css" href="https://cdn.jsdelivr.net/npm/emojify.js@1.1.0/dist/css/basic/emojify.min.css?ver=1.1.0" type="text/css" media="all">
+<script type="text/javascript" src="https://wp.ytlee.cn/wp-includes/js/jquery/jquery.min.js" id="jquery-core-js"></script>
+<script type="text/javascript" src="https://wp.ytlee.cn/wp-includes/js/jquery/jquery-migrate.min.js" id="jquery-migrate-js"></script>
+<script type="text/javascript" src="https://wp.ytlee.cn/wp-content/themes/sweet/static/js/sweet.js" id="sweet-js"></script>
+<script type="text/javascript" src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js?ver=5.7.2" id="fancybox-js"></script>
+
+<link href="https://wp.ytlee.cn/wp-content/uploads/2021/07/1617196601-favicon-32x32-1.png" rel="shortcut icon" type="image/x-icon"><link href="https://wp.ytlee.cn/wp-content/uploads/2021/07/1617196599-apple-touch-icon.png" rel="apple-touch-icon"><script type="text/javascript">
+
+</script>
+<style type="text/css">
+
+</style>
+	
+	</head>
+
+<body class="post-template-default single single-post postid-88 single-format-standard">
+
+
+<div class="navbar w-nav">
+	<div class="container w-container">
+				<a class="logo-block w-inline-block" href="https://ytlee.cn">
+			<img class="logo" src="https://wp.ytlee.cn/wp-content/uploads/2021/07/1617196599-apple-touch-icon.png">
+		</a>
+				<nav class="nav-menu w-nav-menu">
+			<li id="menu-item-97" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-97"><a href="https://ytlee.cn/">首页</a></li>
+<li id="menu-item-99" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-99"><a href="https://ytlee.cn/category/note/">笔记本</a></li>
+<li id="menu-item-100" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-100"><a href="https://ytlee.cn/category/draft/">草稿本</a></li>
+<li id="menu-item-103" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-103"><a href="https://ytlee.cn/about-me/">关于我</a></li>
+					</nav>
+		<div class="menu-button w-nav-button">
+			<div class="w-icon-nav-menu right">
+			</div>
+		</div>
+		<div class="rightNav">
+			<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-97"><a href="https://ytlee.cn/">首页</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-99"><a href="https://ytlee.cn/category/note/">笔记本</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-100"><a href="https://ytlee.cn/category/draft/">草稿本</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-103"><a href="https://ytlee.cn/about-me/">关于我</a></li>
+		</div>
+	</div>
+</div>
+<div class="bgDiv"></div>
+
+<div class="blog-header">
+	<div class="blog-header-overlay"></div>
+	<div class="header-image-block" style="background-image: url('https://wp.ytlee.cn/wp-content/uploads/2021/07/1617196079-a9.jpeg');"></div>
+</div>
+<div class="blog-post-section section">
+	<div class="blog-post-container container w-container">
+		<div class="white-content-block">
+			<div class="blog-post-image-block" style="background-image: url('https://wp.ytlee.cn/wp-content/uploads/2021/07/1617196088-b8.jpeg');">
+				<a href="https://ytlee.cn/category/note/" rel="category tag">笔记本</a>				<div class="blog-post-header">
+					<div class="blog-header-title-wrapper">
+						<div class="blog-post-date">2021-02-17</div>
+						<h1 class="blog-post-title">博客优化简记</h1>
+					</div>
+				</div>
+			</div>
+			<div class="align-left white-content-block-content-wrapper">
+				<div class="rich-text-block w-richtext">
+					<ul>
+<li><a href="#toc-1">前言</a></li>
+<li><a href="#toc-2">数据迁移</a></li>
+<li><a href="#toc-3">WPJAM Basic优化</a></li>
+<li><a href="#toc-4">网站加速基本操作</a><ul>
+<li><a href="#toc-5">安装WordPress缓存插件</a></li>
+<li><a href="#toc-6">Gravatar加速</a></li>
+<li><a href="#toc-7">图片优化</a></li>
+<li><a href="#toc-8">JS/CSS/HTML优化</a></li>
+</ul>
+</li><li><a href="#toc-9">更进一步的优化方案</a></li>
+<li><a href="#toc-10">总结</a></li>
+</ul>
+
+<h2><a name="toc-1"></a>前言</h2>
+<p>​   博客之前是放在腾讯云上的，由上海节点存储网站文件，成都节点存储数据库。现在本地有台性能更好的服务器，主要在于其带宽更高，且数据完全在我自己的raid5阵列中...（主要是想折腾一下了）。所以将数据WP全部迁移到本地。然后思路是本地做好静态化和缓存，再由腾讯小水管反代到80和443端口，然后再套个CDN，万事大吉！牛年吉祥！反正俺这站点也没啥人来看，应该不会受到攻击。</p>
+<h2><a name="toc-2"></a>数据迁移</h2>
+<p>​   迁移的过程是艰辛的。主要在于腾讯云的云数据库直接导出的数据表中丢失数据字段的一些value，最开始我不知道这一茬问题，迁移后始终提示“数据库连接失败”。很难受~最后去查导入的数据表，好家伙。</p>
+<p>​   然而这一问题的答案在于，腾讯云的MySQL5.7中使用的许多LONGTEXT类型，所以必须将LONGTEXT类型全部手动变更到TEXT类型，才可以将导出的数据表重新导入新数据库。不仅如此，在修改<code> wp-posts</code>数据表的时候还会遇到一个问题：有几条数据记录的时间字段其默认项非法，具体非法表现为<code>0000-00-00 00：00：00</code>，把这几项记录酌情删除，或者人为的修改这个记录值方可解决此问题。</p>
+<p>​   此问题不多赘述。</p>
+<h2><a name="toc-3"></a>WPJAM Basic优化</h2>
+<p>WPJAM Basic是<a href="https://blog.wpjam.com/">我爱水煮鱼</a>所写的插件，可以提供一些效果不错的优化。其中在使用时，必须注意，如果你不知道这个东西勾选了以后有什么效果，那就仔细查看插件作者的功能描述。</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gnqe0li9hgj30li0dzdik.jpg" alt="image-20210217114955486"></p>
+<h2><a name="toc-4"></a>网站加速基本操作</h2>
+<h3><a name="toc-5"></a>安装WordPress缓存插件</h3>
+<p>​   WordPress的页面属于动态页面。当创建一个页面时，WordPress会运行一个程序来找到相关的信息，然后把这些信息整合起来呈现给访问用户。这个过程需要很多个步骤。尤其是当单次访问网站的用户比较多的情况下，就会拖慢网站。</p>
+<p>​   用户访问网页的时候，服务器会从PHP文件和SQL数据库中检索出所需的信息，动态的生成HTML文档，然后通过网络递交给客户端（浏览器），浏览器对HTML解析后展现出对应的效果。<strong>缓存插件的本质在于</strong>，提前的定期的将这个动态生成HTML文档的过程做了保存到本地，用户访问的时候就减少了这个动态生成的时间。</p>
+<p>​   我使用WP Super Cache这个插件，其他的插件或者插件的使用教程，这里不再赘述。</p>
+<h3><a name="toc-6"></a>Gravatar加速</h3>
+<p>​   如果网站开启了Gravatar，就是那个头像，就需要对Gravatar加速。如下图，我之前采用的是v2ex的Gravatar镜像，但是加载时间还是很长（我测了下还不如官方的cn源速度），所以我们需要再想办法解决这个问题。</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gnqexmsq6zj30p807pjsk.jpg" alt="image-20210217122140381"></p>
+<p>​   <strong>解决办法：</strong></p>
+<ul>
+<li>不用Gravatar，自己操作，自己想办法</li>
+<li>再换源（换到更快的源）</li>
+<li>自己建镜像源</li>
+</ul>
+<p>我这里当然采用第二种方式。在网上一搜gravatar镜像源，可以搜到很多，自己摁f12选中禁用缓存后，从浏览器的调试工具里面自己看哪个更快用哪个。这里我选用的是<a href="https://sdn.geekzu.org/avatar/">极客族镜像</a>，毕竟加载时间只有短短的数10ms了。</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gnqf9egyzxj30mi085wf4.jpg" alt="image-20210217123258817"></p>
+<p>我这里采用WPJAM插件，此插件可以直接修改Gravatar镜像源地址。</p>
+<h3><a name="toc-7"></a>图片优化</h3>
+<p>​   现在的网站多多少少都会一些图片，除非像我这种有点儿懒的。图片的存在确实提高了网站的观赏性，但是不可避免的拖慢了访问速度。有什么好的解决办法吗？</p>
+<p><strong>解决方案：</strong></p>
+<ul>
+<li>图片全部采用外链图床（CDN）</li>
+<li>图片懒加载</li>
+<li>图片压缩</li>
+<li>图像格式（这真细节，懒得去弄，jpg和webp）</li>
+</ul>
+<p>​   不用说，大部分人都会采用图床的方式，肯定的。图床无非采用公共图床或者自建图床，这里不做过多赘述。但是在本地，也可能还是会有一些零星的图片。处理他们的方式，整个插件就好了，让插件做一下压缩。实际上还可以将图片格式转成webp的格式，也会有些效果。<strong>这里我采用ShortPixel这个插件对图片自动进行压缩。</strong></p>
+<h3><a name="toc-8"></a>JS/CSS/HTML优化</h3>
+<p>​   静态文档（js/css/html）也会对网站的访问速度造成影响，所以这里我们也简单的对这些资源优化一下。</p>
+<p>下载使用<strong>Autoptimize</strong>插件，并进行设置就好了。需要注意的是，google字体，如果在WPJAM或者其他的插件已经设置了，那就不要去管它。</p>
+<h2><a name="toc-9"></a>更进一步的优化方案</h2>
+<p>​   这些方案仅列出，稍微有些麻烦。</p>
+<ul>
+<li>
+<p>nginx fastcgi_cache缓存</p>
+<p><a href="https://www.segena.com/wordpress-blog-nginx-cache.html">WordPress博客优化：启用Nginx缓存加速网站访问！ - 小俊学习网 (segena.com)</a></p>
+<p>建议将fastcgi_cache的缓存目录设置到内存中，更快！！！简单来说就是linux中，建立一个内存文件系统。</p>
+</li>
+<li>
+<p>安装opcache</p>
+</li>
+<li>
+<p>redis/memcached</p>
+</li>
+<li>
+<p>动静分离</p>
+<p>动静分离的主要思想是，将网站的静态资源与动态资源分开，静态资源放到另外的一个地方，比如CDN或者存储桶，动态资源留在本地。服务端对页面中的静态资源的请求不再由源站负责传输，而是从CDN或存储桶传输。</p>
+</li>
+</ul>
+<h2><a name="toc-10"></a>总结</h2>
+<p>没啥好总结的。。。我懒~</p>
+									</div>
+				<div class="blog-author-block w-clearfix">
+					<div class="blog-author-image" style="background-image: url('https://cdn.v2ex.com/gravatar/90418ca09c90fa30b5fceaf7bae4ac31?s=200&d=mm&r=g');"></div>
+					<div class="blog-author-title name">tangger</div>
+					<div class="blog-author-title">
+						我还没有学会写个人说明！					</div>
+					<a href="https://ytlee.cn/author/tangger/" style="font-size: 14px">查看“tangger”的所有文章 →</a>
+				</div>
+			</div>
+		</div>
+		
+<div id="comments" class="comments-area">
+
+		
+	
+	
+		<div id="respond" class="comment-respond">
+		<h3 id="reply-title" class="comment-reply-title">Leave a Reply <small><a rel="nofollow" id="cancel-comment-reply-link" href="/2021/02/the-simple-note-of-optimizing-my-blog/#respond" style="display:none;">Cancel reply</a></small></h3><form action="https://wp.ytlee.cn/wp-comments-post.php" method="post" id="commentform" class="comment-form"><p class="comment-notes"><span id="email-notes">Your email address will not be published.</span> Required fields are marked <span class="required">*</span></p><p class="comment-form-comment"><label for="comment">Comment</label> <textarea id="comment" name="comment" cols="45" rows="8" maxlength="65525" required="required"></textarea></p><p class="comment-form-author"><label for="author">Name <span class="required">*</span></label> <input id="author" name="author" type="text" value="" size="30" maxlength="245" required="required"></p>
+<p class="comment-form-email"><label for="email">Email <span class="required">*</span></label> <input id="email" name="email" type="text" value="" size="30" maxlength="100" aria-describedby="email-notes" required="required"></p>
+<p class="comment-form-url"><label for="url">Website</label> <input id="url" name="url" type="text" value="" size="30" maxlength="200"></p>
+<p class="comment-form-cookies-consent"><input id="wp-comment-cookies-consent" name="wp-comment-cookies-consent" type="checkbox" value="yes"> <label for="wp-comment-cookies-consent">Save my name, email, and website in this browser for the next time I comment.</label></p>
+<p class="form-submit"><input name="submit" type="submit" id="submit" class="submit" value="Post Comment"> <input type="hidden" name="comment_post_ID" value="88" id="comment_post_ID">
+<input type="hidden" name="comment_parent" id="comment_parent" value="0">
+</p></form>	</div>
+	
+</div>	</div>
+</div>
+
+
+<div class="light-tint section">
+	<div class="container w-container">
+		<div class="section-title-wrapper">
+			<h2 class="section-title">相关推荐</h2>
+		</div>
+		<div class="blog-list-wrapper w-dyn-list">
+			<div class="blog-posts-list w-clearfix w-dyn-items w-row">
+				
+				
+				<div class="blog-post-item w-col w-col-4 w-dyn-item">
+					<a class="blog-post-image-link-block small w-inline-block" title="使用Github Actions实现静态博客自动发布到腾讯云静态网站托管" href="https://ytlee.cn/2021/03/use-github-actions-to-automatically-publish-static-blogs-to-tencent-cloud-static-website/" style="background-image: url('https://wp.ytlee.cn/wp-content/uploads/2021/07/x8b30c64c2b53bb710cbb21f8e24de333-ld.jpg.pagespeed.ic_.a0OWHrxdK7.jpg');">
+						<div class="blog-author-wrapper small w-clearfix">
+														<div class="blog-date small">2021-03-30</div>
+						</div>
+					</a>
+					<a class="blog-title-link" title="使用Github Actions实现静态博客自动发布到腾讯云静态网站托管" href="https://ytlee.cn/2021/03/use-github-actions-to-automatically-publish-static-blogs-to-tencent-cloud-static-website/">使用Github Actions实现静态博客自动发布到腾讯云静态网站托管</a>
+				</div>
+
+				
+				<div class="blog-post-item w-col w-col-4 w-dyn-item">
+					<a class="blog-post-image-link-block small w-inline-block" title="NGINX反代配置挡掉WordPress的后台请求并开启NGINX缓存" href="https://ytlee.cn/2021/02/enable-nginx-cache-and-prohibit-background-requests/" style="background-image: url('https://wp.ytlee.cn/wp-content/uploads/2021/07/1617196086-b6.jpeg');">
+						<div class="blog-author-wrapper small w-clearfix">
+														<div class="blog-date small">2021-02-20</div>
+						</div>
+					</a>
+					<a class="blog-title-link" title="NGINX反代配置挡掉WordPress的后台请求并开启NGINX缓存" href="https://ytlee.cn/2021/02/enable-nginx-cache-and-prohibit-background-requests/">NGINX反代配置挡掉WordPress的后台请求并开启NGINX缓存</a>
+				</div>
+
+				
+				<div class="blog-post-item w-col w-col-4 w-dyn-item">
+					<a class="blog-post-image-link-block small w-inline-block" title="图像分割简要综述及Python代码实现" href="https://ytlee.cn/2021/07/overview-of-image-segmentation-and-python-code-implementation/" style="background-image: url('https://wp.ytlee.cn/wp-content/uploads/2021/07/1586232017-thumb-43.jpg.pagespeed.ce_.C1cHTB-DK.jpg');">
+						<div class="blog-author-wrapper small w-clearfix">
+														<div class="blog-date small">2021-07-08</div>
+						</div>
+					</a>
+					<a class="blog-title-link" title="图像分割简要综述及Python代码实现" href="https://ytlee.cn/2021/07/overview-of-image-segmentation-and-python-code-implementation/">图像分割简要综述及Python代码实现</a>
+				</div>
+
+								
+			</div>
+		</div>
+	</div>
+</div>
+<div class="footer">
+	<div class="container w-container">
+		<div class="footer-text">
+			Copyright2021. All Rights Reserved. 			
+						
+			
+				 <a rel="nofollow" target="_blank" href="https://beian.miit.gov.cn/">渝ICP备19011860号-2</a>
+
+					</div>
+		
+		<div class="_2 footer-text">
+			Powered by
+			<a href="http://www.xintheme.com" target="_blank">XinTheme</a> + 
+			<a href="https://blog.wpjam.com/" target="_blank">WordPress 果酱</a>
+		</div>
+		<script type="text/javascript" src="https://wp.ytlee.cn/wp-includes/js/clipboard.min.js" id="clipboard-js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/emojify.js@1.1.0/dist/js/emojify.min.js?ver=1.1.0" id="emojify-js"></script>
+<script type="text/javascript" src="https://zz.bdstatic.com/linksubmit/push.js?ver=5.7.2" id="baidu_zz_push-js"></script>
+ <script id="module-prism-line-number"> (function($) { $(function() { $("code").each(function() { var parent_div = $(this).parent("pre"); var pre_css = $(this).attr("class"); if (typeof pre_css !== "undefined" && -1 !== pre_css.indexOf("language-")) { parent_div.addClass("line-numbers"); } }); }); })(jQuery); </script>  <script id="module-clipboard"> (function($) { $(function() { var pre = document.getElementsByTagName("pre"); var pasteContent = document.getElementById("paste-content"); var hasLanguage = false; for (var i = 0; i < pre.length; i++) { var codeClass = pre[i].children[0].className; var isLanguage = codeClass.indexOf("language-"); var excludedCodeClassNames = [ "language-katex", "language-seq", "language-sequence", "language-flow", "language-flowchart", "language-mermaid", ]; var isExcluded = excludedCodeClassNames.indexOf(codeClass); if (isExcluded !== -1) { isLanguage = -1; } if (isLanguage !== -1) { var button = document.createElement("button"); button.className = "copy-button"; button.textContent = "Copy"; pre[i].appendChild(button); hasLanguage = true; } }; if (hasLanguage) { var copyCode = new ClipboardJS(".copy-button", { target: function(trigger) { return trigger.previousElementSibling; } }); copyCode.on("success", function(event) { event.clearSelection(); event.trigger.textContent = "Copied"; window.setTimeout(function() { event.trigger.textContent = "Copy"; }, 2000); }); } }); })(jQuery); </script> 
+			<script id="module-emojify">
+				(function($) {
+					$(function() {
+						if (typeof emojify !== "undefined") {
+							emojify.setConfig({
+								img_dir: "https://cdn.jsdelivr.net/npm/emojify.js@1.1.0/dist/images/basic",
+								blacklist: {
+									"classes": ["no-emojify"],
+									"elements": ["script", "textarea", "pre", "code"]
+								}
+							});
+							emojify.run();
+						} else {
+							console.log("[wp-githuber-md] emogify is undefined.");
+						}
+					});
+				})(jQuery);
+			</script>
+			</div>
+</div>
+<div class="gotop-wrapper">
+	<a href="javascript:;" class="fixed-gotop gotop"></a>
+</div>
+</body>
+</html>

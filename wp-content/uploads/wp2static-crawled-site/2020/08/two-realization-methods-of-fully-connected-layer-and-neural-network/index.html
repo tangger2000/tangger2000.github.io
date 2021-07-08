@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>简记——全连接层与神经网络的两种实现方式 – 翰林木子的笔记本</title>
+<meta name="description" content="前言 声明 本文所述，为《TensorFlow深度学习》一书的个人记录，文章中有个人理解、总结以及对原文的部分搬运。请悉知~ 机器学习的最终目的是找到一组良好的参数𝜃，使得𝜃表示的数学模型能够很好地从训 练集 …">
+<meta name="keywords" content="Tensorflow">
+<meta name="robots" content="max-image-preview:large">
+<link rel="dns-prefetch" href="//cdn.staticfile.org">
+<link rel="dns-prefetch" href="//cdn.jsdelivr.net">
+<link rel="dns-prefetch" href="//zz.bdstatic.com">
+<link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+<link rel="stylesheet" id="wp-block-library-css" href="https://wp.ytlee.cn/wp-includes/css/dist/block-library/style.min.css" type="text/css" media="all">
+<style id="md-style-inline-css" type="text/css">
+ .copy-button { cursor: pointer; border: 0; font-size: 12px; text-transform: uppercase; font-weight: 500; padding: 3px 6px 3px 6px; background-color: rgba(255, 255, 255, 0.6); position: absolute; overflow: hidden; top: 5px; right: 5px; border-radius: 3px; } .copy-button:before { content: ""; display: inline-block; width: 16px; height: 16px; margin-right: 3px; background-size: contain; background-image: url("data:image/svg+xml,%3Csvg version=\'1.1\' xmlns=\'http://www.w3.org/2000/svg\' xmlns:xlink=\'http://www.w3.org/1999/xlink\' x=\'0px\' y=\'0px\' width=\'16px\' height=\'16px\' viewBox=\'888 888 16 16\' enable-background=\'new 888 888 16 16\' xml:space=\'preserve\'%3E %3Cpath fill=\'%23333333\' d=\'M903.143,891.429c0.238,0,0.44,0.083,0.607,0.25c0.167,0.167,0.25,0.369,0.25,0.607v10.857 c0,0.238-0.083,0.44-0.25,0.607s-0.369,0.25-0.607,0.25h-8.571c-0.238,0-0.44-0.083-0.607-0.25s-0.25-0.369-0.25-0.607v-2.571 h-4.857c-0.238,0-0.44-0.083-0.607-0.25s-0.25-0.369-0.25-0.607v-6c0-0.238,0.06-0.5,0.179-0.786s0.262-0.512,0.428-0.679 l3.643-3.643c0.167-0.167,0.393-0.309,0.679-0.428s0.547-0.179,0.786-0.179h3.714c0.238,0,0.44,0.083,0.607,0.25 c0.166,0.167,0.25,0.369,0.25,0.607v2.929c0.404-0.238,0.785-0.357,1.143-0.357H903.143z M898.286,893.331l-2.67,2.669h2.67V893.331 z M892.571,889.902l-2.669,2.669h2.669V889.902z M894.321,895.679l2.821-2.822v-3.714h-3.428v3.714c0,0.238-0.083,0.441-0.25,0.607 s-0.369,0.25-0.607,0.25h-3.714v5.714h4.571v-2.286c0-0.238,0.06-0.5,0.179-0.786C894.012,896.071,894.155,895.845,894.321,895.679z M902.857,902.857v-10.286h-3.429v3.714c0,0.238-0.083,0.441-0.25,0.607c-0.167,0.167-0.369,0.25-0.607,0.25h-3.714v5.715H902.857z\' /%3E %3C/svg%3E"); background-repeat: no-repeat; position: relative; top: 3px; } pre { position: relative; } pre:hover .copy-button { background-color: rgba(255, 255, 255, 0.9); } 
+</style>
+<link rel="stylesheet" id="fancybox-css" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css?ver=5.7.2" type="text/css" media="all">
+<link rel="stylesheet" id="style-css" href="https://wp.ytlee.cn/wp-content/themes/sweet/static/css/sweet.css" type="text/css" media="all">
+<link rel="stylesheet" id="prism-css-0-css" href="https://cdn.jsdelivr.net/npm/prismjs@1.15.0/themes/prism.css?ver=1.15.0" type="text/css" media="all">
+<link rel="stylesheet" id="prism-css-1-css" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/plugins/line-numbers/prism-line-numbers.css?ver=1.15.0" type="text/css" media="all">
+<link rel="stylesheet" id="emojify-css" href="https://cdn.jsdelivr.net/npm/emojify.js@1.1.0/dist/css/basic/emojify.min.css?ver=1.1.0" type="text/css" media="all">
+<script type="text/javascript" src="https://wp.ytlee.cn/wp-includes/js/jquery/jquery.min.js" id="jquery-core-js"></script>
+<script type="text/javascript" src="https://wp.ytlee.cn/wp-includes/js/jquery/jquery-migrate.min.js" id="jquery-migrate-js"></script>
+<script type="text/javascript" src="https://wp.ytlee.cn/wp-content/themes/sweet/static/js/sweet.js" id="sweet-js"></script>
+<script type="text/javascript" src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js?ver=5.7.2" id="fancybox-js"></script>
+
+<link href="https://wp.ytlee.cn/wp-content/uploads/2021/07/1617196601-favicon-32x32-1.png" rel="shortcut icon" type="image/x-icon"><link href="https://wp.ytlee.cn/wp-content/uploads/2021/07/1617196599-apple-touch-icon.png" rel="apple-touch-icon"><script type="text/javascript">
+
+</script>
+<style type="text/css">
+
+</style>
+	
+	</head>
+
+<body class="post-template-default single single-post postid-83 single-format-standard">
+
+
+<div class="navbar w-nav">
+	<div class="container w-container">
+				<a class="logo-block w-inline-block" href="https://ytlee.cn">
+			<img class="logo" src="https://wp.ytlee.cn/wp-content/uploads/2021/07/1617196599-apple-touch-icon.png">
+		</a>
+				<nav class="nav-menu w-nav-menu">
+			<li id="menu-item-97" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-97"><a href="https://ytlee.cn/">首页</a></li>
+<li id="menu-item-99" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-99"><a href="https://ytlee.cn/category/note/">笔记本</a></li>
+<li id="menu-item-100" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-100"><a href="https://ytlee.cn/category/draft/">草稿本</a></li>
+<li id="menu-item-103" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-103"><a href="https://ytlee.cn/about-me/">关于我</a></li>
+					</nav>
+		<div class="menu-button w-nav-button">
+			<div class="w-icon-nav-menu right">
+			</div>
+		</div>
+		<div class="rightNav">
+			<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-97"><a href="https://ytlee.cn/">首页</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-99"><a href="https://ytlee.cn/category/note/">笔记本</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-100"><a href="https://ytlee.cn/category/draft/">草稿本</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-103"><a href="https://ytlee.cn/about-me/">关于我</a></li>
+		</div>
+	</div>
+</div>
+<div class="bgDiv"></div>
+
+<div class="blog-header">
+	<div class="blog-header-overlay"></div>
+	<div class="header-image-block" style="background-image: url('https://wp.ytlee.cn/wp-content/uploads/2021/07/v2-9d4a482ca07bee2690831a6cf1b8660b_720w.jpg.pagespeed.ce_.9Lx8ee8rNM.jpg');"></div>
+</div>
+<div class="blog-post-section section">
+	<div class="blog-post-container container w-container">
+		<div class="white-content-block">
+			<div class="blog-post-image-block" style="background-image: url('https://wp.ytlee.cn/wp-content/uploads/2021/07/1617199385-c14.jpeg');">
+				<a href="https://ytlee.cn/category/note/" rel="category tag">笔记本</a>				<div class="blog-post-header">
+					<div class="blog-header-title-wrapper">
+						<div class="blog-post-date">2020-08-23</div>
+						<h1 class="blog-post-title">简记——全连接层与神经网络的两种实现方式</h1>
+					</div>
+				</div>
+			</div>
+			<div class="align-left white-content-block-content-wrapper">
+				<div class="rich-text-block w-richtext">
+					<ul>
+<li><a href="#toc-1">前言</a><ul>
+<li><a href="#toc-2">声明</a></li>
+</ul>
+</li><li><a href="#toc-3">感知机与神经网络</a></li>
+<li><a href="#toc-4">全连接层</a><ul>
+<li><a href="#toc-5">张量实现全连接层</a></li>
+<li><a href="#toc-6">层方式实现全连接层</a><ul>
+<li><a href="#toc-7">获取层中权重矩阵和偏置矩阵</a></li>
+<li><a href="#toc-8">获取参数列表</a></li>
+</ul>
+</li>
+</ul>
+</li><li><a href="#toc-9">神经网络</a><ul>
+<li><a href="#toc-10">张量堆叠全连接网络</a></li>
+<li><a href="#toc-11">层方式堆叠全连接网络</a><ul>
+<li><a href="#toc-12">Sequential容器封装前向网络</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+<h2><a name="toc-1"></a>前言</h2>
+<h3><a name="toc-2"></a>声明</h3>
+<p><strong>本文所述，为《TensorFlow深度学习》一书的个人记录，文章中有个人理解、总结以及对原文的部分搬运。请悉知~</strong></p>
+<p>机器学习的最终目的是找到一组良好的参数𝜃，使得𝜃表示的数学模型能够很好地从训 练集中学到映射关系𝑓𝜃: 𝒙 → 𝒚, 𝒙, 𝒚 ∈ 𝔻train，从而利用训练好的𝑓𝜃(𝒙), 𝒙 ∈ 𝔻𝑡𝑒𝑠𝑡去预测新 样本。神经网络属于机器学习的一个研究分支，它特指利用多个神经元去参数化映射函数𝑓𝜃的模型。</p>
+<h2><a name="toc-3"></a>感知机与神经网络</h2>
+<p>感知机模型由于其激活函数的不可导性而被约束，只能执行很简单的任务。现在的深度学习，大概是在感知机模型的基础上，将不可导的激活函数替换成平滑可导的函数，然后堆叠多层网络来增强网络的表达能力。</p>
+<h2><a name="toc-4"></a>全连接层</h2>
+<p>每个输出节点与全部的 输入节点相连接，这种网络层称为全连接层(Fully-connected Layer)，或者稠密连接层(Dense Layer)，𝑾矩阵叫做全连接层的权值矩阵，𝒃向量叫做全连接层的偏置向量。</p>
+<h3><a name="toc-5"></a>张量实现全连接层</h3>
+<p>要实现全连接层，只需要定义好权值张量𝑾和偏置张量𝒃，并利用TensorFlow提供的批量矩阵相乘函数 tf.matmul()即可完成网络层的计算。</p>
+<h5>示例代码</h5>
+<p>创建输入𝑿 矩阵为𝑏 = 2个样本，每个样本的输入特征长度为𝑑in = 784，输出节点数为𝑑out = 256，故 定义权值矩阵𝑾的 shape 为[784,256]，并采用正态分布初始化𝑾；偏置向量𝒃的 shape 定义 为[256]，在计算完𝑿@𝑾后相加即可，最终全连接层的输出𝑶的 shape 为[2,256]，即 2 个样本的特征，每个特征长度为 256。</p>
+<pre><code class="language-python">import tensorflow as tf
+
+x = tf.random.normal([2, 784])
+w1 = tf.Variable(tf.random.truncated_normal([784, 256], stddev=0.1))
+b1 = tf.Variable(tf.zeros([256]))
+o1 = tf.matmul(x, w1) + b1
+o1 = tf.nn.relu(o1)
+print(o1)</code></pre>
+<pre><code class="language-shell">tf.Tensor(
+[[0.         0.         0.         6.808429   0.6845355  0.
+  0.         0.         1.2036994  0.         ...]], shape=(2, 256), dtype=float32)</code></pre>
+<h3><a name="toc-6"></a>层方式实现全连接层</h3>
+<p>由上张量方式实现的全连接层我们容易知道，全连接层本质上是矩阵相乘和相加。Tensorflow是一个成熟的框架，他封装了更好的实现方式，不需要我们自己去写这么多行代码。</p>
+<ul>
+<li>层实现方式：layers.Dense(units, activation)</li>
+<li>需要import tensorflow.keras.layers</li>
+<li>需要指定输出节点数units，和激活函数类型activation即可</li>
+<li>在张量实现中需要指定的输入节点数，会在Dense类中对输入x自动处理</li>
+<li>由于需要用x才能确定输入节点数，所以Dense类中并不会立刻创建权重矩阵和偏置矩阵，而是在进行以此前向计算后，才会创建</li>
+</ul>
+<h5>示例代码</h5>
+<pre><code class="language-python">import tensorflow as tf
+from tensorflow.keras import layers
+
+x = tf.random.normal([2, 28, 28])
+x = tf.reshape(x, [-1, 28 * 28])
+# w1 = tf.Variable(tf.random.truncated_normal([784, 256], stddev=0.1))
+# b1 = tf.Variable(tf.zeros([256]))
+# o1 = tf.matmul(x, w1) + b1
+# o1 = tf.nn.relu(o1)
+fc = layers.Dense(256, activation=tf.nn.relu)
+o1 = fc(x)
+print(o1)</code></pre>
+<pre><code class="language-shell">tf.Tensor(
+[[2.25188434e-01 0.00000000e+00 0.00000000e+00 0.00000000e+00
+  6.86346889e-01 0.00000000e+00 1.57338274e+00 ...]],shape=(2, 256), dtype=float32)</code></pre>
+<p>如上代码，实现的全连接层和之前的张量实现是一样的。</p>
+<h4><a name="toc-7"></a>获取层中权重矩阵和偏置矩阵</h4>
+<pre><code class="language-python">import tensorflow as tf
+from tensorflow.keras import layers
+
+x = tf.random.normal([2, 28, 28])
+x = tf.reshape(x, [-1, 28 * 28])
+# w1 = tf.Variable(tf.random.truncated_normal([784, 256], stddev=0.1))
+# b1 = tf.Variable(tf.zeros([256]))
+# o1 = tf.matmul(x, w1) + b1
+# o1 = tf.nn.relu(o1)
+fc = layers.Dense(256, activation=tf.nn.relu)
+o1 = fc(x)
+print(fc.kernel)
+print(fc.bias)</code></pre>
+<pre><code class="language-shell"><tf.Variable 'dense/kernel:0' shape=(784, 256) dtype=float32, numpy=
+array([[ 0.05471069, -0.0628917 ,  0.03620822, ...,  0.01844664,
+        -0.06971153,  0.0447783 ],...], dtype=float32)>
+<tf.Variable 'dense/bias:0' shape=(256,) dtype=float32, numpy=
+array([0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., ...], dtype=float32)></code></pre>
+<h4><a name="toc-8"></a>获取参数列表</h4>
+<ul>
+<li>
+<p>待优化参数列表</p>
+<pre><code class="language-python">fc.trainable_variables</code></pre>
+</li>
+<li>
+<p>所有参数列表</p>
+<pre><code class="language-python">fc.variables</code></pre>
+</li>
+<li>
+<p>并不是所有层都包含参与梯度优化的张量，如batch normalization层</p>
+</li>
+<li>
+<p>Dense层中所有参数由需要优化</p>
+</li>
+</ul>
+<h2><a name="toc-9"></a>神经网络</h2>
+<p><img src="https://cdn.jsdelivr.net/gh/tangger2000/PicHost/img/image-20200904223645683.png" alt="image-20200904223645683"></p>
+<ul>
+<li>上述图片所示网络为4层堆叠的全连接网络</li>
+<li>每层网络的输入节点数必须与数据的实际特征长度或上一层输出节点数匹配</li>
+</ul>
+<h3><a name="toc-10"></a>张量堆叠全连接网络</h3>
+<p>为实现上图全连接网络，需要定义各层的权重矩阵和偏置向量（只定义向量而不是矩阵是因为Broadcasting技术）</p>
+<h5>示例代码</h5>
+<pre><code class="language-python">import tensorflow as tf
+
+# 模拟输入
+x = tf.random.normal([5, 28, 28])
+x = tf.reshape(x, [-1, 28 * 28])
+
+# 隐藏层 1 张量
+w1 = tf.Variable(tf.random.truncated_normal([784, 256], stddev=0.1))
+b1 = tf.Variable(tf.zeros([256]))
+# 隐藏层 2 张量
+w2 = tf.Variable(tf.random.truncated_normal([256, 128], stddev=0.1))
+b2 = tf.Variable(tf.zeros([128]))
+# 隐藏层 3 张量
+w3 = tf.Variable(tf.random.truncated_normal([128, 64], stddev=0.1))
+b3 = tf.Variable(tf.zeros([64]))
+# 输出层张量
+w4 = tf.Variable(tf.random.truncated_normal([64, 10], stddev=0.1))
+b4 = tf.Variable(tf.zeros([10]))
+
+with tf.GradientTape() as tape:  # 梯度记录器
+    # 隐藏层 1 前向计算，[b, 28*28] => [b, 256]
+    h1 = tf.matmul(x, w1) + tf.broadcast_to(b1, [x.shape[0], 256])
+    h1 = tf.nn.relu(h1)
+    # hiden layer 2,256->128
+    h2 = tf.matmul(h1, w2) + b2
+    h2 = tf.nn.relu(h2)
+    # hiden layer 3,128->64
+    h3 = tf.matmul(h2, w3) + b3
+    h3 = tf.nn.relu(h3)
+    # out layer, 64->10
+    h4 = tf.matmul(h3, w4) + b4
+
+    print(h4)</code></pre>
+<pre><code class="language-shell">tf.Tensor(
+[[ 0.23257127  0.16676497  0.55743366 -0.15181935  0.10486883 -0.73835516
+  -0.01012151 -0.17642742 -0.08443141  0.01910783]
+ [-0.54381084 -0.7701276   1.1232696  -0.5249761   2.1127691  -1.4001988
+   1.1256711  -1.8002102   0.88020146 -1.1632769 ]
+ [-0.19568059  0.4636792   0.56755257  0.08363965  0.00799909 -1.4179347
+   0.1742461  -0.92967355  0.49695563  0.11684024]
+ [ 0.7132307  -0.12016964  0.5661199  -0.837207    0.95532787 -1.0461458
+   0.4727786  -1.2410247   0.66738784 -1.4288025 ]
+ [-0.89083886  0.3015175   0.6476731  -1.023726    1.1129022   0.13236892
+   1.7183071  -0.6784221   0.7361095  -0.9547055 ]], shape=(5, 10), dtype=float32)</code></pre>
+<ul>
+<li>@运算就是矩阵乘运算，类似tf.matmul函数</li>
+<li>在使用TensorFlow自动求导功能计算梯度时，需要将前向计算过程放置在 tf.GradientTape()环境中，从而利用GradientTape 对象的 gradient()方法自动求解参数的梯度，并利用 optimizers 对象更新参数。</li>
+</ul>
+<h3><a name="toc-11"></a>层方式堆叠全连接网络</h3>
+<p>直接使用layers.Dense类来实现，更加简洁高效。不多说，上代码！</p>
+<h5>示例代码</h5>
+<pre><code class="language-python">import tensorflow as tf
+from tensorflow.keras import layers
+
+x = tf.random.normal([5, 28 * 28])
+
+fc1 = layers.Dense(256, activation=tf.nn.relu)
+fc2 = layers.Dense(128, activation=tf.nn.relu)
+fc3 = layers.Dense(64, activation=tf.nn.relu)
+fc4 = layers.Dense(10, activation=None)
+
+h1 = fc1(x)
+h2 = fc2(h1)
+h3 = fc3(h2)
+h4 = fc4(h3)
+print(h4)</code></pre>
+<p>和张量堆叠比起来，利用层实现的网络更加的简洁，但对于前向神经网络我们还可以更简单一些。</p>
+<h4><a name="toc-12"></a>Sequential容器封装前向网络</h4>
+<pre><code class="language-python">import tensorflow as tf
+from tensorflow.keras import layers,Sequential
+
+x = tf.random.normal([5, 28 * 28])
+
+model = Sequential([
+    layers.Dense(256, activation=tf.nn.relu),
+    layers.Dense(128, activation=tf.nn.relu),
+    layers.Dense(64, activation=tf.nn.relu),
+    layers.Dense(10, activation=None)
+    ])
+out = model(x)
+print(out)</code></pre>
+									</div>
+				<div class="blog-author-block w-clearfix">
+					<div class="blog-author-image" style="background-image: url('https://cdn.v2ex.com/gravatar/90418ca09c90fa30b5fceaf7bae4ac31?s=200&d=mm&r=g');"></div>
+					<div class="blog-author-title name">tangger</div>
+					<div class="blog-author-title">
+						我还没有学会写个人说明！					</div>
+					<a href="https://ytlee.cn/author/tangger/" style="font-size: 14px">查看“tangger”的所有文章 →</a>
+				</div>
+			</div>
+		</div>
+		
+<div id="comments" class="comments-area">
+
+		
+	
+	
+		<div id="respond" class="comment-respond">
+		<h3 id="reply-title" class="comment-reply-title">Leave a Reply <small><a rel="nofollow" id="cancel-comment-reply-link" href="/2020/08/two-realization-methods-of-fully-connected-layer-and-neural-network/#respond" style="display:none;">Cancel reply</a></small></h3><form action="https://wp.ytlee.cn/wp-comments-post.php" method="post" id="commentform" class="comment-form"><p class="comment-notes"><span id="email-notes">Your email address will not be published.</span> Required fields are marked <span class="required">*</span></p><p class="comment-form-comment"><label for="comment">Comment</label> <textarea id="comment" name="comment" cols="45" rows="8" maxlength="65525" required="required"></textarea></p><p class="comment-form-author"><label for="author">Name <span class="required">*</span></label> <input id="author" name="author" type="text" value="" size="30" maxlength="245" required="required"></p>
+<p class="comment-form-email"><label for="email">Email <span class="required">*</span></label> <input id="email" name="email" type="text" value="" size="30" maxlength="100" aria-describedby="email-notes" required="required"></p>
+<p class="comment-form-url"><label for="url">Website</label> <input id="url" name="url" type="text" value="" size="30" maxlength="200"></p>
+<p class="comment-form-cookies-consent"><input id="wp-comment-cookies-consent" name="wp-comment-cookies-consent" type="checkbox" value="yes"> <label for="wp-comment-cookies-consent">Save my name, email, and website in this browser for the next time I comment.</label></p>
+<p class="form-submit"><input name="submit" type="submit" id="submit" class="submit" value="Post Comment"> <input type="hidden" name="comment_post_ID" value="83" id="comment_post_ID">
+<input type="hidden" name="comment_parent" id="comment_parent" value="0">
+</p></form>	</div>
+	
+</div>	</div>
+</div>
+
+
+<div class="light-tint section">
+	<div class="container w-container">
+		<div class="section-title-wrapper">
+			<h2 class="section-title">相关推荐</h2>
+		</div>
+		<div class="blog-list-wrapper w-dyn-list">
+			<div class="blog-posts-list w-clearfix w-dyn-items w-row">
+				
+				
+				<div class="blog-post-item w-col w-col-4 w-dyn-item">
+					<a class="blog-post-image-link-block small w-inline-block" title="记录——Docker+Tensorflow2初体验" href="https://ytlee.cn/2020/10/try-to-learn-tensorflow2-on-docker/" style="background-image: url('https://wp.ytlee.cn/wp-content/uploads/2021/07/1617199372-c3.jpeg');">
+						<div class="blog-author-wrapper small w-clearfix">
+														<div class="blog-date small">2020-10-01</div>
+						</div>
+					</a>
+					<a class="blog-title-link" title="记录——Docker+Tensorflow2初体验" href="https://ytlee.cn/2020/10/try-to-learn-tensorflow2-on-docker/">记录——Docker+Tensorflow2初体验</a>
+				</div>
+
+				
+				<div class="blog-post-item w-col w-col-4 w-dyn-item">
+					<a class="blog-post-image-link-block small w-inline-block" title="简记——Tensorflow2进阶知识下" href="https://ytlee.cn/2020/08/study-notes-on-tensorflow-part2/" style="background-image: url('https://wp.ytlee.cn/wp-content/uploads/2021/07/stock-photo-194105743.jpg.pagespeed.ce_.LN1mYM3lob.jpg');">
+						<div class="blog-author-wrapper small w-clearfix">
+														<div class="blog-date small">2020-08-21</div>
+						</div>
+					</a>
+					<a class="blog-title-link" title="简记——Tensorflow2进阶知识下" href="https://ytlee.cn/2020/08/study-notes-on-tensorflow-part2/">简记——Tensorflow2进阶知识下</a>
+				</div>
+
+				
+				<div class="blog-post-item w-col w-col-4 w-dyn-item">
+					<a class="blog-post-image-link-block small w-inline-block" title="简记——Tensorflow进阶知识上" href="https://ytlee.cn/2020/08/study-notes-on-tensorflow-part1/" style="background-image: url('https://wp.ytlee.cn/wp-content/uploads/2021/07/1617196086-b6.jpeg');">
+						<div class="blog-author-wrapper small w-clearfix">
+														<div class="blog-date small">2020-08-19</div>
+						</div>
+					</a>
+					<a class="blog-title-link" title="简记——Tensorflow进阶知识上" href="https://ytlee.cn/2020/08/study-notes-on-tensorflow-part1/">简记——Tensorflow进阶知识上</a>
+				</div>
+
+								
+			</div>
+		</div>
+	</div>
+</div>
+<div class="footer">
+	<div class="container w-container">
+		<div class="footer-text">
+			Copyright2021. All Rights Reserved. 			
+						
+			
+				 <a rel="nofollow" target="_blank" href="https://beian.miit.gov.cn/">渝ICP备19011860号-2</a>
+
+					</div>
+		
+		<div class="_2 footer-text">
+			Powered by
+			<a href="http://www.xintheme.com" target="_blank">XinTheme</a> + 
+			<a href="https://blog.wpjam.com/" target="_blank">WordPress 果酱</a>
+		</div>
+		<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/prismjs@1.15.0/components/prism-core.min.js?ver=1.15.0" id="prism-js-0-js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/prismjs@1.15.0/prism.min.js?ver=1.15.0" id="prism-js-1-js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/prismjs@1.15.0/plugins/line-numbers/prism-line-numbers.min.js?ver=1.15.0" id="prism-js-2-js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/prismjs@1.15.0/plugins/autoloader/prism-autoloader.min.js?ver=1.15.0" id="prism-js-3-js"></script>
+<script type="text/javascript" src="https://wp.ytlee.cn/wp-includes/js/clipboard.min.js" id="clipboard-js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/emojify.js@1.1.0/dist/js/emojify.min.js?ver=1.1.0" id="emojify-js"></script>
+<script type="text/javascript" src="https://zz.bdstatic.com/linksubmit/push.js?ver=5.7.2" id="baidu_zz_push-js"></script>
+ <script id="auto_loader_config_scripts"> Prism.plugins.autoloader.languages_path = "https://cdn.jsdelivr.net/npm/prismjs@1.15.0/components/"; </script>  <script id="module-prism-line-number"> (function($) { $(function() { $("code").each(function() { var parent_div = $(this).parent("pre"); var pre_css = $(this).attr("class"); if (typeof pre_css !== "undefined" && -1 !== pre_css.indexOf("language-")) { parent_div.addClass("line-numbers"); } }); }); })(jQuery); </script>  <script id="module-clipboard"> (function($) { $(function() { var pre = document.getElementsByTagName("pre"); var pasteContent = document.getElementById("paste-content"); var hasLanguage = false; for (var i = 0; i < pre.length; i++) { var codeClass = pre[i].children[0].className; var isLanguage = codeClass.indexOf("language-"); var excludedCodeClassNames = [ "language-katex", "language-seq", "language-sequence", "language-flow", "language-flowchart", "language-mermaid", ]; var isExcluded = excludedCodeClassNames.indexOf(codeClass); if (isExcluded !== -1) { isLanguage = -1; } if (isLanguage !== -1) { var button = document.createElement("button"); button.className = "copy-button"; button.textContent = "Copy"; pre[i].appendChild(button); hasLanguage = true; } }; if (hasLanguage) { var copyCode = new ClipboardJS(".copy-button", { target: function(trigger) { return trigger.previousElementSibling; } }); copyCode.on("success", function(event) { event.clearSelection(); event.trigger.textContent = "Copied"; window.setTimeout(function() { event.trigger.textContent = "Copy"; }, 2000); }); } }); })(jQuery); </script> 
+			<script id="module-emojify">
+				(function($) {
+					$(function() {
+						if (typeof emojify !== "undefined") {
+							emojify.setConfig({
+								img_dir: "https://cdn.jsdelivr.net/npm/emojify.js@1.1.0/dist/images/basic",
+								blacklist: {
+									"classes": ["no-emojify"],
+									"elements": ["script", "textarea", "pre", "code"]
+								}
+							});
+							emojify.run();
+						} else {
+							console.log("[wp-githuber-md] emogify is undefined.");
+						}
+					});
+				})(jQuery);
+			</script>
+			</div>
+</div>
+<div class="gotop-wrapper">
+	<a href="javascript:;" class="fixed-gotop gotop"></a>
+</div>
+</body>
+</html>

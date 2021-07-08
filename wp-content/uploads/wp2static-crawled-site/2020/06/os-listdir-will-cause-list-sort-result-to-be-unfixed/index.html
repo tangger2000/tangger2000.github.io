@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>记录——os.listdir列表不固定的坑 – 翰林木子的笔记本</title>
+<meta name="description" content="前言 这段时间跟着老师跑深度神经网络的实验，在学长的带领下，慢慢的熟悉了跑实验的流程。之前在自己手生的时候，模仿read_cifar10.py写了一段数据读取的代码，在跑二分类的时候，没有问题，因为那个时候 …">
+<meta name="keywords" content="Python">
+<meta name="robots" content="max-image-preview:large">
+<link rel="dns-prefetch" href="//cdn.staticfile.org">
+<link rel="dns-prefetch" href="//cdn.jsdelivr.net">
+<link rel="dns-prefetch" href="//zz.bdstatic.com">
+<link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+<link rel="stylesheet" id="wp-block-library-css" href="https://wp.ytlee.cn/wp-includes/css/dist/block-library/style.min.css" type="text/css" media="all">
+<style id="md-style-inline-css" type="text/css">
+ .copy-button { cursor: pointer; border: 0; font-size: 12px; text-transform: uppercase; font-weight: 500; padding: 3px 6px 3px 6px; background-color: rgba(255, 255, 255, 0.6); position: absolute; overflow: hidden; top: 5px; right: 5px; border-radius: 3px; } .copy-button:before { content: ""; display: inline-block; width: 16px; height: 16px; margin-right: 3px; background-size: contain; background-image: url("data:image/svg+xml,%3Csvg version=\'1.1\' xmlns=\'http://www.w3.org/2000/svg\' xmlns:xlink=\'http://www.w3.org/1999/xlink\' x=\'0px\' y=\'0px\' width=\'16px\' height=\'16px\' viewBox=\'888 888 16 16\' enable-background=\'new 888 888 16 16\' xml:space=\'preserve\'%3E %3Cpath fill=\'%23333333\' d=\'M903.143,891.429c0.238,0,0.44,0.083,0.607,0.25c0.167,0.167,0.25,0.369,0.25,0.607v10.857 c0,0.238-0.083,0.44-0.25,0.607s-0.369,0.25-0.607,0.25h-8.571c-0.238,0-0.44-0.083-0.607-0.25s-0.25-0.369-0.25-0.607v-2.571 h-4.857c-0.238,0-0.44-0.083-0.607-0.25s-0.25-0.369-0.25-0.607v-6c0-0.238,0.06-0.5,0.179-0.786s0.262-0.512,0.428-0.679 l3.643-3.643c0.167-0.167,0.393-0.309,0.679-0.428s0.547-0.179,0.786-0.179h3.714c0.238,0,0.44,0.083,0.607,0.25 c0.166,0.167,0.25,0.369,0.25,0.607v2.929c0.404-0.238,0.785-0.357,1.143-0.357H903.143z M898.286,893.331l-2.67,2.669h2.67V893.331 z M892.571,889.902l-2.669,2.669h2.669V889.902z M894.321,895.679l2.821-2.822v-3.714h-3.428v3.714c0,0.238-0.083,0.441-0.25,0.607 s-0.369,0.25-0.607,0.25h-3.714v5.714h4.571v-2.286c0-0.238,0.06-0.5,0.179-0.786C894.012,896.071,894.155,895.845,894.321,895.679z M902.857,902.857v-10.286h-3.429v3.714c0,0.238-0.083,0.441-0.25,0.607c-0.167,0.167-0.369,0.25-0.607,0.25h-3.714v5.715H902.857z\' /%3E %3C/svg%3E"); background-repeat: no-repeat; position: relative; top: 3px; } pre { position: relative; } pre:hover .copy-button { background-color: rgba(255, 255, 255, 0.9); } 
+</style>
+<link rel="stylesheet" id="fancybox-css" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css?ver=5.7.2" type="text/css" media="all">
+<link rel="stylesheet" id="style-css" href="https://wp.ytlee.cn/wp-content/themes/sweet/static/css/sweet.css" type="text/css" media="all">
+<link rel="stylesheet" id="prism-css-0-css" href="https://cdn.jsdelivr.net/npm/prismjs@1.15.0/themes/prism.css?ver=1.15.0" type="text/css" media="all">
+<link rel="stylesheet" id="prism-css-1-css" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/plugins/line-numbers/prism-line-numbers.css?ver=1.15.0" type="text/css" media="all">
+<link rel="stylesheet" id="emojify-css" href="https://cdn.jsdelivr.net/npm/emojify.js@1.1.0/dist/css/basic/emojify.min.css?ver=1.1.0" type="text/css" media="all">
+<script type="text/javascript" src="https://wp.ytlee.cn/wp-includes/js/jquery/jquery.min.js" id="jquery-core-js"></script>
+<script type="text/javascript" src="https://wp.ytlee.cn/wp-includes/js/jquery/jquery-migrate.min.js" id="jquery-migrate-js"></script>
+<script type="text/javascript" src="https://wp.ytlee.cn/wp-content/themes/sweet/static/js/sweet.js" id="sweet-js"></script>
+<script type="text/javascript" src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js?ver=5.7.2" id="fancybox-js"></script>
+
+<link href="https://wp.ytlee.cn/wp-content/uploads/2021/07/1617196601-favicon-32x32-1.png" rel="shortcut icon" type="image/x-icon"><link href="https://wp.ytlee.cn/wp-content/uploads/2021/07/1617196599-apple-touch-icon.png" rel="apple-touch-icon"><script type="text/javascript">
+
+</script>
+<style type="text/css">
+
+</style>
+	
+	</head>
+
+<body class="post-template-default single single-post postid-79 single-format-standard">
+
+
+<div class="navbar w-nav">
+	<div class="container w-container">
+				<a class="logo-block w-inline-block" href="https://ytlee.cn">
+			<img class="logo" src="https://wp.ytlee.cn/wp-content/uploads/2021/07/1617196599-apple-touch-icon.png">
+		</a>
+				<nav class="nav-menu w-nav-menu">
+			<li id="menu-item-97" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-97"><a href="https://ytlee.cn/">首页</a></li>
+<li id="menu-item-99" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-99"><a href="https://ytlee.cn/category/note/">笔记本</a></li>
+<li id="menu-item-100" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-100"><a href="https://ytlee.cn/category/draft/">草稿本</a></li>
+<li id="menu-item-103" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-103"><a href="https://ytlee.cn/about-me/">关于我</a></li>
+					</nav>
+		<div class="menu-button w-nav-button">
+			<div class="w-icon-nav-menu right">
+			</div>
+		</div>
+		<div class="rightNav">
+			<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-97"><a href="https://ytlee.cn/">首页</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-99"><a href="https://ytlee.cn/category/note/">笔记本</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-100"><a href="https://ytlee.cn/category/draft/">草稿本</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-103"><a href="https://ytlee.cn/about-me/">关于我</a></li>
+		</div>
+	</div>
+</div>
+<div class="bgDiv"></div>
+
+<div class="blog-header">
+	<div class="blog-header-overlay"></div>
+	<div class="header-image-block" style="background-image: url('https://wp.ytlee.cn/wp-content/uploads/2021/07/v2-770673add02ea61d9ecb121a3554ee02_720w.jpg.pagespeed.ce_.O4TyH-bc3P.jpg');"></div>
+</div>
+<div class="blog-post-section section">
+	<div class="blog-post-container container w-container">
+		<div class="white-content-block">
+			<div class="blog-post-image-block" style="background-image: url('https://wp.ytlee.cn/wp-content/uploads/2021/07/1617196087-b7.jpeg');">
+				<a href="https://ytlee.cn/category/note/" rel="category tag">笔记本</a>				<div class="blog-post-header">
+					<div class="blog-header-title-wrapper">
+						<div class="blog-post-date">2020-06-05</div>
+						<h1 class="blog-post-title">记录——os.listdir列表不固定的坑</h1>
+					</div>
+				</div>
+			</div>
+			<div class="align-left white-content-block-content-wrapper">
+				<div class="rich-text-block w-richtext">
+					<ul>
+<li><a href="#toc-1">前言</a><ul>
+<li><a href="#toc-2">第一版的代码</a></li>
+<li><a href="#toc-3">第二版代码</a></li>
+</ul>
+</li><li><a href="#toc-4">问题</a></li>
+<li><a href="#toc-5">二分类第一版代码的调试结果</a></li>
+<li><a href="#toc-6">四分类第二版代码的调试结果</a></li>
+<li><a href="#toc-7">锁定问题</a><ul>
+<li><a href="#toc-8">本地结果</a></li>
+<li><a href="#toc-9">服务器结果</a></li>
+</ul>
+</li><li><a href="#toc-10">解决办法</a></li>
+<li><a href="#toc-11">感言</a></li>
+</ul>
+
+<h2><a name="toc-1"></a>前言</h2>
+<p>这段时间跟着老师跑深度神经网络的实验，在学长的带领下，慢慢的熟悉了跑实验的流程。之前在自己手生的时候，模仿read_cifar10.py写了一段数据读取的代码，在跑二分类的时候，没有问题，因为那个时候很多东西不熟悉，所以写的代码都是用的死路径。但是后面在跑四分类的时候，我改进了代码，就遇到了这个问题。</p>
+<h3><a name="toc-2"></a>第一版的代码</h3>
+<pre><code class="language-python">import os
+from PIL import Image
+import numpy as np
+def Load_train_data():
+    # 初始化4个用0填充的矩阵（np.zeros)
+    train_fir = np.zeros([1300, 224, 224, 3], dtype='float32')
+    train_sec = np.zeros([1300, 224, 224, 3], dtype='float32')
+    train_fir_label = np.zeros([1300, 2], dtype='float32')
+    train_sec_label = np.zeros([1300, 2], dtype='float32')
+    class_fir_path = './Train/Task1/02397096_pig/'
+    class_sec_path = './Train/Task1/03100240_car/'
+    # os.listdir 返回路径下的所有文件名，子目录的不返回，也不返回当前目录（./）和上级目录(../)
+    cnt = 0
+    label = np.array([1, 0], dtype='float32')
+    for file in os.listdir(class_fir_path):
+        img = Image.open(class_fir_path + file).convert("RGB")  # 将图片格式转化为rgb
+        img = img.resize([224, 224], Image.ANTIALIAS)  # resize，为了防止过度失真，加上参数Image.ANTIALIAS
+        train_fir[cnt] = img
+        train_fir_label[cnt] = label
+        cnt += 1
+    cnt = 0
+    label = np.array([0, 1], dtype='float32')
+    for file in os.listdir(class_sec_path):
+        img = Image.open(class_sec_path + file).convert("RGB")
+        img = img.resize([224, 224], Image.ANTIALIAS)
+        train_sec[cnt] = img
+        train_sec_label[cnt] = label
+        cnt += 1
+    # 将上面生成的矩阵合并（np.append 或者 np.concatenate)后随机打乱，但要保证图片和标签对应
+    train_data = np.concatenate([train_fir, train_sec], axis=0)
+    train_label = np.concatenate([train_fir_label, train_sec_label], axis=0)
+    state = np.random.get_state()  # 记录矩阵被打乱的操作
+    np.random.shuffle(train_data)
+    np.random.set_state(state)  # 设定矩阵打乱的操作
+    np.random.shuffle(train_label)
+    return train_data, train_label
+def Load_test_data():
+    # 初始化4个用0填充的矩阵（np.zeros)
+    test_fir = np.zeros([50, 224, 224, 3], dtype='float32')
+    test_sec = np.zeros([50, 224, 224, 3], dtype='float32')
+    test_fir_label = np.zeros([50, 2], dtype='float32')
+    test_sec_label = np.zeros([50, 2], dtype='float32')
+    class_fir_path = './Test/Task1/02397096_Val/'
+    class_sec_path = './Test/Task1/03100240_Val/'
+    # os.listdir 返回路径下的所有文件名，子目录的不返回，也不返回当前目录（./）和上级目录(../)
+    cnt = 0
+    label = np.array([1, 0], dtype='float32')
+    for file in os.listdir(class_fir_path):
+        img = Image.open(class_fir_path + file).convert("RGB")  # 将图片格式转化为rgb
+        img = img.resize([224, 224], Image.ANTIALIAS)  # resize，为了防止过度失真，加上参数Image.ANTIALIAS
+        test_fir[cnt] = img
+        test_fir_label[cnt] = label
+        cnt += 1
+    cnt = 0
+    label = np.array([0, 1], dtype='float32')
+    for file in os.listdir(class_sec_path):
+        img = Image.open(class_sec_path + file).convert("RGB")
+        img = img.resize([224, 224], Image.ANTIALIAS)
+        test_sec[cnt] = img
+        test_sec_label[cnt] = label
+        cnt += 1
+    # 将上面生成的矩阵合并（np.append 或者 np.concatenate),不用打乱顺序
+    test_data = np.concatenate([test_fir, test_sec], axis=0)
+    test_label = np.concatenate([test_fir_label, test_sec_label], axis=0)
+    return test_data, test_label
+def Get_batchdata(data, labels, batch_size, i):
+    x = np.zeros([batch_size, 224, 224, 3], dtype='float32')
+    y = np.zeros([batch_size, 2], dtype='float32')
+    size = data.shape[0]
+    if np.random.random() > 0.:
+        for i in range(batch_size):
+            index = np.random.randint(0, size)
+            x[i, ...] = data[index, ...]
+            y[i, ...] = labels[index, ...]
+    else:
+        x, y = Get_batch(data, labels, batch_size, i)
+    return x, y
+def Get_batch(x_image, y_label, batch_size, i):
+    train_size = y_label.shape[0]
+    offset = (i * batch_size) % (train_size - batch_size)
+    batch_x_image = x_image[offset:(offset + batch_size), ...]
+    batch_y_label = y_label[offset:(offset + batch_size), ...]
+    batch_x_image = np.reshape(batch_x_image, [batch_size, 224, 224, 3])
+    return batch_x_image, batch_y_label
+def Get_testbatch(data, label, batch_size, index):
+    batch_x_image = data[index * batch_size:(index + 1) * batch_size, ...]
+    batch_y_label = label[index * batch_size:(index + 1) * batch_size, ...]
+    return batch_x_image, batch_y_label
+def norm_std_each(data):
+    # norm std
+    size = data.shape[0]
+    for i in range(size):
+        mean_i = np.mean(data[i, ...])
+        std_i = np.std(data[i, ...])
+        data[i, ...] = (data[i, ...] - mean_i) / std_i
+    # data[i,...] = data[i,...] - mean_i
+    return data
+if __name__ == "__main__":
+    Load_train_data()</code></pre>
+<p>这版代码最大的问题在于，不方便，跑二分类是不会碰到os.listdir的问题的，因为他返回的是每个分类下所有图片的路径，图片矩阵和标签矩阵是不会混乱的。后来，我把代码改成了下面这样。</p>
+<h3><a name="toc-3"></a>第二版代码</h3>
+<pre><code class="language-python">import os
+from PIL import Image
+import numpy as np
+train_path = "./Train/Task1/"
+test_path = "./Test/Task1/"
+class_num = 4
+def one_hot(cnt):
+    return np.eye(class_num)[cnt]
+def Load_data(dir_path, size):
+    datas = []
+    labels = []
+    cnt = 0  # 记录分类数,传入one_hot函数，拿到该类的label
+    for paths in os.listdir(dir_path):
+        path = dir_path + paths + '/'
+        _label = one_hot(cnt)  # 每种分类的标签
+        # 每一个类图片都新建一个数组存放该类的所有图片
+        data = np.zeros([size, 224, 224, 3], dtype='float32')
+        label = np.zeros([size, class_num], dtype='float32')
+        _cnt = 0  # 记录图片数
+        for file in os.listdir(path):
+            img = Image.open(path + file).convert("RGB")
+            img = img.resize([224, 224], Image.ANTIALIAS)
+            data[_cnt] = img
+            label[_cnt] = _label  # 这个_label就是通过one_hot取到的该类的label,eg.[1,0,0,0]
+            _cnt += 1
+        # 把每一个分类的所有图片矩阵都放到列表中
+        datas.append(data)
+        labels.append(label)
+        cnt += 1
+    return datas, labels
+def Load_train_data():
+    # 返回所有训练类的数据、标签列表
+    datas, labels = Load_data(train_path, 1300)
+    # 合并起来
+    train_datas = np.concatenate(datas, axis=0)
+    train_labels = np.concatenate(labels, axis=0)
+    # 打乱图片和标签
+    state = np.random.get_state()
+    np.random.shuffle(train_datas)
+    np.random.set_state(state)
+    np.random.shuffle(train_labels)
+    return train_datas, train_labels
+def Load_test_data():
+    datas, labels = Load_data(test_path, 50)
+    test_datas = np.concatenate(datas, axis=0)
+    test_labels = np.concatenate(labels, axis=0)
+    return test_datas, test_labels
+def Get_batchdata(data, labels, batch_size, i):
+    x = np.zeros([batch_size, 224, 224, 3], dtype='float32')
+    y = np.zeros([batch_size, class_num], dtype='float32')
+    size = data.shape[0]
+    if np.random.random() > 0.:
+        for i in range(batch_size):
+            index = np.random.randint(0, size)
+            x[i, ...] = data[index, ...]
+            y[i, ...] = labels[index, ...]
+    else:
+        x, y = Get_batch(data, labels, batch_size, i)
+    return x, y
+def Get_batch(x_image, y_label, batch_size, i):
+    train_size = y_label.shape[0]
+    offset = (i * batch_size) % (train_size - batch_size)
+    batch_x_image = x_image[offset:(offset + batch_size), ...]
+    batch_y_label = y_label[offset:(offset + batch_size), ...]
+    batch_x_image = np.reshape(batch_x_image, [batch_size, 224, 224, 3])
+    return batch_x_image, batch_y_label
+def Get_testbatch(data, label, batch_size, index):
+    batch_x_image = data[index * batch_size:(index + 1) * batch_size, ...]
+    batch_y_label = label[index * batch_size:(index + 1) * batch_size, ...]
+    return batch_x_image, batch_y_label
+def norm_std_each(data):
+    # norm std
+    size = data.shape[0]
+    for i in range(size):
+        mean_i = np.mean(data[i, ...])
+        std_i = np.std(data[i, ...])
+        data[i, ...] = (data[i, ...] - mean_i) / std_i
+    # data[i,...] = data[i,...] - mean_i
+    return data
+if __name__ == "__main__":
+    Load_train_data()</code></pre>
+<p>看起来，第二版代码比第一版代码在数量上没有什么区别，但，难道我跑四分类或者更多的时候，我在第一版的上面就不断的cv操作吗？那得多麻烦啊。所以，机智如我，就改成了上面的代码（懒得写注释）。<br>
+于是，当他跑起来的时候，训练集的准确率是没有问题的，但是测试集的准确率就有问题了。</p>
+<h2><a name="toc-4"></a>问题</h2>
+<p><img src="https://ytlee.cn/post-images/1596528969434.png" alt="img"></p>
+<p>如上图一样，训练集的准确率（train_pr）是ok的。但是，看看test C accuracy（测试集的准确率），低得可怕有木有？<br>
+我和学长一起检测的几次代码，我以为是concatenate的时候的问题。于是我单独测试了上面的代码，在本地跑一下看看，标签和数据是否一一对应，打乱的时候是否正常打乱。</p>
+<h2><a name="toc-5"></a>二分类第一版代码的调试结果</h2>
+<p><img src="https://ytlee.cn/post-images/1596529057680.png" alt="img"></p>
+<h2><a name="toc-6"></a>四分类第二版代码的调试结果</h2>
+<p><img src="https://ytlee.cn/post-images/1596529099352.png" alt="img"></p>
+<p>我还分别作了二分类第一次代码的调试，但是，没有留存截图。<br>
+分析调试结果，很容易的发现，you know，数据和标签确实是一一对应的。</p>
+<h2><a name="toc-7"></a>锁定问题</h2>
+<p>我思考，既然打标签没有问题，那么究竟是哪儿有问题呢？嗯，说出来可能不信，我猜测了几次后，最后一次我猜测是读取的文件路径不对，什么意思？就是，每一个分类的训练集和测试集的标签要是一样的，这就必须保证，在获取每个分类的测试集和训练集文件路径的顺序是一样的。但是，坑就坑在，os.listdir不是固定的。<br>
+我用下面的代码，获得了下面的结果，进一步的确定的我的猜测</p>
+<pre><code class="language-python">import os
+train_path = "./Train/Task1/"
+test_path = "./Test/Task1/"
+def Load_data(dir_path):
+    for paths in os.listdir(dir_path):
+        path = dir_path + paths + '/'
+        print(path)
+def Load_train_data():
+    # 返回所有训练类的数据、标签列表
+    Load_data(train_path)
+
+def Load_test_data():
+    Load_data(test_path)
+
+if __name__ == "__main__":
+    Load_train_data()
+    Load_test_data()</code></pre>
+<h3><a name="toc-8"></a>本地结果</h3>
+<p><img src="https://ytlee.cn/post-images/1596529142789.png" alt="img"></p>
+<h3><a name="toc-9"></a>服务器结果</h3>
+<p><img src="https://ytlee.cn/post-images/1596529159358.png" alt="img"></p>
+<p>果然，如我所猜测的那样。</p>
+<h2><a name="toc-10"></a>解决办法</h2>
+<p>参考解决文章：python os.listdir(path)列表排序的坑<br>
+因为os.listdir返回的是一个列表，那么我们直接sort一下就好了。利用python自带的列表排序。<br>
+只需要这个list.sort()<br>
+这样的话，代码我就改成了这样：</p>
+<pre><code class="language-python">import os
+from PIL import Image
+import numpy as np
+train_path = "./Train/Task1/"
+test_path = "./Test/Task1/"
+class_num = 4
+def one_hot(cnt):
+    return np.eye(class_num)[cnt]
+def Load_data(dir_path, size):
+    datas = []
+    labels = []
+    cnt = 0  # 记录分类数,传入one_hot函数，拿到该类的label
+    paths = os.listdir(dir_path)
+    paths.sort()   # 这行千万别删，删了就gg
+    for _path in paths:
+        path = dir_path + _path + '/'
+        _label = one_hot(cnt)  # 每种分类的标签
+        # 每一个类图片都新建一个数组存放该类的所有图片
+        data = np.zeros([size, 224, 224, 3], dtype='float32')
+        label = np.zeros([size, class_num], dtype='float32')
+        _cnt = 0  # 记录图片数
+        for file in os.listdir(path):
+            img = Image.open(path + file).convert("RGB")
+            img = img.resize([224, 224], Image.ANTIALIAS)
+            data[_cnt] = img
+            label[_cnt] = _label  # 这个_label就是通过one_hot取到的该类的label,eg.[1,0,0,0]
+            _cnt += 1
+        # 把每一个分类的所有图片矩阵都放到列表中
+        datas.append(data)
+        labels.append(label)
+        cnt += 1
+    return datas, labels
+def Load_train_data():
+    # 返回所有训练类的数据、标签列表
+    datas, labels = Load_data(train_path, 1300)
+    # 合并起来
+    train_datas = np.concatenate(datas, axis=0)
+    train_labels = np.concatenate(labels, axis=0)
+    # 打乱图片和标签
+    state = np.random.get_state()
+    np.random.shuffle(train_datas)
+    np.random.set_state(state)
+    np.random.shuffle(train_labels)
+    return train_datas, train_labels
+def Load_test_data():
+    datas, labels = Load_data(test_path, 50)
+    test_datas = np.concatenate(datas, axis=0)
+    test_labels = np.concatenate(labels, axis=0)
+    return test_datas, test_labels
+def Get_batchdata(data, labels, batch_size, i):
+    x = np.zeros([batch_size, 224, 224, 3], dtype='float32')
+    y = np.zeros([batch_size, class_num], dtype='float32')
+    size = data.shape[0]
+    if np.random.random() > 0.:
+        for i in range(batch_size):
+            index = np.random.randint(0, size)
+            x[i, ...] = data[index, ...]
+            y[i, ...] = labels[index, ...]
+    else:
+        x, y = Get_batch(data, labels, batch_size, i)
+    return x, y
+def Get_batch(x_image, y_label, batch_size, i):
+    train_size = y_label.shape[0]
+    offset = (i * batch_size) % (train_size - batch_size)
+    batch_x_image = x_image[offset:(offset + batch_size), ...]
+    batch_y_label = y_label[offset:(offset + batch_size), ...]
+    batch_x_image = np.reshape(batch_x_image, [batch_size, 224, 224, 3])
+    return batch_x_image, batch_y_label
+def Get_testbatch(data, label, batch_size, index):
+    batch_x_image = data[index * batch_size:(index + 1) * batch_size, ...]
+    batch_y_label = label[index * batch_size:(index + 1) * batch_size, ...]
+    return batch_x_image, batch_y_label
+def norm_std_each(data):
+    # norm std
+    size = data.shape[0]
+    for i in range(size):
+        mean_i = np.mean(data[i, ...])
+        std_i = np.std(data[i, ...])
+        data[i, ...] = (data[i, ...] - mean_i) / std_i
+    # data[i,...] = data[i,...] - mean_i
+    return data
+if __name__ == "__main__":
+    Load_train_data()
+    Load_test_data()</code></pre>
+<h2><a name="toc-11"></a>感言</h2>
+<p>自己debug出来的收获感还是蛮不错的。虽然，这种问题，确实不容易找到。当然了，也要感谢学长一直带着我debug。</p>
+									</div>
+				<div class="blog-author-block w-clearfix">
+					<div class="blog-author-image" style="background-image: url('https://cdn.v2ex.com/gravatar/90418ca09c90fa30b5fceaf7bae4ac31?s=200&d=mm&r=g');"></div>
+					<div class="blog-author-title name">tangger</div>
+					<div class="blog-author-title">
+						我还没有学会写个人说明！					</div>
+					<a href="https://ytlee.cn/author/tangger/" style="font-size: 14px">查看“tangger”的所有文章 →</a>
+				</div>
+			</div>
+		</div>
+		
+<div id="comments" class="comments-area">
+
+		
+	
+	
+		<div id="respond" class="comment-respond">
+		<h3 id="reply-title" class="comment-reply-title">Leave a Reply <small><a rel="nofollow" id="cancel-comment-reply-link" href="/2020/06/os-listdir-will-cause-list-sort-result-to-be-unfixed/#respond" style="display:none;">Cancel reply</a></small></h3><form action="https://wp.ytlee.cn/wp-comments-post.php" method="post" id="commentform" class="comment-form"><p class="comment-notes"><span id="email-notes">Your email address will not be published.</span> Required fields are marked <span class="required">*</span></p><p class="comment-form-comment"><label for="comment">Comment</label> <textarea id="comment" name="comment" cols="45" rows="8" maxlength="65525" required="required"></textarea></p><p class="comment-form-author"><label for="author">Name <span class="required">*</span></label> <input id="author" name="author" type="text" value="" size="30" maxlength="245" required="required"></p>
+<p class="comment-form-email"><label for="email">Email <span class="required">*</span></label> <input id="email" name="email" type="text" value="" size="30" maxlength="100" aria-describedby="email-notes" required="required"></p>
+<p class="comment-form-url"><label for="url">Website</label> <input id="url" name="url" type="text" value="" size="30" maxlength="200"></p>
+<p class="comment-form-cookies-consent"><input id="wp-comment-cookies-consent" name="wp-comment-cookies-consent" type="checkbox" value="yes"> <label for="wp-comment-cookies-consent">Save my name, email, and website in this browser for the next time I comment.</label></p>
+<p class="form-submit"><input name="submit" type="submit" id="submit" class="submit" value="Post Comment"> <input type="hidden" name="comment_post_ID" value="79" id="comment_post_ID">
+<input type="hidden" name="comment_parent" id="comment_parent" value="0">
+</p></form>	</div>
+	
+</div>	</div>
+</div>
+
+
+<div class="light-tint section">
+	<div class="container w-container">
+		<div class="section-title-wrapper">
+			<h2 class="section-title">相关推荐</h2>
+		</div>
+		<div class="blog-list-wrapper w-dyn-list">
+			<div class="blog-posts-list w-clearfix w-dyn-items w-row">
+				
+				
+				<div class="blog-post-item w-col w-col-4 w-dyn-item">
+					<a class="blog-post-image-link-block small w-inline-block" title="图像分割简要综述及Python代码实现" href="https://ytlee.cn/2021/07/overview-of-image-segmentation-and-python-code-implementation/" style="background-image: url('https://wp.ytlee.cn/wp-content/uploads/2021/07/1617196090-b9.jpeg');">
+						<div class="blog-author-wrapper small w-clearfix">
+														<div class="blog-date small">2021-07-08</div>
+						</div>
+					</a>
+					<a class="blog-title-link" title="图像分割简要综述及Python代码实现" href="https://ytlee.cn/2021/07/overview-of-image-segmentation-and-python-code-implementation/">图像分割简要综述及Python代码实现</a>
+				</div>
+
+				
+				<div class="blog-post-item w-col w-col-4 w-dyn-item">
+					<a class="blog-post-image-link-block small w-inline-block" title="记录——神经网络可解释性中的两个操作" href="https://ytlee.cn/2020/07/two-options-of-my-experiment/" style="background-image: url('https://wp.ytlee.cn/wp-content/uploads/2021/07/1617199391-c18.jpeg');">
+						<div class="blog-author-wrapper small w-clearfix">
+														<div class="blog-date small">2020-07-08</div>
+						</div>
+					</a>
+					<a class="blog-title-link" title="记录——神经网络可解释性中的两个操作" href="https://ytlee.cn/2020/07/two-options-of-my-experiment/">记录——神经网络可解释性中的两个操作</a>
+				</div>
+
+				
+				<div class="blog-post-item w-col w-col-4 w-dyn-item">
+					<a class="blog-post-image-link-block small w-inline-block" title="内网VPS搭建在线VSCode Server" href="https://ytlee.cn/2021/07/intranet-vps-build-online-vscode-server/" style="background-image: url('https://wp.ytlee.cn/wp-content/uploads/2021/07/1617199369-c1.jpeg');">
+						<div class="blog-author-wrapper small w-clearfix">
+														<div class="blog-date small">2021-07-08</div>
+						</div>
+					</a>
+					<a class="blog-title-link" title="内网VPS搭建在线VSCode Server" href="https://ytlee.cn/2021/07/intranet-vps-build-online-vscode-server/">内网VPS搭建在线VSCode Server</a>
+				</div>
+
+								
+			</div>
+		</div>
+	</div>
+</div>
+<div class="footer">
+	<div class="container w-container">
+		<div class="footer-text">
+			Copyright2021. All Rights Reserved. 			
+						
+			
+				 <a rel="nofollow" target="_blank" href="https://beian.miit.gov.cn/">渝ICP备19011860号-2</a>
+
+					</div>
+		
+		<div class="_2 footer-text">
+			Powered by
+			<a href="http://www.xintheme.com" target="_blank">XinTheme</a> + 
+			<a href="https://blog.wpjam.com/" target="_blank">WordPress 果酱</a>
+		</div>
+		<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/prismjs@1.15.0/components/prism-core.min.js?ver=1.15.0" id="prism-js-0-js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/prismjs@1.15.0/prism.min.js?ver=1.15.0" id="prism-js-1-js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/prismjs@1.15.0/plugins/line-numbers/prism-line-numbers.min.js?ver=1.15.0" id="prism-js-2-js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/prismjs@1.15.0/plugins/autoloader/prism-autoloader.min.js?ver=1.15.0" id="prism-js-3-js"></script>
+<script type="text/javascript" src="https://wp.ytlee.cn/wp-includes/js/clipboard.min.js" id="clipboard-js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/emojify.js@1.1.0/dist/js/emojify.min.js?ver=1.1.0" id="emojify-js"></script>
+<script type="text/javascript" src="https://zz.bdstatic.com/linksubmit/push.js?ver=5.7.2" id="baidu_zz_push-js"></script>
+ <script id="auto_loader_config_scripts"> Prism.plugins.autoloader.languages_path = "https://cdn.jsdelivr.net/npm/prismjs@1.15.0/components/"; </script>  <script id="module-prism-line-number"> (function($) { $(function() { $("code").each(function() { var parent_div = $(this).parent("pre"); var pre_css = $(this).attr("class"); if (typeof pre_css !== "undefined" && -1 !== pre_css.indexOf("language-")) { parent_div.addClass("line-numbers"); } }); }); })(jQuery); </script>  <script id="module-clipboard"> (function($) { $(function() { var pre = document.getElementsByTagName("pre"); var pasteContent = document.getElementById("paste-content"); var hasLanguage = false; for (var i = 0; i < pre.length; i++) { var codeClass = pre[i].children[0].className; var isLanguage = codeClass.indexOf("language-"); var excludedCodeClassNames = [ "language-katex", "language-seq", "language-sequence", "language-flow", "language-flowchart", "language-mermaid", ]; var isExcluded = excludedCodeClassNames.indexOf(codeClass); if (isExcluded !== -1) { isLanguage = -1; } if (isLanguage !== -1) { var button = document.createElement("button"); button.className = "copy-button"; button.textContent = "Copy"; pre[i].appendChild(button); hasLanguage = true; } }; if (hasLanguage) { var copyCode = new ClipboardJS(".copy-button", { target: function(trigger) { return trigger.previousElementSibling; } }); copyCode.on("success", function(event) { event.clearSelection(); event.trigger.textContent = "Copied"; window.setTimeout(function() { event.trigger.textContent = "Copy"; }, 2000); }); } }); })(jQuery); </script> 
+			<script id="module-emojify">
+				(function($) {
+					$(function() {
+						if (typeof emojify !== "undefined") {
+							emojify.setConfig({
+								img_dir: "https://cdn.jsdelivr.net/npm/emojify.js@1.1.0/dist/images/basic",
+								blacklist: {
+									"classes": ["no-emojify"],
+									"elements": ["script", "textarea", "pre", "code"]
+								}
+							});
+							emojify.run();
+						} else {
+							console.log("[wp-githuber-md] emogify is undefined.");
+						}
+					});
+				})(jQuery);
+			</script>
+			</div>
+</div>
+<div class="gotop-wrapper">
+	<a href="javascript:;" class="fixed-gotop gotop"></a>
+</div>
+</body>
+</html>

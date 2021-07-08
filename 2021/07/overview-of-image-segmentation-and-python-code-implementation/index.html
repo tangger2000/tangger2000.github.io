@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>图像分割简要综述及Python代码实现 &#8211; 翰林木子的笔记本</title>
+<meta name="description" content="图像分割简要综述及Python代码实现 前言 ​ 有幸选到生物医学影像处理的课程，这次学到了图像分割部分。在图像分割上，我已经可以训练U-net和SegNet网络做图像分割，但是对于传统的图像分割方法知之甚少，借 &hellip;">
+<meta name="keywords" content="OpenCV,Python,图像增强">
+<meta name="robots" content="max-image-preview:large">
+<link rel="dns-prefetch" href="//cdn.staticfile.org">
+<link rel="dns-prefetch" href="//cdn.jsdelivr.net">
+<link rel="dns-prefetch" href="//zz.bdstatic.com">
+<link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+<link rel="stylesheet" id="wp-block-library-css" href="/wp-includes/css/dist/block-library/style.min.css?ver=5.7.2" type="text/css" media="all">
+<style id="md-style-inline-css" type="text/css">.copy-button { cursor: pointer; border: 0; font-size: 12px; text-transform: uppercase; font-weight: 500; padding: 3px 6px 3px 6px; background-color: rgba(255, 255, 255, 0.6); position: absolute; overflow: hidden; top: 5px; right: 5px; border-radius: 3px; } .copy-button:before { content: ""; display: inline-block; width: 16px; height: 16px; margin-right: 3px; background-size: contain; background-image: url("data:image/svg+xml,%3Csvg version=\'1.1\' xmlns=\'http://www.w3.org/2000/svg\' xmlns:xlink=\'http://www.w3.org/1999/xlink\' x=\'0px\' y=\'0px\' width=\'16px\' height=\'16px\' viewBox=\'888 888 16 16\' enable-background=\'new 888 888 16 16\' xml:space=\'preserve\'%3E %3Cpath fill=\'%23333333\' d=\'M903.143,891.429c0.238,0,0.44,0.083,0.607,0.25c0.167,0.167,0.25,0.369,0.25,0.607v10.857 c0,0.238-0.083,0.44-0.25,0.607s-0.369,0.25-0.607,0.25h-8.571c-0.238,0-0.44-0.083-0.607-0.25s-0.25-0.369-0.25-0.607v-2.571 h-4.857c-0.238,0-0.44-0.083-0.607-0.25s-0.25-0.369-0.25-0.607v-6c0-0.238,0.06-0.5,0.179-0.786s0.262-0.512,0.428-0.679 l3.643-3.643c0.167-0.167,0.393-0.309,0.679-0.428s0.547-0.179,0.786-0.179h3.714c0.238,0,0.44,0.083,0.607,0.25 c0.166,0.167,0.25,0.369,0.25,0.607v2.929c0.404-0.238,0.785-0.357,1.143-0.357H903.143z M898.286,893.331l-2.67,2.669h2.67V893.331 z M892.571,889.902l-2.669,2.669h2.669V889.902z M894.321,895.679l2.821-2.822v-3.714h-3.428v3.714c0,0.238-0.083,0.441-0.25,0.607 s-0.369,0.25-0.607,0.25h-3.714v5.714h4.571v-2.286c0-0.238,0.06-0.5,0.179-0.786C894.012,896.071,894.155,895.845,894.321,895.679z M902.857,902.857v-10.286h-3.429v3.714c0,0.238-0.083,0.441-0.25,0.607c-0.167,0.167-0.369,0.25-0.607,0.25h-3.714v5.715H902.857z\' /%3E %3C/svg%3E"); background-repeat: no-repeat; position: relative; top: 3px; } pre { position: relative; } pre:hover .copy-button { background-color: rgba(255, 255, 255, 0.9); }</style>
+<link rel="stylesheet" id="fancybox-css" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css?ver=5.7.2" type="text/css" media="all">
+<link rel="stylesheet" id="style-css" href="/wp-content/themes/sweet/static/css/sweet.css?ver=5.7.2" type="text/css" media="all">
+<link rel="stylesheet" id="prism-css-0-css" href="https://cdn.jsdelivr.net/npm/prismjs@1.15.0/themes/prism.css?ver=1.15.0" type="text/css" media="all">
+<link rel="stylesheet" id="prism-css-1-css" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/plugins/line-numbers/prism-line-numbers.css?ver=1.15.0" type="text/css" media="all">
+<link rel="stylesheet" id="emojify-css" href="https://cdn.jsdelivr.net/npm/emojify.js@1.1.0/dist/css/basic/emojify.min.css?ver=1.1.0" type="text/css" media="all">
+<script type="text/javascript" src="/wp-includes/js/jquery/jquery.min.js?ver=3.5.1" id="jquery-core-js"></script>
+<script type="text/javascript" src="/wp-includes/js/jquery/jquery-migrate.min.js?ver=3.3.2" id="jquery-migrate-js"></script>
+<script type="text/javascript" src="/wp-content/themes/sweet/static/js/sweet.js?ver=5.7.2" id="sweet-js"></script>
+<script type="text/javascript" src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js?ver=5.7.2" id="fancybox-js"></script>
+<link rel="canonical" href="/2021/07/overview-of-image-segmentation-and-python-code-implementation/">
+<link href="/wp-content/uploads/2021/07/1617196601-favicon-32x32-1.png" rel="shortcut icon" type="image/x-icon">
+<link href="/wp-content/uploads/2021/07/1617196599-apple-touch-icon.png" rel="apple-touch-icon">
+<script type="text/javascript">
+
+</script>
+<style type="text/css"></style>
+	
+	</head>
+
+<body class="post-template-default single single-post postid-96 single-format-standard">
+
+
+<div class="navbar w-nav">
+	<div class="container w-container">
+				<a class="logo-block w-inline-block" href="/">
+			<img class="logo" src="/wp-content/uploads/2021/07/1617196599-apple-touch-icon.png">
+		</a>
+				<nav class="nav-menu w-nav-menu">
+			<li id="menu-item-97" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-97"><a href="https://ytlee.cn/">首页</a></li>
+<li id="menu-item-99" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-99"><a href="/category/note/">笔记本</a></li>
+<li id="menu-item-100" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-100"><a href="/category/draft/">草稿本</a></li>
+<li id="menu-item-103" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-103"><a href="/about-me/">关于我</a></li>
+					</nav>
+		<div class="menu-button w-nav-button">
+			<div class="w-icon-nav-menu right">
+			</div>
+		</div>
+		<div class="rightNav">
+			<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-97"><a href="https://ytlee.cn/">首页</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-99"><a href="/category/note/">笔记本</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-100"><a href="/category/draft/">草稿本</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-103"><a href="/about-me/">关于我</a></li>
+		</div>
+	</div>
+</div>
+<div class="bgDiv"></div>
+
+<div class="blog-header">
+	<div class="blog-header-overlay"></div>
+	<div class="header-image-block" style="background-image: url('/wp-content/uploads/2021/07/stock-photo-26179831.jpg');"></div>
+</div>
+<div class="blog-post-section section">
+	<div class="blog-post-container container w-container">
+		<div class="white-content-block">
+			<div class="blog-post-image-block" style="background-image: url('/wp-content/uploads/2021/07/1617196070-a6.jpeg');">
+				<a href="/category/note/" rel="category tag">笔记本</a>				<div class="blog-post-header">
+					<div class="blog-header-title-wrapper">
+						<div class="blog-post-date">2021-07-08</div>
+						<h1 class="blog-post-title">图像分割简要综述及Python代码实现</h1>
+					</div>
+				</div>
+			</div>
+			<div class="align-left white-content-block-content-wrapper">
+				<div class="rich-text-block w-richtext">
+					<h1>
+<a name="toc-1"></a>图像分割简要综述及Python代码实现</h1>
+<ul>
+<li>
+<a href="#toc-1">图像分割简要综述及Python代码实现</a><ul>
+<li><a href="#toc-2">前言</a></li>
+<li>
+<a href="#toc-3">一、阈值分割</a><ul>
+<li><a href="#toc-4">Target</a></li>
+<li>
+<a href="#toc-5">1、固定阈值分割</a><ul>
+<li><a href="#toc-6">原理和OpenCV函数</a></li>
+<li><a href="#toc-7">代码示例</a></li>
+<li><a href="#toc-8">小结：</a></li>
+</ul>
+</li>
+<li>
+<a href="#toc-9">2、Otsu最佳全局阈值分割（大津法）</a><ul>
+<li><a href="#toc-10">原理和OpenCV函数</a></li>
+<li><a href="#toc-11">代码示例</a></li>
+<li><a href="#toc-12">小结：</a></li>
+</ul>
+</li>
+<li>
+<a href="#toc-13">3、自适应阈值分割</a><ul>
+<li><a href="#toc-14">原理和OpenCV函数</a></li>
+<li><a href="#toc-15">代码示例</a></li>
+<li><a href="#toc-16">小结：</a></li>
+</ul>
+</li>
+<li>
+<a href="#toc-17">4、平滑或锐化改善阈值分割</a><ul>
+<li><a href="#toc-18">原理和函数</a></li>
+<li><a href="#toc-19">代码示例</a></li>
+<li><a href="#toc-20">小结：</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<a href="#toc-21">二、区域分割</a><ul>
+<li>
+<a href="#toc-22">1、区域生长</a><ul>
+<li><a href="#toc-23">原理</a></li>
+<li><a href="#toc-24">代码示例</a></li>
+<li><a href="#toc-25">自动寻找种子点</a></li>
+<li><a href="#toc-26">小结：</a></li>
+</ul>
+</li>
+<li>
+<a href="#toc-27">2、区域分裂与聚合</a><ul>
+<li><a href="#toc-28">原理</a></li>
+<li><a href="#toc-29">代码示例</a></li>
+<li><a href="#toc-30">小结：</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<a href="#toc-31">三、形态学分水岭分割</a><ul>
+<li><a href="#toc-32">原理</a></li>
+<li><a href="#toc-33">示例代码</a></li>
+<li><a href="#toc-34">小结：</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<a href="#toc-35">四、基于U-Net的细胞分割</a><ul>
+<li><a href="#toc-36">原理</a></li>
+</ul>
+</li>
+<li>
+<a href="#toc-37">复现DSB2018数据集细胞核分割</a><ul>
+<li><a href="#toc-38">示例代码</a></li>
+</ul>
+</li>
+<li><a href="#toc-39">参考资料</a></li>
+</ul>
+
+<h2>
+<a name="toc-2"></a>前言</h2>
+<p>​   有幸选到生物医学影像处理的课程，这次学到了图像分割部分。在图像分割上，我已经可以训练U-net和SegNet网络做图像分割，但是对于传统的图像分割方法知之甚少，借作业机会，简要到综述一下图像分割的方法，并用Python实现。</p>
+<h2>
+<a name="toc-3"></a>一、阈值分割</h2>
+<ul>
+<li>
+<p><strong>基本思想：</strong>基于图像的灰度特征来计算一个或多个灰度阈值，并将图像中每个像素的灰度值与阈值作比较，最后将像素根据比较结果分到合适的类别中。</p>
+</li>
+<li>
+<p><strong>关键：</strong>按照某个准则函数来求解最佳灰度阈值。</p>
+</li>
+<li>
+<p><strong>适用：</strong>阈值法特别适用于目标和背景占据不同灰度级范围的图。</p>
+</li>
+</ul>
+<h3>
+<a name="toc-4"></a>Target</h3>
+<p>有如下细胞样本，需要将细胞和背景组织液分开，图中展示了细胞图像以及直方图（统计的彩色图像），接下来我们将比较几种阈值分割方法的效果：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tangger2000/PicHost/img/20210517122245.png" alt=""></p>
+<h3>
+<a name="toc-5"></a>1、固定阈值分割</h3>
+<h4>
+<a name="toc-6"></a>原理和OpenCV函数</h4>
+<p>​   <strong>固定阈值分割是一种全局阈值分割</strong>，固定阈值分割很直接，一句话说就是像素点值大于阈值一个值，小于阈值是另外一个值。如图（THRESH_BINARY）：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tangger2000/PicHost/img/20210517133411.png" alt=""></p>
+<p><strong>函数：</strong></p>
+<pre><code>cv2.threshold(src, thresh, maxval, type[, dst]) → retval, dst
+@param: src – input array (single-channel, 8-bit or 32-bit floating point).
+@param: thresh – threshold value. 因为是固定阈值分割，所以必须选择一个固定的值作为分界线
+@param: maxval – 在使用THRESH_BINARY和THRESH_BINARY_INV的时候，需要指定最大值
+                maximum value to use with the THRESH_BINARY and
+                THRESH_BINARY_INV thresholding types.
+@param: type – thresholding type (see the details below).</code></pre>
+<p>这里采用OpenCV自带的<code>cv2.threshold()</code>实现固定阈值分割，其中固定阈值有5种截断模式，而常用的是<code>THRESH_BINARY和THRESH_BINARY_INV</code>。<strong>更多详细信息参见<a href="https://jinzhangyu.github.io/2018/08/29/2018-08-29-OpenCV-Python%E6%95%99%E7%A8%8B-10-%E9%98%88%E5%80%BC%E5%88%86%E5%89%B2-1/">OpenCV-Python教程(10) --- 阈值分割(1)</a></strong></p>
+<h4>
+<a name="toc-7"></a>代码示例</h4>
+<p>​   我们在这里采用<code>THRESH_BINARY_INV</code>模式，函数定义如上图。这个模式是将大于阈值的点置为0,也就是黑色，小于阈值的不变。</p>
+<pre><code class="language-python">import cv2
+import matplotlib.pyplot as plt
+
+img = cv2.imread(&quot;cell.jpg&quot;, 0)
+# 应用5种不同的阈值方法
+_, th1 = cv2.threshold(img, 40, 255, cv2.THRESH_BINARY)
+_, th2 = cv2.threshold(img, 90, 255, cv2.THRESH_BINARY)
+_, th3 = cv2.threshold(img, 140, 255, cv2.THRESH_BINARY)
+_, th4 = cv2.threshold(img, 190, 255, cv2.THRESH_BINARY)
+_, th5 = cv2.threshold(img, 240, 255, cv2.THRESH_BINARY)
+
+titles = [&#039;Original&#039;, &#039;BINARY_40&#039;, &#039;BINARY_90&#039;, &#039;BINARY_140&#039;, &#039;BINARY_190&#039;, &#039;BINARY_210&#039;]
+images = [img, th1, th2, th3, th4, th5]
+
+# 开始画图
+plt.figure(figsize=(8, 4))
+for i in range(6):
+    plt.subplot(2, 3, i + 1)
+    plt.imshow(images[i], &#039;gray&#039;)
+    plt.title(titles[i])
+    plt.xticks([]), plt.yticks([])
+plt.show()</code></pre>
+<p><img src="/home/tangger/.config/Typora/typora-user-images/image-20210517140144239.png" alt="image-20210517140144239"></p>
+<h4>
+<a name="toc-8"></a>小结：</h4>
+<p>固定阈值是 <strong>最不常用</strong> 的阈值分割方法，其最大的缺陷就是“固定”：</p>
+<ul>
+<li>固定阈值需要人工不断寻找，一张图片甚至要尝试5~10个阈值才能决定最适合的。</li>
+<li>图片与图片之间的阈值都不一样比如说这个阈值可能适用于这张图片，但是那张图片就不能适用了</li>
+<li>固定的阈值会施加在整张图片上，但是每张图片不同区域之间适合的阈值都不一定相同，可能这个全局阈值这一片区域效果比较好，那一片区域就不行了</li>
+</ul>
+<h3>
+<a name="toc-9"></a>2、Otsu最佳全局阈值分割（大津法）</h3>
+<p>​   由上所述<code>固定阈值分割</code>的小结，我们发现全局阈值分割的阈值适用范围很差，特别是分割仅有前景和背景的图像（双峰图像），为了找到效果不错的分割阈值，都需要我们人为的去尝试多次。</p>
+<p>​   是否可以在分割双峰图像时，能够自动的去寻找一个较好的阈值？</p>
+<h4>
+<a name="toc-10"></a>原理和OpenCV函数</h4>
+<p>​   Otsu的阈值化方法涉及遍历所有可能的阈值，并计算阈值每一侧的像素水平（即落在前景或背景中的像素）的扩展度量......<strong>墙裂推荐参见<a href="http://www.labbookpages.co.uk/software/imgProc/otsuThreshold.html">Otsu Thresholding</a>以了解Ostu算法原理</strong></p>
+<p><code>OpenCV</code>中自带有<code>OTSU</code>算法的函数，只需在<code>type</code>那一栏填上一下两者之一即可：</p>
+<ul>
+<li><code>cv2.THRESH_BINARY + cv2.THRESH_OTSU</code></li>
+<li><code>cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU</code></li>
+</ul>
+<h4>
+<a name="toc-11"></a>代码示例</h4>
+<pre><code class="language-python">import cv2
+import matplotlib.pyplot as plt
+
+img = cv2.imread(&quot;cell.jpg&quot;, 0)
+_, th1 = cv2.threshold(img, 190, 255, cv2.THRESH_BINARY_INV)
+_, th2 = cv2.threshold(img, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+
+titles = [&#039;Original&#039;, &#039;BINARY_190&#039;, &#039;Otsu&#039;]
+images = [img, th1, th2]
+
+# 开始画图
+plt.figure()
+for i in range(3):
+    plt.subplot(1, 3, i + 1)
+    plt.imshow(images[i], &#039;gray&#039;)
+    plt.title(titles[i])
+    plt.xticks([]), plt.yticks([])
+plt.show()</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/tangger2000/PicHost/img/20210517140647.png" alt=""></p>
+<h4>
+<a name="toc-12"></a><strong>小结：</strong>
+</h4>
+<ul>
+<li>
+<strong>优点</strong>：算法简单，当目标与背景的面积相差不大时，能够有效地对图像进行分割。</li>
+<li>
+<strong>缺点</strong>：当图像中的目标与背景的面积相差很大时，表现为直方图没有明显的双峰，或者两个峰的大小相差很大，分割效果不佳，或者目标与背景的灰度有较大的重叠时也不能准确的将目标与背景分开。</li>
+</ul>
+<h3>
+<a name="toc-13"></a>3、自适应阈值分割</h3>
+<p>​   前文介绍到，对于阈值分割的关键就是寻找一个合适的阈值，由于双峰图像的特殊性，Otsu算法可以很好的计算出最佳阈值。然而，要处理的图像中双峰仅仅是冰山一角，<strong>由于图像在不同区域具有不同的照明条件，所以图像的直方图多数情况形式多变且复杂。</strong>这时又该怎么办呢？</p>
+<h4>
+<a name="toc-14"></a>原理和OpenCV函数</h4>
+<p>​   在这种情况下，<strong>考虑将图像分区域求解局部的最优阈值。</strong>我们进行<strong>自适应阈值处理</strong>，算法计算图像的小区域的阈值，所以我们对同一幅图像的不同区域给出不同的阈值，这给我们在不同光照下的图像提供了更好的结果。<strong>私以为，Otsu也是一种自适应算法。</strong></p>
+<p><strong>OpenCV自适应函数如下：</strong></p>
+<pre><code class="language-python">cv2.adaptiveThreshold(src, maxValue, adaptiveMethod, thresholdType, blockSize, C[, dst]) → dst
+@param: src – Source 8-bit single-channel image.
+@param: maxValue –  Non-zero value assigned to the pixels for which the condition is satisfied. See the details below.
+                    最大阈值，一般为255。
+@param: adaptiveMethod – Adaptive thresholding algorithm to use,
+        ADAPTIVE_THRESH_MEAN_C：区域内取均值
+        ADAPTIVE_THRESH_GAUSSIAN_C：区域内加权求和，权重是个高斯核
+@param: thresholdType – Thresholding type that must be
+        THRESH_BINARY: 过了临界值的取最大值，没到临界值的取最小值
+        THRESH_BINARY_INV：过了临界值的取最小值，没到临界值的取最大值
+@param: blockSize – 小区域的面积，如11就是11*11的小块；这里不能填1以及所有偶数
+@param: C – 最终阈值等于小区域计算出的阈值再减去此值</code></pre>
+<h4>
+<a name="toc-15"></a>代码示例</h4>
+<pre><code class="language-python">import cv2
+import matplotlib.pyplot as plt
+
+img = cv2.imread(&quot;cell.jpg&quot;, 0)
+_, th1 = cv2.threshold(img, 190, 255, cv2.THRESH_BINARY)
+_, th2 = cv2.threshold(img, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+th3 = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 11, 2)
+
+titles = [&#039;Original&#039;, &#039;BINARY_190&#039;, &#039;Otsu&#039;, &#039;Adaptive&#039;]
+images = [img, th1, th2, th3]
+
+# 开始画图
+plt.figure()
+for i in range(4):
+    plt.subplot(2, 2, i + 1)
+    plt.imshow(images[i], &#039;gray&#039;)
+    plt.title(titles[i])
+    plt.xticks([]), plt.yticks([])
+plt.show()</code></pre>
+<p><img src="/home/tangger/.config/Typora/typora-user-images/image-20210517140839218.png" alt="image-20210517140839218"></p>
+<h4>
+<a name="toc-16"></a>小结：</h4>
+<ul>
+<li>对选定区域内（block size）效果很不错</li>
+<li>对全局考虑欠佳，分割所得图像中有很多噪声点</li>
+</ul>
+<h3>
+<a name="toc-17"></a>4、平滑或锐化改善阈值分割</h3>
+<p>​   对于图像的阈值分割，自适应分割应该有一个很好的预期，但如上图所示，自适应分割采用临域均值的分割结果却含有大量的噪声点。对于噪声的处理，考虑是否可以采用平滑滤波的方式解决呢？</p>
+<h4>
+<a name="toc-18"></a>原理和函数</h4>
+<p>噪声点的产生原因不难猜想，区域分得太小，而区域中的灰度变化不够平滑，也就是有噪声嘛。那么对于这样的噪声，不难想到的解决办法就是提前对图像做平滑滤波。</p>
+<p>相对应的，如果分割后的图像中边缘处分割效果不好，我们就提前对图像进行锐化处理。</p>
+<h4>
+<a name="toc-19"></a>代码示例</h4>
+<pre><code class="language-python">import cv2
+import matplotlib.pyplot as plt
+
+img = cv2.imread(&quot;cell.jpg&quot;, 0)
+_, th1 = cv2.threshold(img, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+th2 = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 11, 2)
+# 高斯滤波
+# img_blured = cv2.GaussianBlur(img, (9, 9), 0)
+# 均值滤波
+img_blured = cv2.blur(img, (7, 7))
+th3 = cv2.adaptiveThreshold(img_blured, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 11, 2)
+
+titles = [&#039;Original&#039;, &#039;Otsu&#039;, &#039;Adaptive Mean&#039;, &#039;Adaptive Mean with blur&#039;]
+images = [img, th1, th2, th3]
+# 开始画图
+plt.figure()
+for i in range(4):
+    plt.subplot(2, 2, i + 1)
+    plt.imshow(images[i], &#039;gray&#039;)
+    plt.title(titles[i])
+    plt.xticks([]), plt.yticks([])
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/tangger2000/PicHost/img/20210517144553.png" alt=""></p>
+<h4>
+<a name="toc-20"></a>小结：</h4>
+<ul>
+<li>阈值分割结合图像平滑或者图像锐化一起使用可能会使图像效果变得很好。</li>
+<li>到底是应该平滑滤波还是锐化，应该视情况参考直方图做决定。</li>
+</ul>
+<h2>
+<a name="toc-21"></a>二、区域分割</h2>
+<p>​   基于区域的分割方法是以直接寻找区域为基础的分割技术，基于区域提取方法有两种基本形式：一种是区域生长，从单个像素出发，逐步合并以形成所需要的分割区域；另一种是从全局出发，逐步切割至所需的分割区域。</p>
+<h3>
+<a name="toc-22"></a>1、区域生长</h3>
+<h4>
+<a name="toc-23"></a>原理</h4>
+<p>令 <em>f(x, y)</em> 表示一个输入图像阵列；<em>S(x, y)</em> 表示一个种子阵列，阵列中种子点位置处为1，其他位置处为0；<em>Q</em> 表示在每个位置 <em>(x, y)</em> 处所用的属性。假设阵列 <em>f</em> 和 <em>S</em> 的尺寸相同。基于8连接的一个基本区域生长算法说明如下：</p>
+<ol>
+<li>在 <em>S(x, y)</em> 中寻找所有连通分量，并把每个连通分量腐蚀成一个像素；把找到的所有这种像素标记为1，把 <em>S</em> 中的所有其他像素标记为0；</li>
+<li>在坐标对 <em>(x, y)</em> 处形成图像 <em>f(q)</em>：如果输入图像在该坐标处满足给定的属性 <em>Q</em>，则令 <em>f[q(x, y)]=1</em>，否则令 <em>f[q(x, y)]=0</em>；</li>
+<li>令 <em>g</em> 是这样形成的图像：即把 <em>f(q)</em> 中为8连通种子点的所有1值点，添加到 <em>S</em> 中的每个种子点；</li>
+<li>用不同的区域标记标记出 <em>g</em> 中的每个连通分量。这就是由区域生长得到的分割图像。</li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/tangger2000/PicHost/img/20210518122840.png" alt=""></p>
+<h4>
+<a name="toc-24"></a>代码示例</h4>
+<pre><code class="language-python">import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+# 区域生长
+def regionGrow(gray, seeds, thresh, p):
+    seedMark = np.zeros(gray.shape)
+    # 八邻域
+    if p == 8:
+        connection = [(-1, -1), (-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1)]
+    elif p == 4:
+        connection = [(-1, 0), (0, 1), (1, 0), (0, -1)]
+
+    # seeds内无元素时候生长停止
+    while len(seeds) != 0:
+        # 栈顶元素出栈
+        pt = seeds.pop(0)
+        for i in range(p):
+            tmpX = pt[0] + connection[i][0]
+            tmpY = pt[1] + connection[i][1]
+
+            # 检测边界点
+            if tmpX &lt; 0 or tmpY &lt; 0 or tmpX &gt;= gray.shape[0] or tmpY &gt;= gray.shape[1]:
+                continue
+
+            if abs(int(gray[tmpX, tmpY]) - int(gray[pt])) &lt; thresh and seedMark[tmpX, tmpY] == 0:
+                seedMark[tmpX, tmpY] = 255
+                seeds.append((tmpX, tmpY))
+    return seedMark
+
+path = &quot;cell.jpg&quot;
+gray = cv2.imread(path, cv2.IMREAD_GRAYSCALE)
+plt.figure(1)
+plt.imshow(gray, &#039;gray&#039;)
+plt.show()
+
+seedMark = regionGrow(gray, [(100, 100)], thresh=3, p=8)
+plt.figure(2)
+plt.imshow(seedMark, &#039;gray&#039;)
+plt.show()</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/tangger2000/PicHost/img/20210518123329.png" alt=""></p>
+<p>​   由图可见，分割的效果并不是很好，特别是细胞内部。</p>
+<h4>
+<a name="toc-25"></a>自动寻找种子点</h4>
+<p>​   当我们将<code>seedMark = regionGrow(gray, [(100, 100)], thresh=3, p=8)</code>中的种子点[(100,100)]换成其他点：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tangger2000/PicHost/img/20210518124346.png" alt=""></p>
+<p>你发现，他分割失败了。所以，区域分割受种子点的影响很大，于是对种子点的选择就至关重要。但是目前种子点的选择都是手动的，有没有可能自动的选择出种子点呢？</p>
+<p>​   <strong>我在网上搜寻到的文章，基本上都是基于这篇文章——<a href="https://www.cnblogs.com/er-gou-zi/p/12016951.html">基于初始种子自动选取的区域生长（python+opencv)</a></strong>，自行参考吧，就不再赘述！</p>
+<h4>
+<a name="toc-26"></a>小结：</h4>
+<p>区域生长的好坏决定于</p>
+<ul>
+<li>初始点(种子点)的选取</li>
+<li>生长准则</li>
+<li>终止条件</li>
+</ul>
+<h3>
+<a name="toc-27"></a>2、区域分裂与聚合</h3>
+<h4>
+<a name="toc-28"></a>原理</h4>
+<p>​   区域生长是从某个或者某些像素点出发，最终得到整个区域，进而实现目标的提取。而分裂合并可以说是区域生长的逆过程，从整幅图像出发，不断的分裂得到各个子区域，然后再把前景区域合并，得到需要分割的前景目标，进而实现目标的提取。</p>
+<p><strong>四叉树算法步骤：</strong></p>
+<ol>
+<li>先把图像分成4块</li>
+<li>若这其中的一块符合分裂条件，那么这一块又分裂成4块</li>
+<li>分裂到一定数量时，以每块为中心，检查相邻的各块，满足一定条件，就合并</li>
+<li>如此循环往复进行分裂和合并的操作</li>
+<li>最后合并小区，即把一些小块图像的合并到旁边的大块里</li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/tangger2000/PicHost/img/20210518134159.png" alt=""></p>
+<h4>
+<a name="toc-29"></a>代码示例</h4>
+<pre><code class="language-python">import numpy as np
+import cv2
+import matplotlib.pyplot as plt
+
+# 判断方框是否需要再次拆分为四个
+def judge(img, w0, h0, w, h):
+    a = img[h0: h0 + h, w0: w0 + w]
+    avg = np.mean(a)
+    std = np.std(a, ddof=1)
+    count = 0
+    total = w * h
+    for i in range(w0, w0 + w):
+        for j in range(h0, h0 + h):
+            # 输入为灰度图像时才可以直接进行比较，rgb色彩需要进行三次比较，因为是三通道
+            if abs(img[j, i] - avg) &lt; 1 * std:
+                count += 1
+    if (count / total) &lt; 0.95:  # 合适的点还是比较少，接着拆
+        return True
+    else:
+        return False
+
+# 将图像将根据阈值二值化处理
+def draw(img, w0, h0, w, h, thresold):
+    for i in range(w0, w0 + w):
+        for j in range(h0, h0 + h):
+            if img[j, i] &gt; thresold:
+                img[j, i] = 255
+            else:
+                img[j, i] = 0
+
+def function(img, w0, h0, w, h, thresold):
+    if judge(img, w0, h0, w, h) and (min(w, h) &gt; 5):
+        function(img, w0, h0, int(w / 2), int(h / 2), thresold)
+        function(img, w0 + int(w / 2), h0, int(w / 2), int(h / 2), thresold)
+        function(img, w0, h0 + int(h / 2), int(w / 2), int(h / 2), thresold)
+        function(img, w0 + int(w / 2), h0 + int(h / 2), int(w / 2), int(h / 2), thresold)
+    else:
+        draw(img, w0, h0, w, h, thresold)
+    return img
+
+image = cv2.imread(&#039;cell.jpg&#039;, 0)
+copy_original = image.copy()
+height, width = image.shape
+function(image, 0, 0, width, height, 200)
+
+plt.figure()
+plt.subplot(1, 2, 1)
+plt.title(&#039;original&#039;)
+plt.imshow(copy_original, &#039;gray&#039;)
+plt.subplot(1, 2, 2)
+plt.title(&#039;div_and_merge&#039;)
+plt.imshow(image, &#039;gray&#039;)
+plt.show()</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/tangger2000/PicHost/img/20210518141454.png" alt=""></p>
+<h4>
+<a name="toc-30"></a>小结：</h4>
+<p>区域分裂合并算法优缺点：</p>
+<p>（1）对复杂图像分割效果好；</p>
+<p>（2）算法复杂，计算量大；</p>
+<p>（3）分裂有可能破坏区域的边界（如图）</p>
+<h2>
+<a name="toc-31"></a>三、形态学分水岭分割</h2>
+<h4>
+<a name="toc-32"></a>原理</h4>
+<p>​   任何灰度图像都可以看作是一个地形表面，高强度表示山峰和丘陵，低强度表示山谷。你开始用不同颜色的水（标签）填满每个孤立的山谷（局部最小值）。随着水位的上升，取决于附近的山峰（坡度），来自不同山谷的水，显然不同颜色的水会开始融合。为了避免这种情况，你要在水汇合的地方设置屏障。你继续充水和建造障碍物，直到所有的山峰都在水下。然后，您创建的屏障将为您提供分割结果。</p>
+<p>​   但这种方法会由于图像中的噪声或任何其他不规则性而导致过分割结果。所以下面的示例代码中我会先对图像二值化后去噪。</p>
+<h4>
+<a name="toc-33"></a>示例代码</h4>
+<pre><code class="language-python">import numpy as np
+import cv2
+from matplotlib import pyplot as plt
+
+img = cv2.imread(&#039;img.png&#039;)
+copy_original = img.copy()
+gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
+ret, thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
+
+# noise removal
+
+kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (3, 3))
+opening = cv2.morphologyEx(thresh, cv2.MORPH_OPEN, kernel, iterations=2)
+
+# sure background area
+
+sure_bg = cv2.dilate(opening, kernel, iterations=3)
+
+# Finding sure foreground area
+
+dist_transform = cv2.distanceTransform(opening, cv2.DIST_L2, 5)
+ret, sure_fg = cv2.threshold(dist_transform, 0.7 * dist_transform.max(), 255, 0)
+
+# Finding unknown region
+
+sure_fg = np.uint8(sure_fg)
+unknown = cv2.subtract(sure_bg, sure_fg)
+
+# Marker labelling
+
+ret, markers = cv2.connectedComponents(sure_fg)
+
+# Add one to all labels so that sure background is not 0, but 1
+
+markers = markers + 1
+
+# Now, mark the region of unknown with zero
+
+markers[unknown == 255] = 0
+markers = cv2.watershed(img, markers)
+img[markers == -1] = [255, 0, 0]
+
+plt.figure()
+plt.subplot(1, 2, 1)
+plt.title(&#039;original&#039;)
+plt.imshow(copy_original)
+plt.subplot(1, 2, 2)
+plt.title(&#039;div_and_merge&#039;)
+plt.imshow(img)
+plt.show()</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/tangger2000/PicHost/img/20210518150707.png" alt=""></p>
+<p>不知道为啥，细胞图片送去分割没效果，就用了大家都用的硬币图像。</p>
+<h4>
+<a name="toc-34"></a>小结：</h4>
+<ul>
+<li>分水岭对微弱边缘具有良好的响应</li>
+<li>图像中的噪声、物体表面细微的灰度变化都有可能产生过度分割的现象，但是这也同时能够保证得到封闭连续边缘。</li>
+<li>分水岭算法得到的封闭的集水盆也为分析图像的区域特征提供了可能。</li>
+</ul>
+<h2>
+<a name="toc-35"></a>四、基于U-Net的细胞分割</h2>
+<h4>
+<a name="toc-36"></a>原理</h4>
+<p>有一篇博文对UNet的网络结构和代码实现讲得挺好，见<a href="https://cuijiahua.com/blog/2019/12/dl-15.html">这里</a>。</p>
+<blockquote>
+<p>UNet最早发表在2015的MICCAI会议上，5年多的时间，论文引用量已经达到了接近12000次。</p>
+<p>UNet成为了大多做医疗影像语义分割任务的baseline，同时也启发了大量研究者对于U型网络结构的研究，发表了一批基于UNet网络结构的改进方法的论文。</p>
+<p>UNet网络结构，最主要的两个特点是：U型网络结构和Skip Connection跳层连接。</p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/tangger2000/PicHost/img/20210518234851.png" alt=""></p>
+<blockquote>
+<p>UNet是一个对称的网络结构，左侧为下采样，右侧为上采样。<br>
+按照功能可以将左侧的一系列下采样操作称为encoder，将右侧的一系列上采样操作称为decoder。<br>
+Skip Connection中间四条灰色的平行线，Skip Connection就是在上采样的过程中，融合下采样过过程中的feature map。<br>
+Skip Connection用到的融合的操作也很简单，就是将feature map的通道进行叠加，俗称Concat。</p>
+</blockquote>
+<h3>
+<a name="toc-37"></a>复现DSB2018数据集细胞核分割</h3>
+<p>详细地址：<a href="https://www.kaggle.com/c/data-science-bowl-2018">https://www.kaggle.com/c/data-science-bowl-2018</a></p>
+<p>数据集地址：<a href="https://www.kaggle.com/c/data-science-bowl-2018">百度飞浆AI</a></p>
+<h4>
+<a name="toc-38"></a>示例代码</h4>
+<p>这里的代码用TensorFlow简单的实现了一下，没有机器可以跑结果，ahh～放弃...</p>
+<pre><code class="language-python">import datetime
+import cv2
+import tensorflow as tf
+import numpy as np
+from matplotlib import pyplot as plt
+from tensorflow.keras.layers import Conv2D, MaxPooling2D, UpSampling2D, concatenate, Dropout
+from tensorflow.keras.optimizers import Adam
+from tensorflow.keras import Input, Model
+from tensorflow.keras.callbacks import ModelCheckpoint
+from tensorflow.keras.models import load_model
+
+EPOCH = 70
+BATCH_SIZE = 16
+BUFFER_SIZE = 300
+IMG_WIDTH = 256
+IMG_HEIGHT = 256
+IMG_CHANNELS = 3
+learning_rate = 0.0005
+MODEL_PATH = &quot;model.h5&quot;
+CKPT_PATH = &quot;ckpt.h5&quot;
+
+train = np.load(&#039;./train.npz&#039;)
+test = np.load(&#039;./test.npz&#039;)
+TEST_SET = [&#039;1.png&#039;, &#039;2.png&#039;, &#039;3.png&#039;]
+
+x_test = test[&#039;datas&#039;] / 255
+x_train = train[&#039;datas&#039;] / 255
+y_train = train[&#039;labels&#039;] / 255
+
+def unet(input_shape):
+    # 输入层数据为256*256的三通道图像
+    inputs = Input(input_shape)
+    # 第一个block(含两个激活函数为relu的有效卷积层 ，和一个卷积最大池化(下采样)操作)
+    conv1 = Conv2D(32, 3, activation=&#039;relu&#039;, padding=&#039;same&#039;, kernel_initializer=&#039;he_normal&#039;)(inputs)
+    conv1 = Conv2D(32, 3, activation=&#039;relu&#039;, padding=&#039;same&#039;, kernel_initializer=&#039;he_normal&#039;)(conv1)
+    # 最大池化
+    pool1 = MaxPooling2D(pool_size=(2, 2))(conv1)
+
+    # 第二个block(含两个激活函数为relu的有效卷积层 ，和一个卷积最大池化(下采样)操作)
+    conv2 = Conv2D(64, 3, activation=&#039;relu&#039;, padding=&#039;same&#039;, kernel_initializer=&#039;he_normal&#039;)(pool1)
+    conv2 = Conv2D(64, 3, activation=&#039;relu&#039;, padding=&#039;same&#039;, kernel_initializer=&#039;he_normal&#039;)(conv2)
+    pool2 = MaxPooling2D(pool_size=(2, 2))(conv2)
+
+    # 第三个block(含两个激活函数为relu的有效卷积层 ，和一个卷积最大池化(下采样)操作)
+    conv3 = Conv2D(128, 3, activation=&#039;relu&#039;, padding=&#039;same&#039;, kernel_initializer=&#039;he_normal&#039;)(pool2)
+    conv3 = Conv2D(128, 3, activation=&#039;relu&#039;, padding=&#039;same&#039;, kernel_initializer=&#039;he_normal&#039;)(conv3)
+    pool3 = MaxPooling2D(pool_size=(2, 2))(conv3)
+
+    # 第四个block(含两个激活函数为relu的有效卷积层 ，和一个卷积最大池化(下采样)操作)
+    conv4 = Conv2D(256, 3, activation=&#039;relu&#039;, padding=&#039;same&#039;, kernel_initializer=&#039;he_normal&#039;)(pool3)
+    conv4 = Conv2D(256, 3, activation=&#039;relu&#039;, padding=&#039;same&#039;, kernel_initializer=&#039;he_normal&#039;)(conv4)
+    # 将部分隐藏层神经元丢弃，防止过于细化而引起的过拟合情况
+    drop4 = Dropout(0.5)(conv4)
+    pool4 = MaxPooling2D(pool_size=(2, 2))(conv4)
+
+    conv5 = Conv2D(512, 3, activation=&#039;relu&#039;, padding=&#039;same&#039;, kernel_initializer=&#039;he_normal&#039;)(pool4)
+    conv5 = Conv2D(512, 3, activation=&#039;relu&#039;, padding=&#039;same&#039;, kernel_initializer=&#039;he_normal&#039;)(conv5)
+    # 将部分隐藏层神经元丢弃，防止过于细化而引起的过拟合情况
+    drop5 = Dropout(0.5)(conv5)
+
+    # expansive path
+    # 上采样
+    up6 = Conv2D(256, 2, activation=&#039;relu&#039;, padding=&#039;same&#039;, kernel_initializer=&#039;he_normal&#039;)(
+        UpSampling2D(size=(2, 2))(drop5))
+    # copy and crop(和contraction path 的feature map合并拼接)
+    merge6 = concatenate([drop4, up6], axis=3)
+    # 两个有效卷积层
+    conv6 = Conv2D(256, 3, activation=&#039;relu&#039;, padding=&#039;same&#039;, kernel_initializer=&#039;he_normal&#039;)(merge6)
+    conv6 = Conv2D(256, 3, activation=&#039;relu&#039;, padding=&#039;same&#039;, kernel_initializer=&#039;he_normal&#039;)(conv6)
+
+    # 上采样
+    up7 = Conv2D(128, 2, activation=&#039;relu&#039;, padding=&#039;same&#039;, kernel_initializer=&#039;he_normal&#039;)(
+        UpSampling2D(size=(2, 2))(conv6))
+    merge7 = concatenate([conv3, up7], axis=3)
+    conv7 = Conv2D(128, 3, activation=&#039;relu&#039;, padding=&#039;same&#039;, kernel_initializer=&#039;he_normal&#039;)(merge7)
+    conv7 = Conv2D(128, 3, activation=&#039;relu&#039;, padding=&#039;same&#039;, kernel_initializer=&#039;he_normal&#039;)(conv7)
+
+    # 上采样
+    up8 = Conv2D(64, 2, activation=&#039;relu&#039;, padding=&#039;same&#039;, kernel_initializer=&#039;he_normal&#039;)(
+        UpSampling2D(size=(2, 2))(conv7))
+    merge8 = concatenate([conv2, up8], axis=3)
+    conv8 = Conv2D(64, 3, activation=&#039;relu&#039;, padding=&#039;same&#039;, kernel_initializer=&#039;he_normal&#039;)(merge8)
+    conv8 = Conv2D(64, 3, activation=&#039;relu&#039;, padding=&#039;same&#039;, kernel_initializer=&#039;he_normal&#039;)(conv8)
+
+    # 上采样
+    up9 = Conv2D(32, 2, activation=&#039;relu&#039;, padding=&#039;same&#039;, kernel_initializer=&#039;he_normal&#039;)(
+        UpSampling2D(size=(2, 2))(conv8))
+    merge9 = concatenate([conv1, up9], axis=3)
+    conv9 = Conv2D(32, 3, activation=&#039;relu&#039;, padding=&#039;same&#039;, kernel_initializer=&#039;he_normal&#039;)(merge9)
+    conv9 = Conv2D(32, 3, activation=&#039;relu&#039;, padding=&#039;same&#039;, kernel_initializer=&#039;he_normal&#039;)(conv9)
+    conv9 = Conv2D(2, 3, activation=&#039;relu&#039;, padding=&#039;same&#039;, kernel_initializer=&#039;he_normal&#039;)(conv9)
+    conv10 = Conv2D(1, 1, activation=&#039;sigmoid&#039;)(conv9)
+    model = Model(inputs=inputs, outputs=conv10)
+    # 优化器为 Adam,损失函数为 binary_crossentropy，评价函数为 accuracy
+    model.compile(optimizer=Adam(lr=learning_rate),
+                  loss=&#039;binary_crossentropy&#039;,
+                  metrics=[&#039;accuracy&#039;])
+    return model
+
+def train():
+    model = unet(input_shape=(IMG_WIDTH, IMG_HEIGHT, IMG_CHANNELS))
+    model.summary()
+    log_dir = &quot;logs/fit/&quot; + datetime.datetime.now().strftime(&quot;%Y%m%d-%H%M%S&quot;)
+    tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir, histogram_freq=1)
+    modelcheck = ModelCheckpoint(CKPT_PATH, monitor=&#039;val_accuracy&#039;, save_best_only=True, mode=&#039;max&#039;)
+    callable = [modelcheck, tensorboard_callback]
+    history = model.fit(x_train,
+                        y_train,
+                        batch_size=BATCH_SIZE,
+                        epochs=EPOCH,
+                        callbacks=callable,
+                        verbose=1,
+                        validation_split=0.2,
+                        shuffle=True,
+                        max_queue_size=3)
+    model.save(MODEL_PATH)
+
+    # plot the training loss and accuracy
+    plt.figure()
+    N = EPOCH
+    plt.plot(np.arange(0, N), history.history[&quot;loss&quot;], label=&quot;train_loss&quot;)
+    plt.plot(np.arange(0, N), history.history[&quot;val_loss&quot;], label=&quot;val_loss&quot;)
+    plt.plot(np.arange(0, N), history.history[&quot;accuracy&quot;], label=&quot;train_acc&quot;)
+    plt.plot(np.arange(0, N), history.history[&quot;val_accuracy&quot;], label=&quot;val_acc&quot;)
+    plt.title(&quot;Training Loss and Accuracy on U-Net Satellite Seg&quot;)
+    plt.xlabel(&quot;Epoch #&quot;)
+    plt.ylabel(&quot;Loss/Accuracy&quot;)
+    plt.legend(loc=&quot;lower left&quot;)
+    plt.savefig(&#039;./result.png&#039;)
+
+def predict():
+    # load the trained convolutional neural network
+    print(&quot;[INFO] loading network...&quot;)
+    model = load_model(MODEL_PATH)
+    for n in range(len(TEST_SET)):
+        path = TEST_SET[n]
+        # load the image
+        image = cv2.imread(&#039;./test/&#039; + path)
+        image = np.resize(image, (1, 256, 256, 3))
+        pred = model.predict(image, verbose=1)
+        # # print (np.unique(pred))
+        pred = pred.reshape((256, 256)).astype(np.uint8)
+        path = &#039;./predict/pre&#039; + str(n + 1) + &#039;.png&#039;
+        print(path, pred.shape)
+        cv2.imwrite(path, pred)
+
+if __name__ == &#039;__main__&#039;:
+    train()
+    predict()</code></pre>
+<p>其中的数据处理部分代码如下：</p>
+<pre><code class="language-python">from pathlib import Path
+from skimage import io
+import numpy as np
+from tqdm import tqdm
+
+def process(file_path, has_mask=True):
+    file_path = Path(file_path)
+    files = sorted(list(Path(file_path).iterdir()))
+    datas = []
+    labels = []
+    for file in tqdm(files):
+        for image in (file/&#039;images&#039;).iterdir():
+            img = io.imread(image)
+            img = np.resize(img, (256, 256, 3))
+        if img.shape[2] &gt; 3:
+            assert (img[:, :, 3] != 255).sum() == 0
+        img = img[:, :, :3]
+
+        if has_mask:
+            mask_files = list((file/&#039;masks&#039;).iterdir())
+            masks = None
+            for ii, mask in enumerate(mask_files):
+                mask = io.imread(mask)
+                mask = np.resize(mask, (256, 256))
+                assert (mask[(mask != 0)] == 255).all()
+                if masks is None:
+                    H, W = mask.shape
+                    masks = np.zeros((len(mask_files), H, W))
+                masks[ii] = mask
+            tmp_mask = masks.sum(0)
+            assert (tmp_mask[tmp_mask != 0] == 255).all()
+            for ii, mask in enumerate(masks):
+                masks[ii] = mask / 255 * (ii + 1)
+            mask = masks.sum(0)
+            labels.append(mask)
+        datas.append(img)
+    return datas, labels
+
+# save data
+test, _ = process(&#039;./stage1_test/&#039;, False)
+test = np.array(test)
+np.savez(&#039;test&#039;, datas=test)
+train_data, train_label = process(&#039;./stage1_train/&#039;)
+train_data = np.array(train_data)
+train_label = np.array(train_label)
+np.savez(&#039;train&#039;, datas=train_data, labels=train_label)</code></pre>
+<p><img src="/media/tangger/资料/文档库/生物医学影像处理PPT/image_segmentation/unet/result.png" alt="result"></p>
+<p><strong>TODO：</strong>笔记本跑起来太慢，并且代码好像有点儿问题，先就这样，后续填坑了放到个人博客上。</p>
+<h2>
+<a name="toc-39"></a>参考资料</h2>
+<p>参考资料1：<a href="https://jinzhangyu.github.io/2018/08/29/2018-08-29-OpenCV-Python%E6%95%99%E7%A8%8B-10-%E9%98%88%E5%80%BC%E5%88%86%E5%89%B2-1/">OpenCV-Python教程(10) --- 阈值分割(1)</a></p>
+<p>参考资料2：<a href="http://www.labbookpages.co.uk/software/imgProc/otsuThreshold.html">Otsu Thresholding</a></p>
+<p>参考资料3：<a href="https://opencv-python-tutorials.readthedocs.io/zh/latest/4.%20OpenCV%E4%B8%AD%E7%9A%84%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/4.3.%20%E5%9B%BE%E5%83%8F%E9%98%88%E5%80%BC/">图像阈值</a></p>
+<p>参考资料4：<a href="https://gy23333.github.io/2020/01/18/%E5%9F%BA%E4%BA%8E%E5%8C%BA%E5%9F%9F%E7%9A%84%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2%E2%80%94%E2%80%94%E5%8C%BA%E5%9F%9F%E7%94%9F%E9%95%BF/">基于区域的图像分割——区域生长</a></p>
+<p>参考资料5：<a href="https://www.cnblogs.com/er-gou-zi/p/12016951.html">基于初始种子自动选取的区域生长（python+opencv)</a></p>
+<p>参考资料6：<a href="https://gy23333.github.io/2020/01/19/%E5%9F%BA%E4%BA%8E%E5%8C%BA%E5%9F%9F%E7%9A%84%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2%E2%80%94%E2%80%94%E5%8C%BA%E5%9F%9F%E5%88%86%E8%A3%82%E4%B8%8E%E5%90%88%E5%B9%B6/">基于区域的图像分割——区域分裂与合并</a></p>
+<p>参考资料7：<a href="https://www.osgeo.cn/opencv-python/ch08-advproc/sec04-watershed.html">基于分水岭算法的图像分割</a></p>
+									</div>
+				<div class="blog-author-block w-clearfix">
+					<div class="blog-author-image" style="background-image: url('https://cdn.v2ex.com/gravatar/90418ca09c90fa30b5fceaf7bae4ac31?s=200&d=mm&r=g');"></div>
+					<div class="blog-author-title name">tangger</div>
+					<div class="blog-author-title">
+						我还没有学会写个人说明！					</div>
+					<a href="/author/tangger/" style="font-size: 14px">查看“tangger”的所有文章 →</a>
+				</div>
+			</div>
+		</div>
+		
+<div id="comments" class="comments-area">
+
+		
+	
+	
+		<div id="respond" class="comment-respond">
+		<h3 id="reply-title" class="comment-reply-title">Leave a Reply <small><a rel="nofollow" id="cancel-comment-reply-link" href="/2021/07/overview-of-image-segmentation-and-python-code-implementation/#respond" style="display:none;">Cancel reply</a></small>
+</h3>
+<form action="/wp-comments-post.php" method="post" id="commentform" class="comment-form">
+<p class="comment-notes"><span id="email-notes">Your email address will not be published.</span> Required fields are marked <span class="required">*</span></p>
+<p class="comment-form-comment"><label for="comment">Comment</label> <textarea id="comment" name="comment" cols="45" rows="8" maxlength="65525" required="required"></textarea></p>
+<p class="comment-form-author"><label for="author">Name <span class="required">*</span></label> <input id="author" name="author" type="text" value="" size="30" maxlength="245" required="required"></p>
+<p class="comment-form-email"><label for="email">Email <span class="required">*</span></label> <input id="email" name="email" type="text" value="" size="30" maxlength="100" aria-describedby="email-notes" required="required"></p>
+<p class="comment-form-url"><label for="url">Website</label> <input id="url" name="url" type="text" value="" size="30" maxlength="200"></p>
+<p class="comment-form-cookies-consent"><input id="wp-comment-cookies-consent" name="wp-comment-cookies-consent" type="checkbox" value="yes"> <label for="wp-comment-cookies-consent">Save my name, email, and website in this browser for the next time I comment.</label></p>
+<p class="form-submit"><input name="submit" type="submit" id="submit" class="submit" value="Post Comment"> <input type="hidden" name="comment_post_ID" value="96" id="comment_post_ID">
+<input type="hidden" name="comment_parent" id="comment_parent" value="0">
+</p>
+</form>	</div>
+<!-- #respond -->
+	
+</div>	</div>
+</div>
+
+
+<div class="light-tint section">
+	<div class="container w-container">
+		<div class="section-title-wrapper">
+			<h2 class="section-title">相关推荐</h2>
+		</div>
+		<div class="blog-list-wrapper w-dyn-list">
+			<div class="blog-posts-list w-clearfix w-dyn-items w-row">
+				
+				
+				<div class="blog-post-item w-col w-col-4 w-dyn-item">
+					<a class="blog-post-image-link-block small w-inline-block" title="记录——神经网络可解释性中的两个操作" href="/2020/07/two-options-of-my-experiment/" style="background-image: url('/wp-content/uploads/2021/07/1617196088-b8.jpeg');">
+						<div class="blog-author-wrapper small w-clearfix">
+														<div class="blog-date small">2020-07-08</div>
+						</div>
+					</a>
+					<a class="blog-title-link" title="记录——神经网络可解释性中的两个操作" href="/2020/07/two-options-of-my-experiment/">记录——神经网络可解释性中的两个操作</a>
+				</div>
+
+				
+				<div class="blog-post-item w-col w-col-4 w-dyn-item">
+					<a class="blog-post-image-link-block small w-inline-block" title="MatLab图像增强方法" href="/2021/04/matlab-implements-commonly-used-image-enhancement-algorithms/" style="background-image: url('/wp-content/uploads/2021/07/v2-770673add02ea61d9ecb121a3554ee02_720w.jpg.pagespeed.ce_.O4TyH-bc3P.jpg');">
+						<div class="blog-author-wrapper small w-clearfix">
+														<div class="blog-date small">2021-04-28</div>
+						</div>
+					</a>
+					<a class="blog-title-link" title="MatLab图像增强方法" href="/2021/04/matlab-implements-commonly-used-image-enhancement-algorithms/">MatLab图像增强方法</a>
+				</div>
+
+				
+				<div class="blog-post-item w-col w-col-4 w-dyn-item">
+					<a class="blog-post-image-link-block small w-inline-block" title="记录——os.listdir列表不固定的坑" href="/2020/06/os-listdir-will-cause-list-sort-result-to-be-unfixed/" style="background-image: url('/wp-content/uploads/2021/07/20101028082839109.jpg.pagespeed.ce_.E7w06-P1Cd.jpg');">
+						<div class="blog-author-wrapper small w-clearfix">
+														<div class="blog-date small">2020-06-05</div>
+						</div>
+					</a>
+					<a class="blog-title-link" title="记录——os.listdir列表不固定的坑" href="/2020/06/os-listdir-will-cause-list-sort-result-to-be-unfixed/">记录——os.listdir列表不固定的坑</a>
+				</div>
+
+								
+			</div>
+		</div>
+	</div>
+</div>
+<div class="footer">
+	<div class="container w-container">
+		<div class="footer-text">
+			Copyright2021. All Rights Reserved.&nbsp;			
+						
+			
+				&nbsp;<a rel="nofollow" target="_blank" href="https://beian.miit.gov.cn/">渝ICP备19011860号-2</a>
+
+					</div>
+		
+		<div class="_2 footer-text">
+			Powered by
+			<a href="http://www.xintheme.com/" target="_blank">XinTheme</a> + 
+			<a href="https://blog.wpjam.com/" target="_blank">WordPress 果酱</a>
+		</div>
+		<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/prismjs@1.15.0/components/prism-core.min.js?ver=1.15.0" id="prism-js-0-js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/prismjs@1.15.0/prism.min.js?ver=1.15.0" id="prism-js-1-js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/prismjs@1.15.0/plugins/line-numbers/prism-line-numbers.min.js?ver=1.15.0" id="prism-js-2-js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/prismjs@1.15.0/plugins/autoloader/prism-autoloader.min.js?ver=1.15.0" id="prism-js-3-js"></script>
+<script type="text/javascript" src="/wp-includes/js/clipboard.min.js?ver=5.7.2" id="clipboard-js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/emojify.js@1.1.0/dist/js/emojify.min.js?ver=1.1.0" id="emojify-js"></script>
+<script type="text/javascript" src="https://zz.bdstatic.com/linksubmit/push.js?ver=5.7.2" id="baidu_zz_push-js"></script>
+ <script id="auto_loader_config_scripts"> Prism.plugins.autoloader.languages_path = "https://cdn.jsdelivr.net/npm/prismjs@1.15.0/components/"; </script>  <script id="module-prism-line-number"> (function($) { $(function() { $("code").each(function() { var parent_div = $(this).parent("pre"); var pre_css = $(this).attr("class"); if (typeof pre_css !== "undefined" && -1 !== pre_css.indexOf("language-")) { parent_div.addClass("line-numbers"); } }); }); })(jQuery); </script>  <script id="module-clipboard"> (function($) { $(function() { var pre = document.getElementsByTagName("pre"); var pasteContent = document.getElementById("paste-content"); var hasLanguage = false; for (var i = 0; i < pre.length; i++) { var codeClass = pre[i].children[0].className; var isLanguage = codeClass.indexOf("language-"); var excludedCodeClassNames = [ "language-katex", "language-seq", "language-sequence", "language-flow", "language-flowchart", "language-mermaid", ]; var isExcluded = excludedCodeClassNames.indexOf(codeClass); if (isExcluded !== -1) { isLanguage = -1; } if (isLanguage !== -1) { var button = document.createElement("button"); button.className = "copy-button"; button.textContent = "Copy"; pre[i].appendChild(button); hasLanguage = true; } }; if (hasLanguage) { var copyCode = new ClipboardJS(".copy-button", { target: function(trigger) { return trigger.previousElementSibling; } }); copyCode.on("success", function(event) { event.clearSelection(); event.trigger.textContent = "Copied"; window.setTimeout(function() { event.trigger.textContent = "Copy"; }, 2000); }); } }); })(jQuery); </script> 
+			<script id="module-emojify">
+				(function($) {
+					$(function() {
+						if (typeof emojify !== "undefined") {
+							emojify.setConfig({
+								img_dir: "https://cdn.jsdelivr.net/npm/emojify.js@1.1.0/dist/images/basic",
+								blacklist: {
+									"classes": ["no-emojify"],
+									"elements": ["script", "textarea", "pre", "code"]
+								}
+							});
+							emojify.run();
+						} else {
+							console.log("[wp-githuber-md] emogify is undefined.");
+						}
+					});
+				})(jQuery);
+			</script>
+			</div>
+</div>
+<div class="gotop-wrapper">
+	<a href="javascript:;" class="fixed-gotop gotop"></a>
+</div>
+</body>
+</html>

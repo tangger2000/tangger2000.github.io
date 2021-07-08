@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>记录——树莓派的安装配置过程 &#8211; 翰林木子的笔记本</title>
+<meta name="description" content="2018年double eleven ，我个穷逼。买了点儿树莓派，就是那种可以吃的树莓派（蛋黄派）。 but，为什么我买的吃的，收到了一块电子板？鸡婆哟！没看懂没看懂，联系卖家，结果二话不说丢给我百度云的连接，懵 &hellip;">
+<meta name="keywords" content="树莓派">
+<meta name="robots" content="max-image-preview:large">
+<link rel="dns-prefetch" href="//cdn.staticfile.org">
+<link rel="dns-prefetch" href="//cdn.jsdelivr.net">
+<link rel="dns-prefetch" href="//zz.bdstatic.com">
+<link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+<link rel="stylesheet" id="wp-block-library-css" href="/wp-includes/css/dist/block-library/style.min.css?ver=5.7.2" type="text/css" media="all">
+<style id="md-style-inline-css" type="text/css">.copy-button { cursor: pointer; border: 0; font-size: 12px; text-transform: uppercase; font-weight: 500; padding: 3px 6px 3px 6px; background-color: rgba(255, 255, 255, 0.6); position: absolute; overflow: hidden; top: 5px; right: 5px; border-radius: 3px; } .copy-button:before { content: ""; display: inline-block; width: 16px; height: 16px; margin-right: 3px; background-size: contain; background-image: url("data:image/svg+xml,%3Csvg version=\'1.1\' xmlns=\'http://www.w3.org/2000/svg\' xmlns:xlink=\'http://www.w3.org/1999/xlink\' x=\'0px\' y=\'0px\' width=\'16px\' height=\'16px\' viewBox=\'888 888 16 16\' enable-background=\'new 888 888 16 16\' xml:space=\'preserve\'%3E %3Cpath fill=\'%23333333\' d=\'M903.143,891.429c0.238,0,0.44,0.083,0.607,0.25c0.167,0.167,0.25,0.369,0.25,0.607v10.857 c0,0.238-0.083,0.44-0.25,0.607s-0.369,0.25-0.607,0.25h-8.571c-0.238,0-0.44-0.083-0.607-0.25s-0.25-0.369-0.25-0.607v-2.571 h-4.857c-0.238,0-0.44-0.083-0.607-0.25s-0.25-0.369-0.25-0.607v-6c0-0.238,0.06-0.5,0.179-0.786s0.262-0.512,0.428-0.679 l3.643-3.643c0.167-0.167,0.393-0.309,0.679-0.428s0.547-0.179,0.786-0.179h3.714c0.238,0,0.44,0.083,0.607,0.25 c0.166,0.167,0.25,0.369,0.25,0.607v2.929c0.404-0.238,0.785-0.357,1.143-0.357H903.143z M898.286,893.331l-2.67,2.669h2.67V893.331 z M892.571,889.902l-2.669,2.669h2.669V889.902z M894.321,895.679l2.821-2.822v-3.714h-3.428v3.714c0,0.238-0.083,0.441-0.25,0.607 s-0.369,0.25-0.607,0.25h-3.714v5.714h4.571v-2.286c0-0.238,0.06-0.5,0.179-0.786C894.012,896.071,894.155,895.845,894.321,895.679z M902.857,902.857v-10.286h-3.429v3.714c0,0.238-0.083,0.441-0.25,0.607c-0.167,0.167-0.369,0.25-0.607,0.25h-3.714v5.715H902.857z\' /%3E %3C/svg%3E"); background-repeat: no-repeat; position: relative; top: 3px; } pre { position: relative; } pre:hover .copy-button { background-color: rgba(255, 255, 255, 0.9); }</style>
+<link rel="stylesheet" id="fancybox-css" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css?ver=5.7.2" type="text/css" media="all">
+<link rel="stylesheet" id="style-css" href="/wp-content/themes/sweet/static/css/sweet.css?ver=5.7.2" type="text/css" media="all">
+<link rel="stylesheet" id="prism-css-0-css" href="https://cdn.jsdelivr.net/npm/prismjs@1.15.0/themes/prism.css?ver=1.15.0" type="text/css" media="all">
+<link rel="stylesheet" id="prism-css-1-css" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/plugins/line-numbers/prism-line-numbers.css?ver=1.15.0" type="text/css" media="all">
+<link rel="stylesheet" id="emojify-css" href="https://cdn.jsdelivr.net/npm/emojify.js@1.1.0/dist/css/basic/emojify.min.css?ver=1.1.0" type="text/css" media="all">
+<script type="text/javascript" src="/wp-includes/js/jquery/jquery.min.js?ver=3.5.1" id="jquery-core-js"></script>
+<script type="text/javascript" src="/wp-includes/js/jquery/jquery-migrate.min.js?ver=3.3.2" id="jquery-migrate-js"></script>
+<script type="text/javascript" src="/wp-content/themes/sweet/static/js/sweet.js?ver=5.7.2" id="sweet-js"></script>
+<script type="text/javascript" src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js?ver=5.7.2" id="fancybox-js"></script>
+<link rel="canonical" href="/2019/10/installation-and-configuration-of-raspberry-pi4/">
+<link href="/wp-content/uploads/2021/07/1617196601-favicon-32x32-1.png" rel="shortcut icon" type="image/x-icon">
+<link href="/wp-content/uploads/2021/07/1617196599-apple-touch-icon.png" rel="apple-touch-icon">
+<script type="text/javascript">
+
+</script>
+<style type="text/css"></style>
+	
+	</head>
+
+<body class="post-template-default single single-post postid-72 single-format-standard">
+
+
+<div class="navbar w-nav">
+	<div class="container w-container">
+				<a class="logo-block w-inline-block" href="/">
+			<img class="logo" src="/wp-content/uploads/2021/07/1617196599-apple-touch-icon.png">
+		</a>
+				<nav class="nav-menu w-nav-menu">
+			<li id="menu-item-97" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-97"><a href="https://ytlee.cn/">首页</a></li>
+<li id="menu-item-99" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-99"><a href="/category/note/">笔记本</a></li>
+<li id="menu-item-100" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-100"><a href="/category/draft/">草稿本</a></li>
+<li id="menu-item-103" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-103"><a href="/about-me/">关于我</a></li>
+					</nav>
+		<div class="menu-button w-nav-button">
+			<div class="w-icon-nav-menu right">
+			</div>
+		</div>
+		<div class="rightNav">
+			<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-97"><a href="https://ytlee.cn/">首页</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-99"><a href="/category/note/">笔记本</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-100"><a href="/category/draft/">草稿本</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-103"><a href="/about-me/">关于我</a></li>
+		</div>
+	</div>
+</div>
+<div class="bgDiv"></div>
+
+<div class="blog-header">
+	<div class="blog-header-overlay"></div>
+	<div class="header-image-block" style="background-image: url('/wp-content/uploads/2021/07/v2-12ccacf4d52cb115b29587f7ca5b8955_720w.jpg.pagespeed.ce_.iU1rgHvref.jpg');"></div>
+</div>
+<div class="blog-post-section section">
+	<div class="blog-post-container container w-container">
+		<div class="white-content-block">
+			<div class="blog-post-image-block" style="background-image: url('/wp-content/uploads/2021/07/1586232236-thumb-49.jpg.pagespeed.ce_.-lchhOVXBD.jpg');">
+				<a href="/category/note/" rel="category tag">笔记本</a>				<div class="blog-post-header">
+					<div class="blog-header-title-wrapper">
+						<div class="blog-post-date">2019-10-12</div>
+						<h1 class="blog-post-title">记录——树莓派的安装配置过程</h1>
+					</div>
+				</div>
+			</div>
+			<div class="align-left white-content-block-content-wrapper">
+				<div class="rich-text-block w-richtext">
+					<ul>
+<li><a href="#toc-1">树莓派实验室</a></li>
+<li>
+<a href="#toc-2">一、系统烧录</a><ul>
+<li><a href="#toc-3">下载系统</a></li>
+<li><a href="#toc-4">格式化SD卡&amp;写入系统</a></li>
+</ul>
+</li>
+<li>
+<a href="#toc-5">二、开启SSH访问和WIFI模块</a><ul>
+<li><a href="#toc-6">（1）开启SSH</a></li>
+<li><a href="#toc-7">（2）WIFI模块</a></li>
+</ul>
+</li>
+<li>
+<a href="#toc-8">三、基本设置</a><ul>
+<li><a href="#toc-9">ssh登陆树莓派</a></li>
+<li><a href="#toc-10">扩展sd卡文件系统</a></li>
+<li><a href="#toc-11">修改初始密码&amp;开启root账户</a></li>
+</ul>
+</li>
+<li>
+<a href="#toc-12">四、更新源</a><ul>
+<li><a href="#toc-13">备份原文件</a></li>
+<li><a href="#toc-14">修改文件</a></li>
+<li><a href="#toc-15">更新命令</a></li>
+</ul>
+</li>
+<li>
+<a href="#toc-16">更多</a><ul>
+<li><a href="#toc-17">3B+开启wifi需选择国家</a></li>
+<li><a href="#toc-18">树莓派做wifi ap热点</a></li>
+</ul>
+</li>
+</ul>
+
+<p>2018年double eleven ，我个穷逼。买了点儿树莓派，就是那种可以吃的树莓派（蛋黄派）。<br>
+but，为什么我买的吃的，收到了一块电子板？鸡婆哟！没看懂没看懂，联系卖家，结果二话不说丢给我百度云的连接，懵圈ing、、、<br>
+买都买了，吃又不能吃，那我总得想点儿玩的吧？<br>
+OK，开箱，组装，烧系统。</p>
+<blockquote>
+<p>前言：<br>
+建议烧录raspberry lite 版本，不带操作界面的那种。因为完全没有必要！当然，你要烧录就烧录吧！</p>
+</blockquote>
+<h3>
+<a name="toc-1"></a><a href="http://shumeipai.nxez.com/">树莓派实验室</a>
+</h3>
+<p>上面是我找到的一个网站。</p>
+<blockquote>
+<p>此测试是在没有路由器，没有显示器，没有鼠标，没有键盘，只有一台树莓派和一台笔记本电脑的情况下进行的，（ps：我的网线是连接在交换机上的，交换机的进网口可能来自于路由器，但是我是不可使用的，就像从别人家牵了一根网线的情况。）如果有，甚好。</p>
+</blockquote>
+<h2>
+<a name="toc-2"></a>一、系统烧录</h2>
+<h3>
+<a name="toc-3"></a>下载系统</h3>
+<p>打开官网Raspberrypi,点击DOWNLOADS，点击NooBS旁边的RASPBIAN,然后点击RASPBIAN STRETCH WITH DESKTOP下面的Download ZIP，这里推荐用迅雷之类的下载软件，如果你的浏览器下载很快，请无视推荐。下载好了之后解压。</p>
+<h3>
+<a name="toc-4"></a>格式化SD卡&amp;写入系统</h3>
+<p>1.首先把sd卡插入读卡器，插上电脑，等待系统识别，右键用管理员权限打开SD Association 选中你的sd卡，只有一个的话默认选中，点击format，等待完成后退出。<br>
+2.同样的，管理员权限打开Win32diskimager，选择好刚才下载解压了的image文件，还有设备是否是你的sd卡，后点击写入。等待完成。<br>
+3.以上步骤如果没有出错，现在你的windows系统，显示的是你的sd卡为一个boot和一个加密的盘符。打开boot盘符，新建一个名字为ssh的空白文件，这是因为新系统默认关闭了ssh的，这么做，是为了开启ssh，以便我们登陆。</p>
+<h2>
+<a name="toc-5"></a>二、开启SSH访问和WIFI模块</h2>
+<h3>
+<a name="toc-6"></a>（1）开启SSH</h3>
+<p>1.首先打开刷入了系统的那个boot盘，不是那个打不开的盘哈！<br>
+2.在根目录新建一个SSH文件即可！</p>
+<blockquote>
+<p>新建一个txt文件，会显示 新建文档.txt 这个文件名。如果不是的，那就是错了噶！然后，重命名为 SSH （就是这个名字，没有后缀.txt）</p>
+</blockquote>
+<h3>
+<a name="toc-7"></a>（2）WIFI模块</h3>
+<p>在boot盘下新建一个文件，命名为wpa_supplicant.conf</p>
+<p>用记事本打开写入以下内容：</p>
+<pre><code class="language-yaml">country=CN
+
+ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+
+update_config=1
+
+network={
+
+ssid=&quot;wifi名称&quot; 
+
+psk=&quot;wifi密码&quot;
+
+key_mgmt=WPA-PSK
+
+priority=1
+
+}</code></pre>
+<p>将上面的名称改为你的wifi/热点名称，密码也是的！</p>
+<p>![image]()</p>
+<h2>
+<a name="toc-8"></a>三、基本设置</h2>
+<h3>
+<a name="toc-9"></a>ssh登陆树莓派</h3>
+<p>在windows中按WIn+R键，打开运行输入cmd回车，输入命令</p>
+<pre><code class="language-bash">arp -a</code></pre>
+<p>现在把sd卡插入树莓派，上电开机，等待一下再次输入上面的命令<br>
+比较一下，可以看出会多一个动态ip，那就是树莓派局域网ip。<br>
+打开putty软件，输入树莓派的ip地址回车<br>
+没有报错的话输入用户名pi 密码raspberry 即可登录成功</p>
+<h3>
+<a name="toc-10"></a>扩展sd卡文件系统</h3>
+<pre><code class="language-bash">sudo raspi-config</code></pre>
+<p>回车后，选择Advanced Options-&gt;Expand Filesystem 确定，然后重启生效。</p>
+<h3>
+<a name="toc-11"></a>修改初始密码&amp;开启root账户</h3>
+<p>这个根据个人情况而定，因为不想看到ssh总是提示我使用的是默认密码。<br>
+直接在命令行里输入</p>
+<pre><code class="language-bash">passwd</code></pre>
+<p>回车后，会提示你输入原来的密码，就是raspberry，然后输入两次新的密码即可。<br>
+使用命令</p>
+<pre><code class="language-bash">sudo passwd root</code></pre>
+<p>回车，然后输入两次新密码，即可开启root账户。<br>
+切换账户，使用su xxx命令如：</p>
+<pre><code class="language-bash">su root</code></pre>
+<p>回车，输入root密码即可进入root账户，退出一个已经的登录的账户只需要输入</p>
+<pre><code class="language-bash">exit</code></pre>
+<p>就OK了</p>
+<h2>
+<a name="toc-12"></a>四、更新源</h2>
+<p>我们只需对（/etc/apt/sources.list）和（/etc/apt/sources.list.d/raspi.list）这两个文件进行修改，将其中的源网址更换为国内镜像站点即可。这个要比正常的Linux更新源多一个地方。</p>
+<h3>
+<a name="toc-13"></a>备份原文件</h3>
+<p>命令行执行：</p>
+<pre><code class="language-bash">sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak
+sudo cp /etc/apt/sources.list.d/raspi.list /etc/apt/sources.list.d/raspi.list.bak</code></pre>
+<h3>
+<a name="toc-14"></a>修改文件</h3>
+<p>此处更换为你想要的源地址，我整理了几个地址：<br>
+<strong>中科大</strong></p>
+<pre><code>http://mirrors.ustc.edu.cn/raspbian/raspbian/</code></pre>
+<p><strong>阿里云</strong></p>
+<pre><code>http://mirrors.aliyun.com/raspbian/raspbian/</code></pre>
+<p><strong>清华大学</strong></p>
+<pre><code>http://mirrors.tuna.tsinghua.edu.cn/raspbian/raspbian/</code></pre>
+<p><strong>下面我把国内的源都加进去做个例子</strong></p>
+<pre><code class="language-bash">sudo nano /etc/apt/sources.list
+
+将文件首行中网址修改即可，修改后文件如下：
+
+deb http://mirrors.ustc.edu.cn/raspbian/raspbian/ stretch main contrib non-free rpi
+deb-src http://mirrors.ustc.edu.cn/raspbian/raspbian/ stretch main contrib non-free rpi
+deb http://mirrors.tuna.tsinghua.edu.cn/raspbian/raspbian/ stretch main contrib non-free rpi
+deb-src  http://mirrors.tuna.tsinghua.edu.cn/raspbian/raspbian/ stretch main contrib non-free rpi</code></pre>
+<p>ctrl+o 保存，之后 回车 确认，然后 ctrl+x 退出。<br>
+再修改系统更新源，命令行执行：</p>
+<pre><code class="language-bash">sudo nano /etc/apt/sources.list.d/raspi.list
+
+同样修改首行网址，修改后文件如下：
+
+deb http://mirrors.ustc.edu.cn/archive.raspberrypi.org/debian/ stretch main ui
+# Uncomment line below then &#039;apt-get update&#039; to enable &#039;apt-get source&#039;
+#deb-src http://archive.raspberrypi.org/debian/ stretch main ui</code></pre>
+<p>ctrl+o 保存，之后 回车 确认，然后 ctrl+x 退出。</p>
+<h3>
+<a name="toc-15"></a>更新命令</h3>
+<pre><code class="language-bash">分别依次执行下面的命令
+sudo apt-get update ; sudo apt-get upgrade ; sudo apt-get dist-upgrade ; sudo rpi-update</code></pre>
+<p>此处为更新软件源列表、软件版本和内核版本，因为更新内容比较多，所以耗时长些，大概需要六分钟。</p>
+<h2>
+<a name="toc-16"></a>更多</h2>
+<h4>
+<a name="toc-17"></a>3B+开启wifi需选择国家</h4>
+<p>ssh登录3B+时会提示wifi使能需要选择国家</p>
+<pre><code class="language-bash">sudo raspi-config</code></pre>
+<p>回车，选择Localisation Options-&gt;Change Wi-fi Country-&gt;CN China回车确认，Finish重启</p>
+<h4>
+<a name="toc-18"></a>树莓派做wifi ap热点</h4>
+<p>树莓派建立wifi热点后，手机，电脑随时都可以连接，方便。步骤如下</p>
+<pre><code class="language-bash">1.进入你想安装的目录，执行命令
+git clone https://github.com/oblique/create_ap.git
+2.进入目录
+cd create_ap
+3.安装
+sudo make install
+4.接下来安装依赖库
+sudo apt-get install util-linux procps hostapd iproute2 iw haveged dnsmasq
+5.接下来保证你的网线插在pi3上并且能上网就行了。输入下面的命令启动无线AP：
+sudo create_ap wlan0 eth0 热点名 密码
+6.开启开机启动
+把5步骤的命令加入/etc/rc.local中,在exit 0前面加入
+sudo nano /etc/rc.local</code></pre>
+									</div>
+				<div class="blog-author-block w-clearfix">
+					<div class="blog-author-image" style="background-image: url('https://cdn.v2ex.com/gravatar/90418ca09c90fa30b5fceaf7bae4ac31?s=200&d=mm&r=g');"></div>
+					<div class="blog-author-title name">tangger</div>
+					<div class="blog-author-title">
+						我还没有学会写个人说明！					</div>
+					<a href="/author/tangger/" style="font-size: 14px">查看“tangger”的所有文章 →</a>
+				</div>
+			</div>
+		</div>
+		
+<div id="comments" class="comments-area">
+
+		
+	
+	
+		<div id="respond" class="comment-respond">
+		<h3 id="reply-title" class="comment-reply-title">Leave a Reply <small><a rel="nofollow" id="cancel-comment-reply-link" href="/2019/10/installation-and-configuration-of-raspberry-pi4/#respond" style="display:none;">Cancel reply</a></small>
+</h3>
+<form action="/wp-comments-post.php" method="post" id="commentform" class="comment-form">
+<p class="comment-notes"><span id="email-notes">Your email address will not be published.</span> Required fields are marked <span class="required">*</span></p>
+<p class="comment-form-comment"><label for="comment">Comment</label> <textarea id="comment" name="comment" cols="45" rows="8" maxlength="65525" required="required"></textarea></p>
+<p class="comment-form-author"><label for="author">Name <span class="required">*</span></label> <input id="author" name="author" type="text" value="" size="30" maxlength="245" required="required"></p>
+<p class="comment-form-email"><label for="email">Email <span class="required">*</span></label> <input id="email" name="email" type="text" value="" size="30" maxlength="100" aria-describedby="email-notes" required="required"></p>
+<p class="comment-form-url"><label for="url">Website</label> <input id="url" name="url" type="text" value="" size="30" maxlength="200"></p>
+<p class="comment-form-cookies-consent"><input id="wp-comment-cookies-consent" name="wp-comment-cookies-consent" type="checkbox" value="yes"> <label for="wp-comment-cookies-consent">Save my name, email, and website in this browser for the next time I comment.</label></p>
+<p class="form-submit"><input name="submit" type="submit" id="submit" class="submit" value="Post Comment"> <input type="hidden" name="comment_post_ID" value="72" id="comment_post_ID">
+<input type="hidden" name="comment_parent" id="comment_parent" value="0">
+</p>
+</form>	</div>
+<!-- #respond -->
+	
+</div>	</div>
+</div>
+
+
+<div class="light-tint section">
+	<div class="container w-container">
+		<div class="section-title-wrapper">
+			<h2 class="section-title">相关推荐</h2>
+		</div>
+		<div class="blog-list-wrapper w-dyn-list">
+			<div class="blog-posts-list w-clearfix w-dyn-items w-row">
+				
+				
+				<div class="blog-post-item w-col w-col-4 w-dyn-item">
+					<a class="blog-post-image-link-block small w-inline-block" title="记录——树莓派搭建内网DNS服务器并实现内网域名解析" href="/2019/10/build-dnsmasq-server-on-raspberry-pi4/" style="background-image: url('/wp-content/uploads/2021/07/1617199392-c19.jpeg');">
+						<div class="blog-author-wrapper small w-clearfix">
+														<div class="blog-date small">2019-10-15</div>
+						</div>
+					</a>
+					<a class="blog-title-link" title="记录——树莓派搭建内网DNS服务器并实现内网域名解析" href="/2019/10/build-dnsmasq-server-on-raspberry-pi4/">记录——树莓派搭建内网DNS服务器并实现内网域名解析</a>
+				</div>
+
+				
+				<div class="blog-post-item w-col w-col-4 w-dyn-item">
+					<a class="blog-post-image-link-block small w-inline-block" title="记录——树莓派进一步的安装配置" href="/2019/10/further-installation-and-configuration-of-raspberry-pi4/" style="background-image: url('/wp-content/uploads/2021/07/stock-photo-1028555265.jpg');">
+						<div class="blog-author-wrapper small w-clearfix">
+														<div class="blog-date small">2019-10-13</div>
+						</div>
+					</a>
+					<a class="blog-title-link" title="记录——树莓派进一步的安装配置" href="/2019/10/further-installation-and-configuration-of-raspberry-pi4/">记录——树莓派进一步的安装配置</a>
+				</div>
+
+				
+				<div class="blog-post-item w-col w-col-4 w-dyn-item">
+					<a class="blog-post-image-link-block small w-inline-block" title="记录——树莓派4B通过SD卡辅助USB引导系统" href="/2019/10/raspberry-pi-4b-assists-usb-boot-system-via-sd-card/" style="background-image: url('/wp-content/uploads/2021/07/1617199369-c1.jpeg');">
+						<div class="blog-author-wrapper small w-clearfix">
+														<div class="blog-date small">2019-10-11</div>
+						</div>
+					</a>
+					<a class="blog-title-link" title="记录——树莓派4B通过SD卡辅助USB引导系统" href="/2019/10/raspberry-pi-4b-assists-usb-boot-system-via-sd-card/">记录——树莓派4B通过SD卡辅助USB引导系统</a>
+				</div>
+
+								
+			</div>
+		</div>
+	</div>
+</div>
+<div class="footer">
+	<div class="container w-container">
+		<div class="footer-text">
+			Copyright2021. All Rights Reserved.&nbsp;			
+						
+			
+				&nbsp;<a rel="nofollow" target="_blank" href="https://beian.miit.gov.cn/">渝ICP备19011860号-2</a>
+
+					</div>
+		
+		<div class="_2 footer-text">
+			Powered by
+			<a href="http://www.xintheme.com/" target="_blank">XinTheme</a> + 
+			<a href="https://blog.wpjam.com/" target="_blank">WordPress 果酱</a>
+		</div>
+		<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/prismjs@1.15.0/components/prism-core.min.js?ver=1.15.0" id="prism-js-0-js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/prismjs@1.15.0/prism.min.js?ver=1.15.0" id="prism-js-1-js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/prismjs@1.15.0/plugins/line-numbers/prism-line-numbers.min.js?ver=1.15.0" id="prism-js-2-js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/prismjs@1.15.0/plugins/autoloader/prism-autoloader.min.js?ver=1.15.0" id="prism-js-3-js"></script>
+<script type="text/javascript" src="/wp-includes/js/clipboard.min.js?ver=5.7.2" id="clipboard-js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/emojify.js@1.1.0/dist/js/emojify.min.js?ver=1.1.0" id="emojify-js"></script>
+<script type="text/javascript" src="https://zz.bdstatic.com/linksubmit/push.js?ver=5.7.2" id="baidu_zz_push-js"></script>
+ <script id="auto_loader_config_scripts"> Prism.plugins.autoloader.languages_path = "https://cdn.jsdelivr.net/npm/prismjs@1.15.0/components/"; </script>  <script id="module-prism-line-number"> (function($) { $(function() { $("code").each(function() { var parent_div = $(this).parent("pre"); var pre_css = $(this).attr("class"); if (typeof pre_css !== "undefined" && -1 !== pre_css.indexOf("language-")) { parent_div.addClass("line-numbers"); } }); }); })(jQuery); </script>  <script id="module-clipboard"> (function($) { $(function() { var pre = document.getElementsByTagName("pre"); var pasteContent = document.getElementById("paste-content"); var hasLanguage = false; for (var i = 0; i < pre.length; i++) { var codeClass = pre[i].children[0].className; var isLanguage = codeClass.indexOf("language-"); var excludedCodeClassNames = [ "language-katex", "language-seq", "language-sequence", "language-flow", "language-flowchart", "language-mermaid", ]; var isExcluded = excludedCodeClassNames.indexOf(codeClass); if (isExcluded !== -1) { isLanguage = -1; } if (isLanguage !== -1) { var button = document.createElement("button"); button.className = "copy-button"; button.textContent = "Copy"; pre[i].appendChild(button); hasLanguage = true; } }; if (hasLanguage) { var copyCode = new ClipboardJS(".copy-button", { target: function(trigger) { return trigger.previousElementSibling; } }); copyCode.on("success", function(event) { event.clearSelection(); event.trigger.textContent = "Copied"; window.setTimeout(function() { event.trigger.textContent = "Copy"; }, 2000); }); } }); })(jQuery); </script> 
+			<script id="module-emojify">
+				(function($) {
+					$(function() {
+						if (typeof emojify !== "undefined") {
+							emojify.setConfig({
+								img_dir: "https://cdn.jsdelivr.net/npm/emojify.js@1.1.0/dist/images/basic",
+								blacklist: {
+									"classes": ["no-emojify"],
+									"elements": ["script", "textarea", "pre", "code"]
+								}
+							});
+							emojify.run();
+						} else {
+							console.log("[wp-githuber-md] emogify is undefined.");
+						}
+					});
+				})(jQuery);
+			</script>
+			</div>
+</div>
+<div class="gotop-wrapper">
+	<a href="javascript:;" class="fixed-gotop gotop"></a>
+</div>
+</body>
+</html>
