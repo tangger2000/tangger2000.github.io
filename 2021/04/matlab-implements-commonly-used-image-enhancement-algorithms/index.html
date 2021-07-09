@@ -120,8 +120,8 @@
 <li>tanA为斜率</li>
 <li>tanA>1，图片变亮</li>
 <li>tanA=1，图片不变</li>
-<li>tanA<1，图片变暗</li>
-</ul>
+<li>tanA
+</li></ul>
 <p><strong>示例：</strong></p>
 <pre><code class="language-matlab">Image =im2double(rgb2gray(imread('chest-x.png')));
 [h, w] = size(Image);
@@ -157,16 +157,7 @@ y2=135/255;
 
 for i = 1:h 
     for j = 1:w 
-        if Image(i,j)<=x1
-            Image1(i,j)= Image(i, j)*(y1/x1);
-        else
-            Image1(i,j)= Image(i, j)*(y2/x2);
-        end
-
-    end
-end
-subplot(221),imshow(Image),title('原图');
-subplot(222),imshow(Image1),title('分段线性变换');</code></pre>
+        if Image(i,j)</code></pre>
 <p><img src="https://gitee.com/itanger/my-pic-repo/raw/master/img/image-20210412232506796.png" alt="image-20210412232506796"></p>
 <h3>
 <a name="toc-4"></a>非线性变换</h3>

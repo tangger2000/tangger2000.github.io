@@ -177,11 +177,8 @@ fc = layers.Dense(256, activation=tf.nn.relu)
 o1 = fc(x)
 print(fc.kernel)
 print(fc.bias)</code></pre>
-<pre><code class="language-shell"><tf.Variable 'dense/kernel:0' shape=(784, 256) dtype=float32, numpy=
-array([[ 0.05471069, -0.0628917 ,  0.03620822, ...,  0.01844664,
-        -0.06971153,  0.0447783 ],...], dtype=float32)>
-<tf.Variable 'dense/bias:0' shape=(256,) dtype=float32, numpy=
-array([0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., ...], dtype=float32)></code></pre>
+<pre><code class="language-shell"><tf.variable shape="(784," dtype="float32," numpy="array([[" ...>
+<tf.variable shape="(256,)" dtype="float32," numpy="array([0.," ...></tf.variable></tf.variable></code></pre>
 <h4>
 <a name="toc-8"></a>获取参数列表</h4>
 <ul>

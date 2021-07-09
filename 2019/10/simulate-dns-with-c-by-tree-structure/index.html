@@ -387,14 +387,7 @@ void Menu()
     hints.ai_addrlen = 0; /* 下面不可以设置，为0，或者为NULL */
 
     isRequest = getaddrinfo(hostname,port,&hints,&ailist);
-    if(isRequest < 0)
-    {
-        printf("请求上级DNS服务器失败！");
-        return;
-    }
-
-    /*处理返回的信息*/
-    sinp = (struct sockaddr_in *)ailist->ai_addr;
+    if(isRequest ai_addr;
     addr = inet_ntop(AF_INET, &sinp->sin_addr, buf, INET_ADDRSTRLEN);
     strcpy(res,addr);
 }</code></pre>
@@ -712,14 +705,7 @@ void GetIpFromDNS(char *hostname,char *res)
     hints.ai_addrlen = 0; /* 下面不可以设置，为0，或者为NULL */
 
     isRequest = getaddrinfo(hostname,port,&hints,&ailist);
-    if(isRequest < 0)
-    {
-        printf("请求上级DNS服务器失败！");
-        return;
-    }
-
-    /*处理返回的信息*/
-    sinp = (struct sockaddr_in *)ailist->ai_addr;
+    if(isRequest ai_addr;
     addr = inet_ntop(AF_INET, &sinp->sin_addr, buf, INET_ADDRSTRLEN);
     strcpy(res,addr);
 }

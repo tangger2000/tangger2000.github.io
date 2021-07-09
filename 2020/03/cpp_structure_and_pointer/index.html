@@ -122,7 +122,7 @@ int main() {
     s1.name = "张三";
     s1.age = 19;
     s1.score = 99;
-    cout << "姓名： "<< s1.name << "年龄：" << s1.age << "分数： "<< s1.score <</code></pre>
+    cout </code></pre>
 <blockquote>
 <ol>
 <li><code>在c++中，创建结构体变量的时候struct关键字可以省略，但是定义结构的时候不可省略</code></li>
@@ -153,7 +153,7 @@ int main() {
             };
 
     for(struct student &i : arr)
-        cout << "姓名：" << i.name << " 年龄："<< i.age << " 成绩:"<< i.score <</code></pre>
+        cout </code></pre>
 <h2>
 <a name="toc-4"></a>结构体指针</h2>
 <pre><code class="language-c++">//结构体指针
@@ -179,7 +179,7 @@ int main() {
 
     //利用指针访问结构体变量的内容
     //通过结构体指针访问结构体内的属性，需要用"->"运算符来访问
-    cout << "姓名：" << p->name << " 年龄："<< p->age << " 成绩:"<< p->score <</code></pre>
+    cout name age score </code></pre>
 <blockquote>
 <pre><code>通过结构体指针访问结构体内的属性，需要用"->"运算符来访问</code></pre>
 </blockquote>
@@ -218,7 +218,7 @@ int main() {
      t.stu.age = 18;
      t.stu.score = 90;
 
-     cout << "老师姓名："<< t.name << " 老师编号："<</code></pre>
+     cout </code></pre>
 <h2>
 <a name="toc-6"></a>结构体做函数参数</h2>
 <pre><code class="language-c++">//结构体做函数参数
@@ -237,17 +237,7 @@ struct student{
 //值传递
 void printStudent1(struct student s)
 {
-    cout << "值传递子函数中打印" <name << " 年龄：" << p->age <<" 成绩："<score<age = 30;
-}
-
-int main() {
-    //将学生的传入一个参数中，打印学生身上的所有信息
-    student stu;
-    stu.name = "张三";
-    stu.age = 20;
-    stu.score = 89;
-
-    cout << "main函数中打印" <</code></pre>
+    cout age </code></pre>
 <h2>
 <a name="toc-7"></a>结构体中const使用场景</h2>
 <blockquote>
@@ -270,8 +260,7 @@ struct student{
 /*
 void printStudent(student s)
 {
-    cout << "姓名：" <age = 21;
-    cout << "姓名：" <name << " 年龄：" << s->age <<" 成绩："<score<</code></pre>
+    cout age </code></pre>
 <h2>
 <a name="toc-8"></a>案例一</h2>
 <blockquote>
@@ -351,11 +340,7 @@ using namespace std;
 int main() {
     int a = 10;
     int *p = &a;
-    cout <<"a的地址: " << &a << endl;
-    cout << "p为" << p << endl;
-    cout << "p的地址为: " << &p << endl;
-    cout <<"*p为" << *p << endl;
-    cout <<"指针的占⽤用空间⼤大⼩小:" << sizeof(p) <</code></pre>
+    cout </code></pre>
 <h2>
 <a name="toc-12"></a><strong>const</strong>指针</h2>
 <pre><code class="language-c++">//指针(2)
@@ -380,7 +365,7 @@ int main() {
     //常量指针
     // 常量指针: 可以改变指针的指向，不能改变指针的内容,const限定*p为常量 
   const int *p = &a;
-    cout << "改变指针指向前: " << *p <</code></pre>
+    cout </code></pre>
 <h2>
 <a name="toc-13"></a>指针和数组</h2>
 <pre><code class="language-c++">//指针(3)
@@ -392,7 +377,7 @@ int main() { //指针和数组
     //利用指针访问数组中的元素
 
     int arr[10] = {0,1,2,3,4,5,6,7,8,9}; 
-  cout << "利用数组输出数组" <</code></pre>
+  cout </code></pre>
 <h2>
 <a name="toc-14"></a>指针和函数</h2>
 <pre><code class="language-c++">//指针(4)
@@ -404,8 +389,7 @@ void swap_num(int a, int b) {
     int temp = a;
     a = b;
     b = temp;
-    cout << "【值传递】交换中的a:" << a <
-**值传递不不会改变实参的值**，**地址传递会改变实参的值**</code></pre>
+    cout </code></pre>
 <h2>
 <a name="toc-15"></a>指针、数组、函数</h2>
 <pre><code class="language-c++">//指针(5)
@@ -430,15 +414,7 @@ void bubbleSort(int *arr,int len) {
 int main() { //指针、数组、函数
         int arr[10]={4,3,6,9,1,2,10,8,7,5};
 
-    cout << "排序前" << endl; 
-    for(int i:arr)
-        cout << i << " ";
-
-    bubbleSort(arr,10);
-
-    cout <
-**数组名就是数组首地址**
-arr[i] = *(arr+i)</code></pre>
+    cout </code></pre>
 									</div>
 				<div class="blog-author-block w-clearfix">
 					<div class="blog-author-image" style="background-image: url('https://cdn.v2ex.com/gravatar/90418ca09c90fa30b5fceaf7bae4ac31?s=200&d=mm&r=g');"></div>

@@ -86,10 +86,10 @@ Description=clash daemon
 [Service]
 Type=simple
 User=tangger
-ExecStart=/home/<用户名>/.config/clash/start-clash.sh
-ExecStop=/home/<用户名>/.config/clash/stop-clash.sh
-Environment="HOME=/home/<用户名>/"
-Environment="CLASH_URL=<填入您的订阅链接>"
+ExecStart=/home//.config/clash/start-clash.sh
+ExecStop=/home//.config/clash/stop-clash.sh
+Environment="HOME=/home//"
+Environment="CLASH_URL="
 
 [Install]
 WantedBy=multi-user.target</code></pre>
@@ -100,13 +100,10 @@ WantedBy=multi-user.target</code></pre>
 # save pid file
 echo $$ > ${HOME}/.config/clash/clash.pid
 
-diff ${HOME}/.config/clash/config.yaml <(curl -s ${CLASH_URL})
-if [ "$?" == 0 ]
-then
-    /usr/local/bin/clash -d /home/<用户名>/.config/clash/
+diff ${HOME}/.config/clash/config.yaml /.config/clash/
 else
     curl -L -o ${HOME}/.config/clash/config.yaml ${CLASH_URL}
-    /usr/local/bin/clash -d /home/<用户名>/.config/clash/
+    /usr/local/bin/clash -d /home//.config/clash/
 fi
 </code></pre>
 <p><strong>stop-clash.sh</strong></p>
