@@ -1,171 +1,171 @@
 <?xml version="1.0" encoding="UTF-8"?>
-		<?xml-stylesheet type="text/xsl" href="https://wp.ytlee.cn/wp-sitemap.xsl"?>
+		<?xml-stylesheet type="text/xsl" href="https://ytlee.cn/wp-sitemap.xsl"?>
 		<!-- generated-on="08. July 2021" -->
 		<urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 	<url>
-		<loc>https://wp.ytlee.cn/</loc>
+		<loc>https://ytlee.cn/</loc>
 		<lastmod>2021-07-08T08:07:34+00:00</lastmod>
 		<changefreq>daily</changefreq>
 		<priority>1.0</priority>
 	</url>
 	<url>
-		<loc>https://wp.ytlee.cn/tag/c/</loc>
+		<loc>https://ytlee.cn/tag/c/</loc>
 		<lastmod>2021-07-08T08:07:34+00:00</lastmod>
 		<changefreq>daily</changefreq>
 		<priority>0.4</priority>
 	</url>
 	<url>
-		<loc>https://wp.ytlee.cn/tag/centos/</loc>
+		<loc>https://ytlee.cn/tag/centos/</loc>
 		<lastmod>2021-07-08T08:07:34+00:00</lastmod>
 		<changefreq>daily</changefreq>
 		<priority>0.4</priority>
 	</url>
 	<url>
-		<loc>https://wp.ytlee.cn/tag/clash/</loc>
+		<loc>https://ytlee.cn/tag/clash/</loc>
 		<lastmod>2021-07-08T08:07:34+00:00</lastmod>
 		<changefreq>daily</changefreq>
 		<priority>0.4</priority>
 	</url>
 	<url>
-		<loc>https://wp.ytlee.cn/tag/cloudflare/</loc>
+		<loc>https://ytlee.cn/tag/cloudflare/</loc>
 		<lastmod>2021-07-08T08:07:34+00:00</lastmod>
 		<changefreq>daily</changefreq>
 		<priority>0.4</priority>
 	</url>
 	<url>
-		<loc>https://wp.ytlee.cn/tag/dns/</loc>
+		<loc>https://ytlee.cn/tag/dns/</loc>
 		<lastmod>2021-07-08T08:07:34+00:00</lastmod>
 		<changefreq>daily</changefreq>
 		<priority>0.4</priority>
 	</url>
 	<url>
-		<loc>https://wp.ytlee.cn/tag/dnsmasq/</loc>
+		<loc>https://ytlee.cn/tag/dnsmasq/</loc>
 		<lastmod>2021-07-08T08:07:34+00:00</lastmod>
 		<changefreq>daily</changefreq>
 		<priority>0.4</priority>
 	</url>
 	<url>
-		<loc>https://wp.ytlee.cn/tag/docker/</loc>
+		<loc>https://ytlee.cn/tag/docker/</loc>
 		<lastmod>2021-07-08T08:07:34+00:00</lastmod>
 		<changefreq>daily</changefreq>
 		<priority>0.4</priority>
 	</url>
 	<url>
-		<loc>https://wp.ytlee.cn/tag/github/</loc>
+		<loc>https://ytlee.cn/tag/github/</loc>
 		<lastmod>2021-07-08T08:07:34+00:00</lastmod>
 		<changefreq>daily</changefreq>
 		<priority>0.4</priority>
 	</url>
 	<url>
-		<loc>https://wp.ytlee.cn/tag/hadoop/</loc>
+		<loc>https://ytlee.cn/tag/hadoop/</loc>
 		<lastmod>2021-07-08T08:07:34+00:00</lastmod>
 		<changefreq>daily</changefreq>
 		<priority>0.4</priority>
 	</url>
 	<url>
-		<loc>https://wp.ytlee.cn/tag/linux/</loc>
+		<loc>https://ytlee.cn/tag/linux/</loc>
 		<lastmod>2021-07-08T08:07:34+00:00</lastmod>
 		<changefreq>daily</changefreq>
 		<priority>0.4</priority>
 	</url>
 	<url>
-		<loc>https://wp.ytlee.cn/tag/lnmp/</loc>
+		<loc>https://ytlee.cn/tag/lnmp/</loc>
 		<lastmod>2021-07-08T08:07:34+00:00</lastmod>
 		<changefreq>daily</changefreq>
 		<priority>0.4</priority>
 	</url>
 	<url>
-		<loc>https://wp.ytlee.cn/tag/matlab/</loc>
+		<loc>https://ytlee.cn/tag/matlab/</loc>
 		<lastmod>2021-07-08T08:07:34+00:00</lastmod>
 		<changefreq>daily</changefreq>
 		<priority>0.4</priority>
 	</url>
 	<url>
-		<loc>https://wp.ytlee.cn/tag/nginx/</loc>
+		<loc>https://ytlee.cn/tag/nginx/</loc>
 		<lastmod>2021-07-08T08:07:34+00:00</lastmod>
 		<changefreq>daily</changefreq>
 		<priority>0.4</priority>
 	</url>
 	<url>
-		<loc>https://wp.ytlee.cn/tag/opencv/</loc>
+		<loc>https://ytlee.cn/tag/opencv/</loc>
 		<lastmod>2021-07-08T08:07:34+00:00</lastmod>
 		<changefreq>daily</changefreq>
 		<priority>0.4</priority>
 	</url>
 	<url>
-		<loc>https://wp.ytlee.cn/tag/python/</loc>
+		<loc>https://ytlee.cn/tag/python/</loc>
 		<lastmod>2021-07-08T08:07:34+00:00</lastmod>
 		<changefreq>daily</changefreq>
 		<priority>0.4</priority>
 	</url>
 	<url>
-		<loc>https://wp.ytlee.cn/tag/qemu/</loc>
+		<loc>https://ytlee.cn/tag/qemu/</loc>
 		<lastmod>2021-07-08T08:07:34+00:00</lastmod>
 		<changefreq>daily</changefreq>
 		<priority>0.4</priority>
 	</url>
 	<url>
-		<loc>https://wp.ytlee.cn/tag/serverless/</loc>
+		<loc>https://ytlee.cn/tag/serverless/</loc>
 		<lastmod>2021-07-08T08:07:34+00:00</lastmod>
 		<changefreq>daily</changefreq>
 		<priority>0.4</priority>
 	</url>
 	<url>
-		<loc>https://wp.ytlee.cn/tag/tensorflow/</loc>
+		<loc>https://ytlee.cn/tag/tensorflow/</loc>
 		<lastmod>2021-07-08T08:07:34+00:00</lastmod>
 		<changefreq>daily</changefreq>
 		<priority>0.4</priority>
 	</url>
 	<url>
-		<loc>https://wp.ytlee.cn/tag/uboot/</loc>
+		<loc>https://ytlee.cn/tag/uboot/</loc>
 		<lastmod>2021-07-08T08:07:34+00:00</lastmod>
 		<changefreq>daily</changefreq>
 		<priority>0.4</priority>
 	</url>
 	<url>
-		<loc>https://wp.ytlee.cn/tag/ubuntu/</loc>
+		<loc>https://ytlee.cn/tag/ubuntu/</loc>
 		<lastmod>2021-07-08T08:07:34+00:00</lastmod>
 		<changefreq>daily</changefreq>
 		<priority>0.4</priority>
 	</url>
 	<url>
-		<loc>https://wp.ytlee.cn/tag/wordpress/</loc>
+		<loc>https://ytlee.cn/tag/wordpress/</loc>
 		<lastmod>2021-07-08T08:07:34+00:00</lastmod>
 		<changefreq>daily</changefreq>
 		<priority>0.4</priority>
 	</url>
 	<url>
-		<loc>https://wp.ytlee.cn/tag/%e5%9b%be%e5%83%8f%e5%a2%9e%e5%bc%ba/</loc>
+		<loc>https://ytlee.cn/tag/%e5%9b%be%e5%83%8f%e5%a2%9e%e5%bc%ba/</loc>
 		<lastmod>2021-07-08T08:07:34+00:00</lastmod>
 		<changefreq>daily</changefreq>
 		<priority>0.4</priority>
 	</url>
 	<url>
-		<loc>https://wp.ytlee.cn/tag/%e5%b5%8c%e5%85%a5%e5%bc%8f/</loc>
+		<loc>https://ytlee.cn/tag/%e5%b5%8c%e5%85%a5%e5%bc%8f/</loc>
 		<lastmod>2021-07-08T08:07:34+00:00</lastmod>
 		<changefreq>daily</changefreq>
 		<priority>0.4</priority>
 	</url>
 	<url>
-		<loc>https://wp.ytlee.cn/tag/%e6%95%b0%e5%ad%a6/</loc>
+		<loc>https://ytlee.cn/tag/%e6%95%b0%e5%ad%a6/</loc>
 		<lastmod>2021-07-08T08:07:34+00:00</lastmod>
 		<changefreq>daily</changefreq>
 		<priority>0.4</priority>
 	</url>
 	<url>
-		<loc>https://wp.ytlee.cn/tag/%e6%a0%91%e8%8e%93%e6%b4%be/</loc>
+		<loc>https://ytlee.cn/tag/%e6%a0%91%e8%8e%93%e6%b4%be/</loc>
 		<lastmod>2021-07-08T08:07:34+00:00</lastmod>
 		<changefreq>daily</changefreq>
 		<priority>0.4</priority>
 	</url>
 	<url>
-		<loc>https://wp.ytlee.cn/category/note/</loc>
+		<loc>https://ytlee.cn/category/note/</loc>
 		<lastmod>2021-07-08T08:07:34+00:00</lastmod>
 		<changefreq>daily</changefreq>
 		<priority>0.6</priority>
 	</url>
 	<url>
-		<loc>https://wp.ytlee.cn/category/draft/</loc>
+		<loc>https://ytlee.cn/category/draft/</loc>
 		<lastmod>2021-07-08T08:07:34+00:00</lastmod>
 		<changefreq>daily</changefreq>
 		<priority>0.6</priority>
