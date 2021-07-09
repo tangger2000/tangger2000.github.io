@@ -41,7 +41,7 @@
 			<img class="logo" src="/wp-content/uploads/2021/07/1617196599-apple-touch-icon.png">
 		</a>
 				<nav class="nav-menu w-nav-menu">
-			<li id="menu-item-97" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-97"><a href="https://wp.ytlee.cn/">首页</a></li>
+			<li id="menu-item-97" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-97"><a href="https://ytlee.cn/">首页</a></li>
 <li id="menu-item-99" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-99"><a href="/category/note/">笔记本</a></li>
 <li id="menu-item-100" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-100"><a href="/category/draft/">草稿本</a></li>
 <li id="menu-item-103" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-103"><a href="/about-me/">关于我</a></li>
@@ -51,7 +51,7 @@
 			</div>
 		</div>
 		<div class="rightNav">
-			<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-97"><a href="https://wp.ytlee.cn/">首页</a></li>
+			<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-97"><a href="https://ytlee.cn/">首页</a></li>
 <li class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-99"><a href="/category/note/">笔记本</a></li>
 <li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-100"><a href="/category/draft/">草稿本</a></li>
 <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-103"><a href="/about-me/">关于我</a></li>
@@ -289,15 +289,15 @@ if __name__ == "__main__":
 于是，当他跑起来的时候，训练集的准确率是没有问题的，但是测试集的准确率就有问题了。</p>
 <h2>
 <a name="toc-4"></a>问题</h2>
-<p><img src="https://wp.ytlee.cn/post-images/1596528969434.png" alt="img"></p>
+<p><img src="https://ytlee.cn/post-images/1596528969434.png" alt="img"></p>
 <p>如上图一样，训练集的准确率（train_pr）是ok的。但是，看看test C accuracy（测试集的准确率），低得可怕有木有？<br>
 我和学长一起检测的几次代码，我以为是concatenate的时候的问题。于是我单独测试了上面的代码，在本地跑一下看看，标签和数据是否一一对应，打乱的时候是否正常打乱。</p>
 <h2>
 <a name="toc-5"></a>二分类第一版代码的调试结果</h2>
-<p><img src="https://wp.ytlee.cn/post-images/1596529057680.png" alt="img"></p>
+<p><img src="https://ytlee.cn/post-images/1596529057680.png" alt="img"></p>
 <h2>
 <a name="toc-6"></a>四分类第二版代码的调试结果</h2>
-<p><img src="https://wp.ytlee.cn/post-images/1596529099352.png" alt="img"></p>
+<p><img src="https://ytlee.cn/post-images/1596529099352.png" alt="img"></p>
 <p>我还分别作了二分类第一次代码的调试，但是，没有留存截图。<br>
 分析调试结果，很容易的发现，you know，数据和标签确实是一一对应的。</p>
 <h2>
@@ -323,10 +323,10 @@ if __name__ == "__main__":
     Load_test_data()</code></pre>
 <h3>
 <a name="toc-8"></a>本地结果</h3>
-<p><img src="https://wp.ytlee.cn/post-images/1596529142789.png" alt="img"></p>
+<p><img src="https://ytlee.cn/post-images/1596529142789.png" alt="img"></p>
 <h3>
 <a name="toc-9"></a>服务器结果</h3>
-<p><img src="https://wp.ytlee.cn/post-images/1596529159358.png" alt="img"></p>
+<p><img src="https://ytlee.cn/post-images/1596529159358.png" alt="img"></p>
 <p>果然，如我所猜测的那样。</p>
 <h2>
 <a name="toc-10"></a>解决办法</h2>

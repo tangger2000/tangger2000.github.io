@@ -392,24 +392,10 @@ def regionGrow(gray, seeds, thresh, p):
             tmpY = pt[1] + connection[i][1]
 
             # 检测边界点
-            if tmpX < 0 or tmpY < 0 or tmpX >= gray.shape[0] or tmpY >= gray.shape[1]:
+            if tmpX = gray.shape[0] or tmpY >= gray.shape[1]:
                 continue
 
-            if abs(int(gray[tmpX, tmpY]) - int(gray[pt])) < thresh and seedMark[tmpX, tmpY] == 0:
-                seedMark[tmpX, tmpY] = 255
-                seeds.append((tmpX, tmpY))
-    return seedMark
-
-path = "cell.jpg"
-gray = cv2.imread(path, cv2.IMREAD_GRAYSCALE)
-plt.figure(1)
-plt.imshow(gray, 'gray')
-plt.show()
-
-seedMark = regionGrow(gray, [(100, 100)], thresh=3, p=8)
-plt.figure(2)
-plt.imshow(seedMark, 'gray')
-plt.show()</code></pre>
+            if abs(int(gray[tmpX, tmpY]) - int(gray[pt])) </code></pre>
 <p><img src="https://cdn.jsdelivr.net/gh/tangger2000/PicHost/img/20210518123329.png" alt=""></p>
 <p>​   由图可见，分割的效果并不是很好，特别是细胞内部。</p>
 <h4>
@@ -456,18 +442,7 @@ def judge(img, w0, h0, w, h):
     for i in range(w0, w0 + w):
         for j in range(h0, h0 + h):
             # 输入为灰度图像时才可以直接进行比较，rgb色彩需要进行三次比较，因为是三通道
-            if abs(img[j, i] - avg) < 1 * std:
-                count += 1
-    if (count / total) < 0.95:  # 合适的点还是比较少，接着拆
-        return True
-    else:
-        return False
-
-# 将图像将根据阈值二值化处理
-def draw(img, w0, h0, w, h, thresold):
-    for i in range(w0, w0 + w):
-        for j in range(h0, h0 + h):
-            if img[j, i] > thresold:
+            if abs(img[j, i] - avg)  thresold:
                 img[j, i] = 255
             else:
                 img[j, i] = 0

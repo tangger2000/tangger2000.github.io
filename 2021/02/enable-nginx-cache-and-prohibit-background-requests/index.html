@@ -41,7 +41,7 @@
 			<img class="logo" src="/wp-content/uploads/2021/07/1617196599-apple-touch-icon.png">
 		</a>
 				<nav class="nav-menu w-nav-menu">
-			<li id="menu-item-97" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-97"><a href="https://wp.ytlee.cn/">首页</a></li>
+			<li id="menu-item-97" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-97"><a href="https://ytlee.cn/">首页</a></li>
 <li id="menu-item-99" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-99"><a href="/category/note/">笔记本</a></li>
 <li id="menu-item-100" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-100"><a href="/category/draft/">草稿本</a></li>
 <li id="menu-item-103" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-103"><a href="/about-me/">关于我</a></li>
@@ -51,7 +51,7 @@
 			</div>
 		</div>
 		<div class="rightNav">
-			<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-97"><a href="https://wp.ytlee.cn/">首页</a></li>
+			<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-97"><a href="https://ytlee.cn/">首页</a></li>
 <li class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-99"><a href="/category/note/">笔记本</a></li>
 <li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-100"><a href="/category/draft/">草稿本</a></li>
 <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-103"><a href="/about-me/">关于我</a></li>
@@ -103,7 +103,7 @@
 <a name="toc-3"></a>挡掉*.php的请求</h3>
 <pre><code class="language-nginx">location  ~* \.(php)$
 {
-    rewrite ^ https://wp.ytlee.cn;
+    rewrite ^ https://ytlee.cn;
 }</code></pre>
 <p>​   如上，在反代配置中增改如上配置就可以挡掉所有对php的请求，很明显的，前端全是静态的HTML、JS、CSS、图像这些玩意儿，缓存到反代服务器就好了。</p>
 <h3>
@@ -114,7 +114,7 @@
 </ul>
 <pre><code class="language-nginx">location /wp-admin
 {
-    rewrite ^ https://wp.ytlee.cn;
+    rewrite ^ https://ytlee.cn;
 }</code></pre>
 <p><strong>注意：不要在/wp-admin后面多此一举的添加一个<code>/</code>，路由的意义就变了</strong></p>
 <ul>
