@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-<title>简记——Tensorflow进阶知识上 &#8211; 翰林木子的笔记本</title>
-<meta name="description" content="前言 最近在学习龙龙老师的《Tensorflow深度学习》这本书，从去年10月到现在8月，快一年的日子都没怎么系统的学习过TF，趁着现在TF2出来了，我便打算系统的学一学TF2。 下面的东西是我记的一些笔记，大概是 &hellip;">
+<title>简记——Tensorflow进阶知识上 – 翰林木子的笔记本</title>
+<meta name="description" content="前言 最近在学习龙龙老师的《Tensorflow深度学习》这本书，从去年10月到现在8月，快一年的日子都没怎么系统的学习过TF，趁着现在TF2出来了，我便打算系统的学一学TF2。 下面的东西是我记的一些笔记，大概是 …">
 <meta name="keywords" content="Tensorflow">
 <meta name="robots" content="max-image-preview:large">
 <link rel="dns-prefetch" href="//cdn.staticfile.org">
@@ -22,7 +22,7 @@
 <script type="text/javascript" src="/wp-includes/js/jquery/jquery-migrate.min.js?ver=3.3.2" id="jquery-migrate-js"></script>
 <script type="text/javascript" src="/wp-content/themes/sweet/static/js/sweet.js?ver=5.7.2" id="sweet-js"></script>
 <script type="text/javascript" src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js?ver=5.7.2" id="fancybox-js"></script>
-<link rel="canonical" href="/2020/08/study-notes-on-tensorflow-part1/">
+
 <link href="/wp-content/uploads/2021/07/1617196601-favicon-32x32-1.png" rel="shortcut icon" type="image/x-icon">
 <link href="/wp-content/uploads/2021/07/1617196599-apple-touch-icon.png" rel="apple-touch-icon">
 <script type="text/javascript">
@@ -41,7 +41,7 @@
 			<img class="logo" src="/wp-content/uploads/2021/07/1617196599-apple-touch-icon.png">
 		</a>
 				<nav class="nav-menu w-nav-menu">
-			<li id="menu-item-97" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-97"><a href="https://ytlee.cn/">首页</a></li>
+			<li id="menu-item-97" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-97"><a href="https://wp.ytlee.cn/">首页</a></li>
 <li id="menu-item-99" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-99"><a href="/category/note/">笔记本</a></li>
 <li id="menu-item-100" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-100"><a href="/category/draft/">草稿本</a></li>
 <li id="menu-item-103" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-103"><a href="/about-me/">关于我</a></li>
@@ -51,7 +51,7 @@
 			</div>
 		</div>
 		<div class="rightNav">
-			<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-97"><a href="https://ytlee.cn/">首页</a></li>
+			<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-97"><a href="https://wp.ytlee.cn/">首页</a></li>
 <li class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-99"><a href="/category/note/">笔记本</a></li>
 <li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-100"><a href="/category/draft/">草稿本</a></li>
 <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-103"><a href="/about-me/">关于我</a></li>
@@ -82,7 +82,7 @@
 <p>最近在学习龙龙老师的《Tensorflow深度学习》这本书，从去年10月到现在8月，快一年的日子都没怎么系统的学习过TF，趁着现在TF2出来了，我便打算系统的学一学TF2。</p>
 <p>下面的东西是我记的一些笔记，大概是《Tensorflow深度学习》这本书的第五章的相关的内容，主要是自己边看边理解后的一些简要记录。当然有些内容是直接复制的原书的部分内容，由于是直接从PDF上复制，难免会遇到格式错误，请见谅！</p>
 <h2>
-<a name="toc-2"></a>合并&amp;分割</h2>
+<a name="toc-2"></a>合并&分割</h2>
 <h3>
 <a name="toc-3"></a>合并</h3>
 <h4>
@@ -97,7 +97,7 @@
 b = tf.random.normal([6,35,8]) # 模拟成绩册 B 
 tf.concat([a,b],axis=0) # 拼接合并成绩册 
 Out[1]:
-&lt;tf.Tensor: id=13, shape=(10, 35, 8), dtype=float32, numpy= array([[[ 1.95299834e-01,
+<tf.Tensor: id=13, shape=(10, 35, 8), dtype=float32, numpy= array([[[ 1.95299834e-01,
 1.29430830e+00, [ 4.29753691e-01, 2.56610274e-01, -1.27798581e+00], 9.11329567e-01, -4.47975427e-01, ...,</code></pre>
 <ul>
 <li>错误示例</li>
@@ -112,7 +112,7 @@ InvalidArgumentError: ConcatOp : Dimensions of inputs should match: shape[0] = [
 <a name="toc-5"></a>堆叠</h4>
 <p>拼接不会产生新的维度，是在现有维度上进行数据合并。当在数据合并时产生新的维度，需要使用tf.stack(tensors,axis)操作。</p>
 <ul>
-<li>当axis&gt;=0,表示在axis前插入新的维度；当axis&lt;0,表示在axis后插入新的维度。</li>
+<li>当axis>=0,表示在axis前插入新的维度；当axis<0,表示在axis后插入新的维度。</li>
 <li>同样的，待拼接张量间需保证除拼接轴以外的维度大小一样。</li>
 </ul>
 <h5>示例代码</h5>
@@ -124,7 +124,7 @@ a = tf.random.normal([35,8])
 b = tf.random.normal([35,8]) 
 tf.stack([a,b],axis=0) # 堆叠合并为 2 个班级，班级维度插入在最前 
 Out[4]:
-&lt;tf.Tensor: id=55, shape=(2, 35, 8), dtype=float32, numpy= array([[[ 3.68728966e-01, -8.54765773e-01, -4.77824420e-01, -3.83714020e-01, -1.73216307e+00,
+<tf.Tensor: id=55, shape=(2, 35, 8), dtype=float32, numpy= array([[[ 3.68728966e-01, -8.54765773e-01, -4.77824420e-01, -3.83714020e-01, -1.73216307e+00,
 2.03872994e-02, 2.63810277e+00, -1.12998331e+00],…</code></pre>
 <ul>
 <li>错误示例</li>
@@ -155,7 +155,7 @@ result = tf.split(x, num_or_size_splits=10, axis=0)
 len(result) # 返回的列表为 10 个张量的列表
 Out[8]: 10
 In [9]: result[0] # 查看第一个班级的成绩册张量 
-Out[9]: &lt;tf.Tensor: id=136, shape=(1, 35, 8), dtype=float32, numpy= array([[[-1.7786729 , 0.2970506 ,
+Out[9]: <tf.Tensor: id=136, shape=(1, 35, 8), dtype=float32, numpy= array([[[-1.7786729 , 0.2970506 ,
 0.02983334, 1.3970423 , 1.315918 , -0.79110134, -0.8501629 , -1.5549672 ],
 [ 0.5398711 , 0.21478991, -0.08685189, 0.7730989 ,…</code></pre>
 <ul>
@@ -167,7 +167,7 @@ result = tf.split(x, num_or_size_splits=[4,2,2,2] ,axis=0)
 len(result)
 Out[10]: 4
 In [10]: result[0] 
-Out[10]: &lt;tf.Tensor: id=155, shape=(4, 35, 8), dtype=float32, numpy= array([[[-6.95693314e-01,
+Out[10]: <tf.Tensor: id=155, shape=(4, 35, 8), dtype=float32, numpy= array([[[-6.95693314e-01,
 3.01393479e-01, 1.33964568e-01, ...,</code></pre>
 <h2>
 <a name="toc-7"></a>数据统计</h2>
@@ -181,12 +181,12 @@ Out[10]: &lt;tf.Tensor: id=155, shape=(4, 35, 8), dtype=float32, numpy= array([[
 <p><strong>可以通过 tf.norm(x, ord)求解张量的 L1、L2、∞等范数</strong>，其中参数 ord 指定为 1、2 时计算 L1、L2 范数，指定为 np.inf时计算∞−范数</p>
 <h5>示例代码</h5>
 <pre><code class="language-python">In [13]: x = tf.ones([2,2]) tf.norm(x,ord=1) # 计算 L1 范数 
-Out[13]: &lt;tf.Tensor: id=183, shape=(), dtype=float32, numpy=4.0&gt; 
+Out[13]: <tf.Tensor: id=183, shape=(), dtype=float32, numpy=4.0> 
 In [14]: tf.norm(x,ord=2) # 计算 L2 范数 
-Out[14]: &lt;tf.Tensor: id=189, shape=(), dtype=float32, numpy=2.0&gt; 
+Out[14]: <tf.Tensor: id=189, shape=(), dtype=float32, numpy=2.0> 
 In [15]: import numpy as np 
 tf.norm(x,ord=np.inf) # 计算∞范数
-Out[15]: &lt;tf.Tensor: id=194, shape=(), dtype=float32, numpy=1.0&gt;</code></pre>
+Out[15]: <tf.Tensor: id=194, shape=(), dtype=float32, numpy=1.0></code></pre>
 <h3>
 <a name="toc-9"></a>最值、均值、和</h3>
 <p><strong>求解某维度上的最大、最小、均值、和的操作如下：</strong></p>
@@ -204,20 +204,20 @@ loss = keras.losses.mse(y,out) # 计算每个样本的误差
 loss = tf.reduce_mean(loss) # 平均误差，在样本数维度上取均值 
 loss # 误差标量 
 Out[20]:
-&lt;tf.Tensor: id=241, shape=(), dtype=float32, numpy=1.1921183&gt;</code></pre>
+<tf.Tensor: id=241, shape=(), dtype=float32, numpy=1.1921183></code></pre>
 <h4>
 <a name="toc-10"></a>最值应用示例——分类问题</h4>
 <p>在分类问题的标签预测中，我们通常需要获得最值所在的位置索引号，一般把这个位置索引号作为预测类别。例如在10分类任务中，我们得到神经网络的输出张量 out，shape 为[2,10]，代表了2个样本属于10个类别的概率，由于元素的位置索引代表了当前样本属于此类别的概率，预测时往往会选择概率值最大的元素所在的索引号作为样本类别的预测值，例如：</p>
 <pre><code class="language-python">In [22]:out = tf.random.normal([2,10]) 
 out = tf.nn.softmax(out, axis=1) # 通过 softmax 函数转换为概率值 
 out
-Out[22]:&lt;tf.Tensor: id=257, shape=(2, 10), dtype=float32, numpy= array([[0.18773547, 0.1510464 , 0.09431915, 0.13652141, 0.06579739, 0.02033597, 0.06067333, 0.0666793 , 0.14594753, 0.07094406], [0.5092072 , 0.03887136, 0.0390687 , 0.01911005, 0.03850609, 0.03442522, 0.08060656, 0.10171875, 0.08244187, 0.05604421]],
-dtype=float32)&gt;</code></pre>
+Out[22]:<tf.Tensor: id=257, shape=(2, 10), dtype=float32, numpy= array([[0.18773547, 0.1510464 , 0.09431915, 0.13652141, 0.06579739, 0.02033597, 0.06067333, 0.0666793 , 0.14594753, 0.07094406], [0.5092072 , 0.03887136, 0.0390687 , 0.01911005, 0.03850609, 0.03442522, 0.08060656, 0.10171875, 0.08244187, 0.05604421]],
+dtype=float32)></code></pre>
 <p>以第一个样本为例，可以看到，它概率最大的索引为𝑖 = 0，最大概率值为 0.1877。由于每 个索引号上的概率值代表了样本属于此索引号的类别的概率，因此第一个样本属于 0 类的 概率最大，在预测时考虑第一个样本应该最有可能属于类别 0。这就是需要求解最大值的 索引号的一个典型应用。 <strong>通过 tf.argmax(x, axis)和 tf.argmin(x, axis)可以求解在 axis 轴上，x 的最大值、最小值所在的索引号</strong>，例如：</p>
 <pre><code class="language-python">In [23]:pred = tf.argmax(out, axis=1) # 选取概率最大的位置 
 pred
-Out[23]:&lt;tf.Tensor: id=262, shape=(2,), dtype=int64, numpy=array([0, 0],
-dtype=int64)&gt;</code></pre>
+Out[23]:<tf.Tensor: id=262, shape=(2,), dtype=int64, numpy=array([0, 0],
+dtype=int64)></code></pre>
 <h2>
 <a name="toc-11"></a>张量比较</h2>
 <p><strong>当我们在分类任务中，通常需要比较神经网络的预测值与实际标签，然后统计预测值与实际标签的正确数量来计算准确率。</strong></p>
@@ -245,9 +245,9 @@ tf.Tensor(0.11, shape=(), dtype=float32)</code></pre>
 <li>
 <strong>a=b:</strong> tf.equal(a,b)</li>
 <li>
-<strong>a&gt;b:</strong> tf.math.greater()</li>
+<strong>a>b:</strong> tf.math.greater()</li>
 <li>
-<strong>𝑎 &lt; 𝑏</strong>:  tf.math.less</li>
+<strong>𝑎 < 𝑏</strong>:  tf.math.less</li>
 <li>
 <strong>𝑎 ≥ 𝑏:</strong> tf.math.greater_equal</li>
 <li>
@@ -274,24 +274,24 @@ a = tf.constant([1,2,3,4,5,6]) # 第一个句子
 b = tf.constant([7,8,1,6]) # 第二个句子 
 b = tf.pad(b, [[0,2]]) # 句子末尾填充 2 个 0 
 b # 填充后的结果 
-Out[28]:&lt;tf.Tensor: id=3, shape=(6,), dtype=int32, numpy=array([7, 8, 1, 6,
-0, 0])&gt;</code></pre>
+Out[28]:<tf.Tensor: id=3, shape=(6,), dtype=int32, numpy=array([7, 8, 1, 6,
+0, 0])></code></pre>
 <p>如上，将b填充后，a、b的形状就是一样的了。然后就可以把这两个句子堆叠在一起，如：</p>
 <pre><code class="language-python">In [29]:tf.stack([a,b],axis=0) # 堆叠合并，创建句子数维度 
-Out[29]:&lt;tf.Tensor: id=5, shape=(2, 6), dtype=int32, numpy= array([[1, 2, 3, 4, 5, 6],
-[7, 8, 1, 6, 0, 0]])&gt;</code></pre>
+Out[29]:<tf.Tensor: id=5, shape=(2, 6), dtype=int32, numpy= array([[1, 2, 3, 4, 5, 6],
+[7, 8, 1, 6, 0, 0]])></code></pre>
 <h4>
 <a name="toc-16"></a>填充示例——图片的填充</h4>
 <p>在minst数据集中，假设有图片的大小是28*28，如下：</p>
-<p><img src="C:\Users\wrtan\Documents\Gridea\post-images\image-20200829231301840.png" alt="image-20200829231301840"></p>
+<p><img src="C:%5CUsers%5Cwrtan%5CDocuments%5CGridea%5Cpost-images%5Cimage-20200829231301840.png" alt="image-20200829231301840"></p>
 <p>但是我们神经网络的输入是32*32，此时就可以对图片进行上下左右各填充2个单元。如下：</p>
-<p><img src="C:\Users\wrtan\Documents\Gridea\post-images\image-20200829231417546.png" alt="image-20200829231417546"></p>
+<p><img src="C:%5CUsers%5Cwrtan%5CDocuments%5CGridea%5Cpost-images%5Cimage-20200829231417546.png" alt="image-20200829231417546"></p>
 <p>此填充方案为[[0,0], [2,2], [2,2], [0,0]],有如下示例代码：</p>
 <pre><code class="language-python">In [31]: 
 x = tf.random.normal([4,28,28,1]) # 图片上下、左右各填充 2 个单元 
 tf.pad(x,[[0,0],[2,2],[2,2],[0,0]]) 
 Out[31]:
-&lt;tf.Tensor: id=16, shape=(4, 32, 32, 1), dtype=float32, numpy= array([[[[ 0.
+<tf.Tensor: id=16, shape=(4, 32, 32, 1), dtype=float32, numpy= array([[[[ 0.
 ], [ 0. [ 0. ], ],…</code></pre>
 <h3>
 <a name="toc-17"></a>复制</h3>
@@ -303,7 +303,7 @@ Out[31]:
 <pre><code class="language-python">In [32]:
 x = tf.random.normal([4,32,32,3]) 
 tf.tile(x,[2,3,3,1]) # 数据复制 
-Out[32]:&lt;tf.Tensor: id=25, shape=(8, 96, 96, 3), dtype=float32, numpy=...</code></pre>
+Out[32]:<tf.Tensor: id=25, shape=(8, 96, 96, 3), dtype=float32, numpy=...</code></pre>
 <h2>
 <a name="toc-18"></a>数据限幅</h2>
 <ul>
@@ -366,7 +366,7 @@ tf.clip_by_value(x,2,7) # 限幅为 2~7</code></pre>
 <input type="hidden" name="comment_parent" id="comment_parent" value="0">
 </p>
 </form>	</div>
-<!-- #respond -->
+
 	
 </div>	</div>
 </div>
@@ -418,10 +418,10 @@ tf.clip_by_value(x,2,7) # 限幅为 2~7</code></pre>
 <div class="footer">
 	<div class="container w-container">
 		<div class="footer-text">
-			Copyright2021. All Rights Reserved.&nbsp;			
+			Copyright2021. All Rights Reserved. 			
 						
 			
-				&nbsp;<a rel="nofollow" target="_blank" href="https://beian.miit.gov.cn/">渝ICP备19011860号-2</a>
+				 <a rel="nofollow" target="_blank" href="https://beian.miit.gov.cn/">渝ICP备19011860号-2</a>
 
 					</div>
 		

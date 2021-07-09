@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-<title>使用Qemu模拟Cortex-A9运行U-boot和Linux &#8211; 翰林木子的笔记本</title>
-<meta name="description" content="一、 安装GNU工具链和Qemu sudo apt-get insatll gcc-arm-linux-gnueabi sudo apt-get insatll g++-arm-linux-gnueabi 安装完成后会在 /usr/arm-linux-gnueabi/ 目录下生成库文件、头文件等。 然后安装Qemu &hellip;">
+<title>使用Qemu模拟Cortex-A9运行U-boot和Linux – 翰林木子的笔记本</title>
+<meta name="description" content="一、 安装GNU工具链和Qemu sudo apt-get insatll gcc-arm-linux-gnueabi sudo apt-get insatll g++-arm-linux-gnueabi 安装完成后会在 /usr/arm-linux-gnueabi/ 目录下生成库文件、头文件等。 然后安装Qemu …">
 <meta name="keywords" content="Linux,Qemu,Uboot,嵌入式">
 <meta name="robots" content="max-image-preview:large">
 <link rel="dns-prefetch" href="//cdn.staticfile.org">
@@ -22,7 +22,7 @@
 <script type="text/javascript" src="/wp-includes/js/jquery/jquery-migrate.min.js?ver=3.3.2" id="jquery-migrate-js"></script>
 <script type="text/javascript" src="/wp-content/themes/sweet/static/js/sweet.js?ver=5.7.2" id="sweet-js"></script>
 <script type="text/javascript" src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js?ver=5.7.2" id="fancybox-js"></script>
-<link rel="canonical" href="/2021/01/use-qemu-to-simulate-cortex-a9-to-run-u-boot-and-linux/">
+
 <link href="/wp-content/uploads/2021/07/1617196601-favicon-32x32-1.png" rel="shortcut icon" type="image/x-icon">
 <link href="/wp-content/uploads/2021/07/1617196599-apple-touch-icon.png" rel="apple-touch-icon">
 <script type="text/javascript">
@@ -41,7 +41,7 @@
 			<img class="logo" src="/wp-content/uploads/2021/07/1617196599-apple-touch-icon.png">
 		</a>
 				<nav class="nav-menu w-nav-menu">
-			<li id="menu-item-97" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-97"><a href="https://ytlee.cn/">首页</a></li>
+			<li id="menu-item-97" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-97"><a href="https://wp.ytlee.cn/">首页</a></li>
 <li id="menu-item-99" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-99"><a href="/category/note/">笔记本</a></li>
 <li id="menu-item-100" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-100"><a href="/category/draft/">草稿本</a></li>
 <li id="menu-item-103" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-103"><a href="/about-me/">关于我</a></li>
@@ -51,7 +51,7 @@
 			</div>
 		</div>
 		<div class="rightNav">
-			<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-97"><a href="https://ytlee.cn/">首页</a></li>
+			<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-97"><a href="https://wp.ytlee.cn/">首页</a></li>
 <li class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-99"><a href="/category/note/">笔记本</a></li>
 <li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-100"><a href="/category/draft/">草稿本</a></li>
 <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-103"><a href="/about-me/">关于我</a></li>
@@ -107,7 +107,7 @@
 </ul>
 </li>
 <li><a href="#toc-16">make menuconfig配置</a></li>
-<li><a href="#toc-17">make&amp;make install</a></li>
+<li><a href="#toc-17">make&make install</a></li>
 </ul>
 </li>
 <li>
@@ -216,7 +216,7 @@ make</code></pre>
 <a name="toc-9"></a>Make</h3>
 <p>在当前目录下开始make</p>
 <pre><code class="language-shell">make vexpress_defconfig</code></pre>
-<p>然后 <code>make menuconfig</code> --&gt; System Type  把 Enable the L2x0 outer cache controller 取消， 否则Qemu会起不来。</p>
+<p>然后 <code>make menuconfig</code> --> System Type  把 Enable the L2x0 outer cache controller 取消， 否则Qemu会起不来。</p>
 <h3>
 <a name="toc-10"></a>坑点一</h3>
 <p>缺少ncurses包。</p>
@@ -259,13 +259,13 @@ make</code></pre>
 <p>在busybox的相对目录的下， 进入终端后，输入以下的代码。</p>
 <pre><code>make menuconfig</code></pre>
 <p><img src="https://cdn.jsdelivr.net/gh/tangger2000/PicHost/img/20201126212238.png" alt=""></p>
-<p><strong>在Setting---&gt;Build Options--&gt;选择[ ]Build BusyBox as a static binary (no shared libs)使用静态编译。</strong></p>
+<p><strong>在Setting--->Build Options-->选择[ ]Build BusyBox as a static binary (no shared libs)使用静态编译。</strong></p>
 <p>如下图选中即可！</p>
 <p><img src="https://cdn.jsdelivr.net/gh/tangger2000/PicHost/img/20201126214306.png" alt=""></p>
 <p>退出，然后保存配置时，选择YES！</p>
 <p><img src="https://cdn.jsdelivr.net/gh/tangger2000/PicHost/img/20201126214354.png" alt=""></p>
 <h3>
-<a name="toc-17"></a>make&amp;make install</h3>
+<a name="toc-17"></a>make&make install</h3>
 <pre><code class="language-shell">make
 make install</code></pre>
 <p>会在目录中生成文件夹_install。</p>
@@ -345,9 +345,9 @@ sudo umount tmpfs</code></pre>
 <li>linux内核文件夹中，我们在arch/arm/boot/下生成了支持A9平台的linux内核镜像文件zImage。</li>
 </ul>
 <p>接下来，我们用Qemu把这个系统启动起来吧！</p>
-<pre><code class="language-bash">qemu-system-arm -M vexpress-a9 -m 512M -kernel linux-4.19.160/arch/arm/boot/zImage -dtb linux-4.19.160/arch/arm/boot/dts/vexpress-v2p-ca9.dtb -nographic -append &quot;root=/dev/mmcblk0 console=ttyAMA0 init=/linuxrc&quot; -sd rootfs.img</code></pre>
+<pre><code class="language-bash">qemu-system-arm -M vexpress-a9 -m 512M -kernel linux-4.19.160/arch/arm/boot/zImage -dtb linux-4.19.160/arch/arm/boot/dts/vexpress-v2p-ca9.dtb -nographic -append "root=/dev/mmcblk0 console=ttyAMA0 init=/linuxrc" -sd rootfs.img</code></pre>
 <p><img src="https://cdn.jsdelivr.net/gh/tangger2000/PicHost/img/20201127000959.png" alt=""></p>
-<p>如上图，就意味着启动成功了。你也可以取消<code>-nographic</code>参数，这时可以从qemu的串口输出结果。此时你需要选中View--&gt; serial0即可。</p>
+<p>如上图，就意味着启动成功了。你也可以取消<code>-nographic</code>参数，这时可以从qemu的串口输出结果。此时你需要选中View--> serial0即可。</p>
 <p><img src="https://cdn.jsdelivr.net/gh/tangger2000/PicHost/img/20201127001318.png" alt=""></p>
 <h3>
 <a name="toc-26"></a>图形化输出</h3>
@@ -355,7 +355,7 @@ sudo umount tmpfs</code></pre>
 <p><img src="https://cdn.jsdelivr.net/gh/tangger2000/PicHost/img/20201127171933.png" alt=""></p>
 <p><strong>操作步骤：</strong></p>
 <p>用这行启动命令就好了：</p>
-<pre><code class="language-bash">qemu-system-arm -M vexpress-a9 -m 512M -kernel linux-4.19.160/arch/arm/boot/zImage -dtb linux-4.19.160/arch/arm/boot/dts/vexpress-v2p-ca9.dtb -append &quot;root=/dev/mmcblk0 console=tty0 init=/linuxrc&quot; -sd rootfs.img</code></pre>
+<pre><code class="language-bash">qemu-system-arm -M vexpress-a9 -m 512M -kernel linux-4.19.160/arch/arm/boot/zImage -dtb linux-4.19.160/arch/arm/boot/dts/vexpress-v2p-ca9.dtb -append "root=/dev/mmcblk0 console=tty0 init=/linuxrc" -sd rootfs.img</code></pre>
 <p>如上命令只是将启动参数ttyAMA0变成了tty0，并且去掉了-nographic参数。</p>
 <p><strong>如果你的输出界面看不到上图这样的效果，尝试在View中选择第二个pl111输出方式。</strong></p>
 <h2>
@@ -373,7 +373,7 @@ sudo umount tmpfs</code></pre>
 <p>接下来启动nfs服务：</p>
 <pre><code class="language-bash">sudo /etc/init.d/nfs-kernel-server start</code></pre>
 <p>然后重新启动qemu模拟的A9环境：</p>
-<pre><code class="language-bash">qemu-system-arm -M vexpress-a9 -m 512M -kernel linux-4.19.160/arch/arm/boot/zImage -dtb linux-4.19.160/arch/arm/boot/dts/vexpress-v2p-ca9.dtb -nographic -append &quot;root=/dev/mmcblk0 console=ttyAMA0 init=/linuxrc&quot; -sd rootfs.img -net user -net nic -s </code></pre>
+<pre><code class="language-bash">qemu-system-arm -M vexpress-a9 -m 512M -kernel linux-4.19.160/arch/arm/boot/zImage -dtb linux-4.19.160/arch/arm/boot/dts/vexpress-v2p-ca9.dtb -nographic -append "root=/dev/mmcblk0 console=ttyAMA0 init=/linuxrc" -sd rootfs.img -net user -net nic -s </code></pre>
 <p>查看主机的IPv4地址：</p>
 <pre><code class="language-bash">ifconfig</code></pre>
 <p>如果提示缺少软件，则安装net-tools：</p>
@@ -444,12 +444,12 @@ clean:
 <p>然后make编译，结果如下：</p>
 <p><img src="https://cdn.jsdelivr.net/gh/tangger2000/PicHost/img/20201129171111.png" alt=""></p>
 <p>接下来，我们切换到qemu环境中加载这个驱动进内核。这里我习惯使用命令行模式，要切换到图形化模式的方法，前面有。</p>
-<pre><code class="language-shell">qemu-system-arm -M vexpress-a9 -m 512M -kernel linux-4.19.160/arch/arm/boot/zImage -dtb linux-4.19.160/arch/arm/boot/dts/vexpress-v2p-ca9.dtb -nographic -append &quot;root=/dev/mmcblk0 console=ttyAMA0 init=/linuxrc&quot; -sd rootfs.img</code></pre>
+<pre><code class="language-shell">qemu-system-arm -M vexpress-a9 -m 512M -kernel linux-4.19.160/arch/arm/boot/zImage -dtb linux-4.19.160/arch/arm/boot/dts/vexpress-v2p-ca9.dtb -nographic -append "root=/dev/mmcblk0 console=ttyAMA0 init=/linuxrc" -sd rootfs.img</code></pre>
 <p>然后加载驱动到内核：</p>
 <pre><code class="language-bash">insmod chrdev.ko</code></pre>
 <p>查看驱动是否加载成功：</p>
 <pre><code class="language-bash">cat /proc/devices</code></pre>
-<p>![](<a href="https://cdn.jsdelivr.net/gh/tangger2000/PicHost/img/屏幕截图">https://cdn.jsdelivr.net/gh/tangger2000/PicHost/img/屏幕截图</a> 2020-11-29 171515.png)</p>
+<p>![](<a href="https://cdn.jsdelivr.net/gh/tangger2000/PicHost/img/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE">https://cdn.jsdelivr.net/gh/tangger2000/PicHost/img/屏幕截图</a> 2020-11-29 171515.png)</p>
 <p>如上图所示，已经成功的加载进了内核，并分配到了设备号。</p>
 <h2>
 <a name="toc-34"></a>十一、总结</h2>
@@ -457,9 +457,9 @@ clean:
 <p>总的来说，还是学到了很多东西的。了解了嵌入式环境是怎么回事儿，内核、文件系统总算是有了最基本的了解了。诚实的讲，我没有那么多的精力、兴趣去深入了解学习Makefile、linux kernel、uboot、文件系统、make工具、以及linux的驱动编写。其实想想也挺遗憾，不过总还是有了最最最基本的了解了嘛。</p>
 <h2>
 <a name="toc-35"></a>致谢</h2>
-<p><a href="https://anriku.top/2018/12/24/没开发板做Linux嵌入式开发-虚拟机搞定一切/">没开发板做Linux嵌入式开发？虚拟机搞定一切！ - Anriku's Blog</a></p>
+<p><a href="https://anriku.top/2018/12/24/%E6%B2%A1%E5%BC%80%E5%8F%91%E6%9D%BF%E5%81%9ALinux%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%BC%80%E5%8F%91-%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%90%9E%E5%AE%9A%E4%B8%80%E5%88%87/">没开发板做Linux嵌入式开发？虚拟机搞定一切！ - Anriku's Blog</a></p>
 <p><a href="https://tutorial.linux.doc.embedfire.com/zh_CN/latest/linux_driver/character_device.html#id15">野火</a></p>
-<p><a href="https://milicat.gitee.io/2019/07/28/使用qemu仿真vexpress-a9开发板/">使用QEMU仿真vexpress-a9开发板实践 - Milicat Blog (gitee.io)</a></p>
+<p><a href="https://milicat.gitee.io/2019/07/28/%E4%BD%BF%E7%94%A8qemu%E4%BB%BF%E7%9C%9Fvexpress-a9%E5%BC%80%E5%8F%91%E6%9D%BF/">使用QEMU仿真vexpress-a9开发板实践 - Milicat Blog (gitee.io)</a></p>
 <p>还有龙林波老师。</p>
 									</div>
 				<div class="blog-author-block w-clearfix">
@@ -491,7 +491,7 @@ clean:
 <input type="hidden" name="comment_parent" id="comment_parent" value="0">
 </p>
 </form>	</div>
-<!-- #respond -->
+
 	
 </div>	</div>
 </div>
@@ -543,10 +543,10 @@ clean:
 <div class="footer">
 	<div class="container w-container">
 		<div class="footer-text">
-			Copyright2021. All Rights Reserved.&nbsp;			
+			Copyright2021. All Rights Reserved. 			
 						
 			
-				&nbsp;<a rel="nofollow" target="_blank" href="https://beian.miit.gov.cn/">渝ICP备19011860号-2</a>
+				 <a rel="nofollow" target="_blank" href="https://beian.miit.gov.cn/">渝ICP备19011860号-2</a>
 
 					</div>
 		

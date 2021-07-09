@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-<title>Clash For Linux自动更新订阅配置 &#8211; 翰林木子的笔记本</title>
-<meta name="description" content="声明：科学上网仅为了更好使用国外文献库，查询科研资料。爱我中国！！！ 鸣谢：ClashForLinux自动更新订阅配置，任何对文章的转载请直接转载原作者！ 配置 本文通过systemctl来管理Clash的进程，对应clash &hellip;">
+<title>Clash For Linux自动更新订阅配置 – 翰林木子的笔记本</title>
+<meta name="description" content="声明：科学上网仅为了更好使用国外文献库，查询科研资料。爱我中国！！！ 鸣谢：ClashForLinux自动更新订阅配置，任何对文章的转载请直接转载原作者！ 配置 本文通过systemctl来管理Clash的进程，对应clash …">
 <meta name="keywords" content="Clash,Linux">
 <meta name="robots" content="max-image-preview:large">
 <link rel="dns-prefetch" href="//cdn.staticfile.org">
@@ -19,7 +19,7 @@
 <script type="text/javascript" src="/wp-includes/js/jquery/jquery-migrate.min.js?ver=3.3.2" id="jquery-migrate-js"></script>
 <script type="text/javascript" src="/wp-content/themes/sweet/static/js/sweet.js?ver=5.7.2" id="sweet-js"></script>
 <script type="text/javascript" src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js?ver=5.7.2" id="fancybox-js"></script>
-<link rel="canonical" href="/2021/04/clash-for-linux-automatically-renews-the-subscription-link/">
+
 <link href="/wp-content/uploads/2021/07/1617196601-favicon-32x32-1.png" rel="shortcut icon" type="image/x-icon">
 <link href="/wp-content/uploads/2021/07/1617196599-apple-touch-icon.png" rel="apple-touch-icon">
 <script type="text/javascript">
@@ -38,7 +38,7 @@
 			<img class="logo" src="/wp-content/uploads/2021/07/1617196599-apple-touch-icon.png">
 		</a>
 				<nav class="nav-menu w-nav-menu">
-			<li id="menu-item-97" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-97"><a href="https://ytlee.cn/">首页</a></li>
+			<li id="menu-item-97" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-97"><a href="https://wp.ytlee.cn/">首页</a></li>
 <li id="menu-item-99" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-99"><a href="/category/note/">笔记本</a></li>
 <li id="menu-item-100" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-100"><a href="/category/draft/">草稿本</a></li>
 <li id="menu-item-103" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-103"><a href="/about-me/">关于我</a></li>
@@ -48,7 +48,7 @@
 			</div>
 		</div>
 		<div class="rightNav">
-			<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-97"><a href="https://ytlee.cn/">首页</a></li>
+			<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-97"><a href="https://wp.ytlee.cn/">首页</a></li>
 <li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-99"><a href="/category/note/">笔记本</a></li>
 <li class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-100"><a href="/category/draft/">草稿本</a></li>
 <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-103"><a href="/about-me/">关于我</a></li>
@@ -86,10 +86,10 @@ Description=clash daemon
 [Service]
 Type=simple
 User=tangger
-ExecStart=/home/&lt;用户名&gt;/.config/clash/start-clash.sh
-ExecStop=/home/&lt;用户名&gt;/.config/clash/stop-clash.sh
-Environment=&quot;HOME=/home/&lt;用户名&gt;/&quot;
-Environment=&quot;CLASH_URL=&lt;填入您的订阅链接&gt;&quot;
+ExecStart=/home/<用户名>/.config/clash/start-clash.sh
+ExecStop=/home/<用户名>/.config/clash/stop-clash.sh
+Environment="HOME=/home/<用户名>/"
+Environment="CLASH_URL=<填入您的订阅链接>"
 
 [Install]
 WantedBy=multi-user.target</code></pre>
@@ -98,15 +98,15 @@ WantedBy=multi-user.target</code></pre>
 # save this file to ${HOME}/.config/clash/start-clash.sh
 
 # save pid file
-echo $$ &gt; ${HOME}/.config/clash/clash.pid
+echo $$ > ${HOME}/.config/clash/clash.pid
 
-diff ${HOME}/.config/clash/config.yaml &lt;(curl -s ${CLASH_URL})
-if [ &quot;$?&quot; == 0 ]
+diff ${HOME}/.config/clash/config.yaml <(curl -s ${CLASH_URL})
+if [ "$?" == 0 ]
 then
-    /usr/local/bin/clash -d /home/&lt;用户名&gt;/.config/clash/
+    /usr/local/bin/clash -d /home/<用户名>/.config/clash/
 else
     curl -L -o ${HOME}/.config/clash/config.yaml ${CLASH_URL}
-    /usr/local/bin/clash -d /home/&lt;用户名&gt;/.config/clash/
+    /usr/local/bin/clash -d /home/<用户名>/.config/clash/
 fi
 </code></pre>
 <p><strong>stop-clash.sh</strong></p>
@@ -153,7 +153,7 @@ sudo systemctl start clash</code></pre>
 <input type="hidden" name="comment_parent" id="comment_parent" value="0">
 </p>
 </form>	</div>
-<!-- #respond -->
+
 	
 </div>	</div>
 </div>
@@ -205,10 +205,10 @@ sudo systemctl start clash</code></pre>
 <div class="footer">
 	<div class="container w-container">
 		<div class="footer-text">
-			Copyright2021. All Rights Reserved.&nbsp;			
+			Copyright2021. All Rights Reserved. 			
 						
 			
-				&nbsp;<a rel="nofollow" target="_blank" href="https://beian.miit.gov.cn/">渝ICP备19011860号-2</a>
+				 <a rel="nofollow" target="_blank" href="https://beian.miit.gov.cn/">渝ICP备19011860号-2</a>
 
 					</div>
 		

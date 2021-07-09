@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-<title>简记——全连接层与神经网络的两种实现方式 &#8211; 翰林木子的笔记本</title>
-<meta name="description" content="前言 声明 本文所述，为《TensorFlow深度学习》一书的个人记录，文章中有个人理解、总结以及对原文的部分搬运。请悉知~ 机器学习的最终目的是找到一组良好的参数𝜃，使得𝜃表示的数学模型能够很好地从训 练集 &hellip;">
+<title>简记——全连接层与神经网络的两种实现方式 – 翰林木子的笔记本</title>
+<meta name="description" content="前言 声明 本文所述，为《TensorFlow深度学习》一书的个人记录，文章中有个人理解、总结以及对原文的部分搬运。请悉知~ 机器学习的最终目的是找到一组良好的参数𝜃，使得𝜃表示的数学模型能够很好地从训 练集 …">
 <meta name="keywords" content="Tensorflow">
 <meta name="robots" content="max-image-preview:large">
 <link rel="dns-prefetch" href="//cdn.staticfile.org">
@@ -22,7 +22,7 @@
 <script type="text/javascript" src="/wp-includes/js/jquery/jquery-migrate.min.js?ver=3.3.2" id="jquery-migrate-js"></script>
 <script type="text/javascript" src="/wp-content/themes/sweet/static/js/sweet.js?ver=5.7.2" id="sweet-js"></script>
 <script type="text/javascript" src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js?ver=5.7.2" id="fancybox-js"></script>
-<link rel="canonical" href="/2020/08/two-realization-methods-of-fully-connected-layer-and-neural-network/">
+
 <link href="/wp-content/uploads/2021/07/1617196601-favicon-32x32-1.png" rel="shortcut icon" type="image/x-icon">
 <link href="/wp-content/uploads/2021/07/1617196599-apple-touch-icon.png" rel="apple-touch-icon">
 <script type="text/javascript">
@@ -41,7 +41,7 @@
 			<img class="logo" src="/wp-content/uploads/2021/07/1617196599-apple-touch-icon.png">
 		</a>
 				<nav class="nav-menu w-nav-menu">
-			<li id="menu-item-97" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-97"><a href="https://ytlee.cn/">首页</a></li>
+			<li id="menu-item-97" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-97"><a href="https://wp.ytlee.cn/">首页</a></li>
 <li id="menu-item-99" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-99"><a href="/category/note/">笔记本</a></li>
 <li id="menu-item-100" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-100"><a href="/category/draft/">草稿本</a></li>
 <li id="menu-item-103" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-103"><a href="/about-me/">关于我</a></li>
@@ -51,7 +51,7 @@
 			</div>
 		</div>
 		<div class="rightNav">
-			<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-97"><a href="https://ytlee.cn/">首页</a></li>
+			<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-97"><a href="https://wp.ytlee.cn/">首页</a></li>
 <li class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-99"><a href="/category/note/">笔记本</a></li>
 <li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-100"><a href="/category/draft/">草稿本</a></li>
 <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-103"><a href="/about-me/">关于我</a></li>
@@ -177,11 +177,11 @@ fc = layers.Dense(256, activation=tf.nn.relu)
 o1 = fc(x)
 print(fc.kernel)
 print(fc.bias)</code></pre>
-<pre><code class="language-shell">&lt;tf.Variable &#039;dense/kernel:0&#039; shape=(784, 256) dtype=float32, numpy=
+<pre><code class="language-shell"><tf.Variable 'dense/kernel:0' shape=(784, 256) dtype=float32, numpy=
 array([[ 0.05471069, -0.0628917 ,  0.03620822, ...,  0.01844664,
-        -0.06971153,  0.0447783 ],...], dtype=float32)&gt;
-&lt;tf.Variable &#039;dense/bias:0&#039; shape=(256,) dtype=float32, numpy=
-array([0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., ...], dtype=float32)&gt;</code></pre>
+        -0.06971153,  0.0447783 ],...], dtype=float32)>
+<tf.Variable 'dense/bias:0' shape=(256,) dtype=float32, numpy=
+array([0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., ...], dtype=float32)></code></pre>
 <h4>
 <a name="toc-8"></a>获取参数列表</h4>
 <ul>
@@ -231,16 +231,16 @@ w4 = tf.Variable(tf.random.truncated_normal([64, 10], stddev=0.1))
 b4 = tf.Variable(tf.zeros([10]))
 
 with tf.GradientTape() as tape:  # 梯度记录器
-    # 隐藏层 1 前向计算，[b, 28*28] =&gt; [b, 256]
+    # 隐藏层 1 前向计算，[b, 28*28] => [b, 256]
     h1 = tf.matmul(x, w1) + tf.broadcast_to(b1, [x.shape[0], 256])
     h1 = tf.nn.relu(h1)
-    # hiden layer 2,256-&gt;128
+    # hiden layer 2,256->128
     h2 = tf.matmul(h1, w2) + b2
     h2 = tf.nn.relu(h2)
-    # hiden layer 3,128-&gt;64
+    # hiden layer 3,128->64
     h3 = tf.matmul(h2, w3) + b3
     h3 = tf.nn.relu(h3)
-    # out layer, 64-&gt;10
+    # out layer, 64->10
     h4 = tf.matmul(h3, w4) + b4
 
     print(h4)</code></pre>
@@ -324,7 +324,7 @@ print(out)</code></pre>
 <input type="hidden" name="comment_parent" id="comment_parent" value="0">
 </p>
 </form>	</div>
-<!-- #respond -->
+
 	
 </div>	</div>
 </div>
@@ -376,10 +376,10 @@ print(out)</code></pre>
 <div class="footer">
 	<div class="container w-container">
 		<div class="footer-text">
-			Copyright2021. All Rights Reserved.&nbsp;			
+			Copyright2021. All Rights Reserved. 			
 						
 			
-				&nbsp;<a rel="nofollow" target="_blank" href="https://beian.miit.gov.cn/">渝ICP备19011860号-2</a>
+				 <a rel="nofollow" target="_blank" href="https://beian.miit.gov.cn/">渝ICP备19011860号-2</a>
 
 					</div>
 		

@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-<title>记录——树莓派的安装配置过程 &#8211; 翰林木子的笔记本</title>
-<meta name="description" content="2018年double eleven ，我个穷逼。买了点儿树莓派，就是那种可以吃的树莓派（蛋黄派）。 but，为什么我买的吃的，收到了一块电子板？鸡婆哟！没看懂没看懂，联系卖家，结果二话不说丢给我百度云的连接，懵 &hellip;">
+<title>记录——树莓派的安装配置过程 – 翰林木子的笔记本</title>
+<meta name="description" content="2018年double eleven ，我个穷逼。买了点儿树莓派，就是那种可以吃的树莓派（蛋黄派）。 but，为什么我买的吃的，收到了一块电子板？鸡婆哟！没看懂没看懂，联系卖家，结果二话不说丢给我百度云的连接，懵 …">
 <meta name="keywords" content="树莓派">
 <meta name="robots" content="max-image-preview:large">
 <link rel="dns-prefetch" href="//cdn.staticfile.org">
@@ -22,7 +22,7 @@
 <script type="text/javascript" src="/wp-includes/js/jquery/jquery-migrate.min.js?ver=3.3.2" id="jquery-migrate-js"></script>
 <script type="text/javascript" src="/wp-content/themes/sweet/static/js/sweet.js?ver=5.7.2" id="sweet-js"></script>
 <script type="text/javascript" src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js?ver=5.7.2" id="fancybox-js"></script>
-<link rel="canonical" href="/2019/10/installation-and-configuration-of-raspberry-pi4/">
+
 <link href="/wp-content/uploads/2021/07/1617196601-favicon-32x32-1.png" rel="shortcut icon" type="image/x-icon">
 <link href="/wp-content/uploads/2021/07/1617196599-apple-touch-icon.png" rel="apple-touch-icon">
 <script type="text/javascript">
@@ -41,7 +41,7 @@
 			<img class="logo" src="/wp-content/uploads/2021/07/1617196599-apple-touch-icon.png">
 		</a>
 				<nav class="nav-menu w-nav-menu">
-			<li id="menu-item-97" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-97"><a href="https://ytlee.cn/">首页</a></li>
+			<li id="menu-item-97" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-97"><a href="https://wp.ytlee.cn/">首页</a></li>
 <li id="menu-item-99" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-99"><a href="/category/note/">笔记本</a></li>
 <li id="menu-item-100" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-100"><a href="/category/draft/">草稿本</a></li>
 <li id="menu-item-103" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-103"><a href="/about-me/">关于我</a></li>
@@ -51,7 +51,7 @@
 			</div>
 		</div>
 		<div class="rightNav">
-			<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-97"><a href="https://ytlee.cn/">首页</a></li>
+			<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-97"><a href="https://wp.ytlee.cn/">首页</a></li>
 <li class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-99"><a href="/category/note/">笔记本</a></li>
 <li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-100"><a href="/category/draft/">草稿本</a></li>
 <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-103"><a href="/about-me/">关于我</a></li>
@@ -82,7 +82,7 @@
 <li>
 <a href="#toc-2">一、系统烧录</a><ul>
 <li><a href="#toc-3">下载系统</a></li>
-<li><a href="#toc-4">格式化SD卡&amp;写入系统</a></li>
+<li><a href="#toc-4">格式化SD卡&写入系统</a></li>
 </ul>
 </li>
 <li>
@@ -95,7 +95,7 @@
 <a href="#toc-8">三、基本设置</a><ul>
 <li><a href="#toc-9">ssh登陆树莓派</a></li>
 <li><a href="#toc-10">扩展sd卡文件系统</a></li>
-<li><a href="#toc-11">修改初始密码&amp;开启root账户</a></li>
+<li><a href="#toc-11">修改初始密码&开启root账户</a></li>
 </ul>
 </li>
 <li>
@@ -134,7 +134,7 @@ OK，开箱，组装，烧系统。</p>
 <a name="toc-3"></a>下载系统</h3>
 <p>打开官网Raspberrypi,点击DOWNLOADS，点击NooBS旁边的RASPBIAN,然后点击RASPBIAN STRETCH WITH DESKTOP下面的Download ZIP，这里推荐用迅雷之类的下载软件，如果你的浏览器下载很快，请无视推荐。下载好了之后解压。</p>
 <h3>
-<a name="toc-4"></a>格式化SD卡&amp;写入系统</h3>
+<a name="toc-4"></a>格式化SD卡&写入系统</h3>
 <p>1.首先把sd卡插入读卡器，插上电脑，等待系统识别，右键用管理员权限打开SD Association 选中你的sd卡，只有一个的话默认选中，点击format，等待完成后退出。<br>
 2.同样的，管理员权限打开Win32diskimager，选择好刚才下载解压了的image文件，还有设备是否是你的sd卡，后点击写入。等待完成。<br>
 3.以上步骤如果没有出错，现在你的windows系统，显示的是你的sd卡为一个boot和一个加密的盘符。打开boot盘符，新建一个名字为ssh的空白文件，这是因为新系统默认关闭了ssh的，这么做，是为了开启ssh，以便我们登陆。</p>
@@ -159,9 +159,9 @@ update_config=1
 
 network={
 
-ssid=&quot;wifi名称&quot; 
+ssid="wifi名称" 
 
-psk=&quot;wifi密码&quot;
+psk="wifi密码"
 
 key_mgmt=WPA-PSK
 
@@ -183,9 +183,9 @@ priority=1
 <h3>
 <a name="toc-10"></a>扩展sd卡文件系统</h3>
 <pre><code class="language-bash">sudo raspi-config</code></pre>
-<p>回车后，选择Advanced Options-&gt;Expand Filesystem 确定，然后重启生效。</p>
+<p>回车后，选择Advanced Options->Expand Filesystem 确定，然后重启生效。</p>
 <h3>
-<a name="toc-11"></a>修改初始密码&amp;开启root账户</h3>
+<a name="toc-11"></a>修改初始密码&开启root账户</h3>
 <p>这个根据个人情况而定，因为不想看到ssh总是提示我使用的是默认密码。<br>
 直接在命令行里输入</p>
 <pre><code class="language-bash">passwd</code></pre>
@@ -231,7 +231,7 @@ deb-src  http://mirrors.tuna.tsinghua.edu.cn/raspbian/raspbian/ stretch main con
 同样修改首行网址，修改后文件如下：
 
 deb http://mirrors.ustc.edu.cn/archive.raspberrypi.org/debian/ stretch main ui
-# Uncomment line below then &#039;apt-get update&#039; to enable &#039;apt-get source&#039;
+# Uncomment line below then 'apt-get update' to enable 'apt-get source'
 #deb-src http://archive.raspberrypi.org/debian/ stretch main ui</code></pre>
 <p>ctrl+o 保存，之后 回车 确认，然后 ctrl+x 退出。</p>
 <h3>
@@ -245,7 +245,7 @@ sudo apt-get update ; sudo apt-get upgrade ; sudo apt-get dist-upgrade ; sudo rp
 <a name="toc-17"></a>3B+开启wifi需选择国家</h4>
 <p>ssh登录3B+时会提示wifi使能需要选择国家</p>
 <pre><code class="language-bash">sudo raspi-config</code></pre>
-<p>回车，选择Localisation Options-&gt;Change Wi-fi Country-&gt;CN China回车确认，Finish重启</p>
+<p>回车，选择Localisation Options->Change Wi-fi Country->CN China回车确认，Finish重启</p>
 <h4>
 <a name="toc-18"></a>树莓派做wifi ap热点</h4>
 <p>树莓派建立wifi热点后，手机，电脑随时都可以连接，方便。步骤如下</p>
@@ -292,7 +292,7 @@ sudo nano /etc/rc.local</code></pre>
 <input type="hidden" name="comment_parent" id="comment_parent" value="0">
 </p>
 </form>	</div>
-<!-- #respond -->
+
 	
 </div>	</div>
 </div>
@@ -344,10 +344,10 @@ sudo nano /etc/rc.local</code></pre>
 <div class="footer">
 	<div class="container w-container">
 		<div class="footer-text">
-			Copyright2021. All Rights Reserved.&nbsp;			
+			Copyright2021. All Rights Reserved. 			
 						
 			
-				&nbsp;<a rel="nofollow" target="_blank" href="https://beian.miit.gov.cn/">渝ICP备19011860号-2</a>
+				 <a rel="nofollow" target="_blank" href="https://beian.miit.gov.cn/">渝ICP备19011860号-2</a>
 
 					</div>
 		

@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-<title>图像分割简要综述及Python代码实现 &#8211; 翰林木子的笔记本</title>
-<meta name="description" content="图像分割简要综述及Python代码实现 前言 ​ 有幸选到生物医学影像处理的课程，这次学到了图像分割部分。在图像分割上，我已经可以训练U-net和SegNet网络做图像分割，但是对于传统的图像分割方法知之甚少，借 &hellip;">
+<title>图像分割简要综述及Python代码实现 – 翰林木子的笔记本</title>
+<meta name="description" content="图像分割简要综述及Python代码实现 前言 ​ 有幸选到生物医学影像处理的课程，这次学到了图像分割部分。在图像分割上，我已经可以训练U-net和SegNet网络做图像分割，但是对于传统的图像分割方法知之甚少，借 …">
 <meta name="keywords" content="OpenCV,Python,图像增强">
 <meta name="robots" content="max-image-preview:large">
 <link rel="dns-prefetch" href="//cdn.staticfile.org">
@@ -22,7 +22,7 @@
 <script type="text/javascript" src="/wp-includes/js/jquery/jquery-migrate.min.js?ver=3.3.2" id="jquery-migrate-js"></script>
 <script type="text/javascript" src="/wp-content/themes/sweet/static/js/sweet.js?ver=5.7.2" id="sweet-js"></script>
 <script type="text/javascript" src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js?ver=5.7.2" id="fancybox-js"></script>
-<link rel="canonical" href="/2021/07/overview-of-image-segmentation-and-python-code-implementation/">
+
 <link href="/wp-content/uploads/2021/07/1617196601-favicon-32x32-1.png" rel="shortcut icon" type="image/x-icon">
 <link href="/wp-content/uploads/2021/07/1617196599-apple-touch-icon.png" rel="apple-touch-icon">
 <script type="text/javascript">
@@ -41,7 +41,7 @@
 			<img class="logo" src="/wp-content/uploads/2021/07/1617196599-apple-touch-icon.png">
 		</a>
 				<nav class="nav-menu w-nav-menu">
-			<li id="menu-item-97" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-97"><a href="https://ytlee.cn/">首页</a></li>
+			<li id="menu-item-97" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-97"><a href="https://wp.ytlee.cn/">首页</a></li>
 <li id="menu-item-99" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-99"><a href="/category/note/">笔记本</a></li>
 <li id="menu-item-100" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-100"><a href="/category/draft/">草稿本</a></li>
 <li id="menu-item-103" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-103"><a href="/about-me/">关于我</a></li>
@@ -51,7 +51,7 @@
 			</div>
 		</div>
 		<div class="rightNav">
-			<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-97"><a href="https://ytlee.cn/">首页</a></li>
+			<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-97"><a href="https://wp.ytlee.cn/">首页</a></li>
 <li class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-99"><a href="/category/note/">笔记本</a></li>
 <li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-100"><a href="/category/draft/">草稿本</a></li>
 <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-103"><a href="/about-me/">关于我</a></li>
@@ -198,7 +198,7 @@
 <pre><code class="language-python">import cv2
 import matplotlib.pyplot as plt
 
-img = cv2.imread(&quot;cell.jpg&quot;, 0)
+img = cv2.imread("cell.jpg", 0)
 # 应用5种不同的阈值方法
 _, th1 = cv2.threshold(img, 40, 255, cv2.THRESH_BINARY)
 _, th2 = cv2.threshold(img, 90, 255, cv2.THRESH_BINARY)
@@ -206,14 +206,14 @@ _, th3 = cv2.threshold(img, 140, 255, cv2.THRESH_BINARY)
 _, th4 = cv2.threshold(img, 190, 255, cv2.THRESH_BINARY)
 _, th5 = cv2.threshold(img, 240, 255, cv2.THRESH_BINARY)
 
-titles = [&#039;Original&#039;, &#039;BINARY_40&#039;, &#039;BINARY_90&#039;, &#039;BINARY_140&#039;, &#039;BINARY_190&#039;, &#039;BINARY_210&#039;]
+titles = ['Original', 'BINARY_40', 'BINARY_90', 'BINARY_140', 'BINARY_190', 'BINARY_210']
 images = [img, th1, th2, th3, th4, th5]
 
 # 开始画图
 plt.figure(figsize=(8, 4))
 for i in range(6):
     plt.subplot(2, 3, i + 1)
-    plt.imshow(images[i], &#039;gray&#039;)
+    plt.imshow(images[i], 'gray')
     plt.title(titles[i])
     plt.xticks([]), plt.yticks([])
 plt.show()</code></pre>
@@ -243,18 +243,18 @@ plt.show()</code></pre>
 <pre><code class="language-python">import cv2
 import matplotlib.pyplot as plt
 
-img = cv2.imread(&quot;cell.jpg&quot;, 0)
+img = cv2.imread("cell.jpg", 0)
 _, th1 = cv2.threshold(img, 190, 255, cv2.THRESH_BINARY_INV)
 _, th2 = cv2.threshold(img, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
 
-titles = [&#039;Original&#039;, &#039;BINARY_190&#039;, &#039;Otsu&#039;]
+titles = ['Original', 'BINARY_190', 'Otsu']
 images = [img, th1, th2]
 
 # 开始画图
 plt.figure()
 for i in range(3):
     plt.subplot(1, 3, i + 1)
-    plt.imshow(images[i], &#039;gray&#039;)
+    plt.imshow(images[i], 'gray')
     plt.title(titles[i])
     plt.xticks([]), plt.yticks([])
 plt.show()</code></pre>
@@ -292,19 +292,19 @@ plt.show()</code></pre>
 <pre><code class="language-python">import cv2
 import matplotlib.pyplot as plt
 
-img = cv2.imread(&quot;cell.jpg&quot;, 0)
+img = cv2.imread("cell.jpg", 0)
 _, th1 = cv2.threshold(img, 190, 255, cv2.THRESH_BINARY)
 _, th2 = cv2.threshold(img, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
 th3 = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 11, 2)
 
-titles = [&#039;Original&#039;, &#039;BINARY_190&#039;, &#039;Otsu&#039;, &#039;Adaptive&#039;]
+titles = ['Original', 'BINARY_190', 'Otsu', 'Adaptive']
 images = [img, th1, th2, th3]
 
 # 开始画图
 plt.figure()
 for i in range(4):
     plt.subplot(2, 2, i + 1)
-    plt.imshow(images[i], &#039;gray&#039;)
+    plt.imshow(images[i], 'gray')
     plt.title(titles[i])
     plt.xticks([]), plt.yticks([])
 plt.show()</code></pre>
@@ -327,7 +327,7 @@ plt.show()</code></pre>
 <pre><code class="language-python">import cv2
 import matplotlib.pyplot as plt
 
-img = cv2.imread(&quot;cell.jpg&quot;, 0)
+img = cv2.imread("cell.jpg", 0)
 _, th1 = cv2.threshold(img, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
 th2 = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 11, 2)
 # 高斯滤波
@@ -336,13 +336,13 @@ th2 = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BIN
 img_blured = cv2.blur(img, (7, 7))
 th3 = cv2.adaptiveThreshold(img_blured, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 11, 2)
 
-titles = [&#039;Original&#039;, &#039;Otsu&#039;, &#039;Adaptive Mean&#039;, &#039;Adaptive Mean with blur&#039;]
+titles = ['Original', 'Otsu', 'Adaptive Mean', 'Adaptive Mean with blur']
 images = [img, th1, th2, th3]
 # 开始画图
 plt.figure()
 for i in range(4):
     plt.subplot(2, 2, i + 1)
-    plt.imshow(images[i], &#039;gray&#039;)
+    plt.imshow(images[i], 'gray')
     plt.title(titles[i])
     plt.xticks([]), plt.yticks([])
 plt.show()
@@ -392,23 +392,23 @@ def regionGrow(gray, seeds, thresh, p):
             tmpY = pt[1] + connection[i][1]
 
             # 检测边界点
-            if tmpX &lt; 0 or tmpY &lt; 0 or tmpX &gt;= gray.shape[0] or tmpY &gt;= gray.shape[1]:
+            if tmpX < 0 or tmpY < 0 or tmpX >= gray.shape[0] or tmpY >= gray.shape[1]:
                 continue
 
-            if abs(int(gray[tmpX, tmpY]) - int(gray[pt])) &lt; thresh and seedMark[tmpX, tmpY] == 0:
+            if abs(int(gray[tmpX, tmpY]) - int(gray[pt])) < thresh and seedMark[tmpX, tmpY] == 0:
                 seedMark[tmpX, tmpY] = 255
                 seeds.append((tmpX, tmpY))
     return seedMark
 
-path = &quot;cell.jpg&quot;
+path = "cell.jpg"
 gray = cv2.imread(path, cv2.IMREAD_GRAYSCALE)
 plt.figure(1)
-plt.imshow(gray, &#039;gray&#039;)
+plt.imshow(gray, 'gray')
 plt.show()
 
 seedMark = regionGrow(gray, [(100, 100)], thresh=3, p=8)
 plt.figure(2)
-plt.imshow(seedMark, &#039;gray&#039;)
+plt.imshow(seedMark, 'gray')
 plt.show()</code></pre>
 <p><img src="https://cdn.jsdelivr.net/gh/tangger2000/PicHost/img/20210518123329.png" alt=""></p>
 <p>​   由图可见，分割的效果并不是很好，特别是细胞内部。</p>
@@ -456,9 +456,9 @@ def judge(img, w0, h0, w, h):
     for i in range(w0, w0 + w):
         for j in range(h0, h0 + h):
             # 输入为灰度图像时才可以直接进行比较，rgb色彩需要进行三次比较，因为是三通道
-            if abs(img[j, i] - avg) &lt; 1 * std:
+            if abs(img[j, i] - avg) < 1 * std:
                 count += 1
-    if (count / total) &lt; 0.95:  # 合适的点还是比较少，接着拆
+    if (count / total) < 0.95:  # 合适的点还是比较少，接着拆
         return True
     else:
         return False
@@ -467,13 +467,13 @@ def judge(img, w0, h0, w, h):
 def draw(img, w0, h0, w, h, thresold):
     for i in range(w0, w0 + w):
         for j in range(h0, h0 + h):
-            if img[j, i] &gt; thresold:
+            if img[j, i] > thresold:
                 img[j, i] = 255
             else:
                 img[j, i] = 0
 
 def function(img, w0, h0, w, h, thresold):
-    if judge(img, w0, h0, w, h) and (min(w, h) &gt; 5):
+    if judge(img, w0, h0, w, h) and (min(w, h) > 5):
         function(img, w0, h0, int(w / 2), int(h / 2), thresold)
         function(img, w0 + int(w / 2), h0, int(w / 2), int(h / 2), thresold)
         function(img, w0, h0 + int(h / 2), int(w / 2), int(h / 2), thresold)
@@ -482,18 +482,18 @@ def function(img, w0, h0, w, h, thresold):
         draw(img, w0, h0, w, h, thresold)
     return img
 
-image = cv2.imread(&#039;cell.jpg&#039;, 0)
+image = cv2.imread('cell.jpg', 0)
 copy_original = image.copy()
 height, width = image.shape
 function(image, 0, 0, width, height, 200)
 
 plt.figure()
 plt.subplot(1, 2, 1)
-plt.title(&#039;original&#039;)
-plt.imshow(copy_original, &#039;gray&#039;)
+plt.title('original')
+plt.imshow(copy_original, 'gray')
 plt.subplot(1, 2, 2)
-plt.title(&#039;div_and_merge&#039;)
-plt.imshow(image, &#039;gray&#039;)
+plt.title('div_and_merge')
+plt.imshow(image, 'gray')
 plt.show()</code></pre>
 <p><img src="https://cdn.jsdelivr.net/gh/tangger2000/PicHost/img/20210518141454.png" alt=""></p>
 <h4>
@@ -514,7 +514,7 @@ plt.show()</code></pre>
 import cv2
 from matplotlib import pyplot as plt
 
-img = cv2.imread(&#039;img.png&#039;)
+img = cv2.imread('img.png')
 copy_original = img.copy()
 gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
 ret, thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
@@ -554,10 +554,10 @@ img[markers == -1] = [255, 0, 0]
 
 plt.figure()
 plt.subplot(1, 2, 1)
-plt.title(&#039;original&#039;)
+plt.title('original')
 plt.imshow(copy_original)
 plt.subplot(1, 2, 2)
-plt.title(&#039;div_and_merge&#039;)
+plt.title('div_and_merge')
 plt.imshow(img)
 plt.show()</code></pre>
 <p><img src="https://cdn.jsdelivr.net/gh/tangger2000/PicHost/img/20210518150707.png" alt=""></p>
@@ -611,93 +611,93 @@ IMG_WIDTH = 256
 IMG_HEIGHT = 256
 IMG_CHANNELS = 3
 learning_rate = 0.0005
-MODEL_PATH = &quot;model.h5&quot;
-CKPT_PATH = &quot;ckpt.h5&quot;
+MODEL_PATH = "model.h5"
+CKPT_PATH = "ckpt.h5"
 
-train = np.load(&#039;./train.npz&#039;)
-test = np.load(&#039;./test.npz&#039;)
-TEST_SET = [&#039;1.png&#039;, &#039;2.png&#039;, &#039;3.png&#039;]
+train = np.load('./train.npz')
+test = np.load('./test.npz')
+TEST_SET = ['1.png', '2.png', '3.png']
 
-x_test = test[&#039;datas&#039;] / 255
-x_train = train[&#039;datas&#039;] / 255
-y_train = train[&#039;labels&#039;] / 255
+x_test = test['datas'] / 255
+x_train = train['datas'] / 255
+y_train = train['labels'] / 255
 
 def unet(input_shape):
     # 输入层数据为256*256的三通道图像
     inputs = Input(input_shape)
     # 第一个block(含两个激活函数为relu的有效卷积层 ，和一个卷积最大池化(下采样)操作)
-    conv1 = Conv2D(32, 3, activation=&#039;relu&#039;, padding=&#039;same&#039;, kernel_initializer=&#039;he_normal&#039;)(inputs)
-    conv1 = Conv2D(32, 3, activation=&#039;relu&#039;, padding=&#039;same&#039;, kernel_initializer=&#039;he_normal&#039;)(conv1)
+    conv1 = Conv2D(32, 3, activation='relu', padding='same', kernel_initializer='he_normal')(inputs)
+    conv1 = Conv2D(32, 3, activation='relu', padding='same', kernel_initializer='he_normal')(conv1)
     # 最大池化
     pool1 = MaxPooling2D(pool_size=(2, 2))(conv1)
 
     # 第二个block(含两个激活函数为relu的有效卷积层 ，和一个卷积最大池化(下采样)操作)
-    conv2 = Conv2D(64, 3, activation=&#039;relu&#039;, padding=&#039;same&#039;, kernel_initializer=&#039;he_normal&#039;)(pool1)
-    conv2 = Conv2D(64, 3, activation=&#039;relu&#039;, padding=&#039;same&#039;, kernel_initializer=&#039;he_normal&#039;)(conv2)
+    conv2 = Conv2D(64, 3, activation='relu', padding='same', kernel_initializer='he_normal')(pool1)
+    conv2 = Conv2D(64, 3, activation='relu', padding='same', kernel_initializer='he_normal')(conv2)
     pool2 = MaxPooling2D(pool_size=(2, 2))(conv2)
 
     # 第三个block(含两个激活函数为relu的有效卷积层 ，和一个卷积最大池化(下采样)操作)
-    conv3 = Conv2D(128, 3, activation=&#039;relu&#039;, padding=&#039;same&#039;, kernel_initializer=&#039;he_normal&#039;)(pool2)
-    conv3 = Conv2D(128, 3, activation=&#039;relu&#039;, padding=&#039;same&#039;, kernel_initializer=&#039;he_normal&#039;)(conv3)
+    conv3 = Conv2D(128, 3, activation='relu', padding='same', kernel_initializer='he_normal')(pool2)
+    conv3 = Conv2D(128, 3, activation='relu', padding='same', kernel_initializer='he_normal')(conv3)
     pool3 = MaxPooling2D(pool_size=(2, 2))(conv3)
 
     # 第四个block(含两个激活函数为relu的有效卷积层 ，和一个卷积最大池化(下采样)操作)
-    conv4 = Conv2D(256, 3, activation=&#039;relu&#039;, padding=&#039;same&#039;, kernel_initializer=&#039;he_normal&#039;)(pool3)
-    conv4 = Conv2D(256, 3, activation=&#039;relu&#039;, padding=&#039;same&#039;, kernel_initializer=&#039;he_normal&#039;)(conv4)
+    conv4 = Conv2D(256, 3, activation='relu', padding='same', kernel_initializer='he_normal')(pool3)
+    conv4 = Conv2D(256, 3, activation='relu', padding='same', kernel_initializer='he_normal')(conv4)
     # 将部分隐藏层神经元丢弃，防止过于细化而引起的过拟合情况
     drop4 = Dropout(0.5)(conv4)
     pool4 = MaxPooling2D(pool_size=(2, 2))(conv4)
 
-    conv5 = Conv2D(512, 3, activation=&#039;relu&#039;, padding=&#039;same&#039;, kernel_initializer=&#039;he_normal&#039;)(pool4)
-    conv5 = Conv2D(512, 3, activation=&#039;relu&#039;, padding=&#039;same&#039;, kernel_initializer=&#039;he_normal&#039;)(conv5)
+    conv5 = Conv2D(512, 3, activation='relu', padding='same', kernel_initializer='he_normal')(pool4)
+    conv5 = Conv2D(512, 3, activation='relu', padding='same', kernel_initializer='he_normal')(conv5)
     # 将部分隐藏层神经元丢弃，防止过于细化而引起的过拟合情况
     drop5 = Dropout(0.5)(conv5)
 
     # expansive path
     # 上采样
-    up6 = Conv2D(256, 2, activation=&#039;relu&#039;, padding=&#039;same&#039;, kernel_initializer=&#039;he_normal&#039;)(
+    up6 = Conv2D(256, 2, activation='relu', padding='same', kernel_initializer='he_normal')(
         UpSampling2D(size=(2, 2))(drop5))
     # copy and crop(和contraction path 的feature map合并拼接)
     merge6 = concatenate([drop4, up6], axis=3)
     # 两个有效卷积层
-    conv6 = Conv2D(256, 3, activation=&#039;relu&#039;, padding=&#039;same&#039;, kernel_initializer=&#039;he_normal&#039;)(merge6)
-    conv6 = Conv2D(256, 3, activation=&#039;relu&#039;, padding=&#039;same&#039;, kernel_initializer=&#039;he_normal&#039;)(conv6)
+    conv6 = Conv2D(256, 3, activation='relu', padding='same', kernel_initializer='he_normal')(merge6)
+    conv6 = Conv2D(256, 3, activation='relu', padding='same', kernel_initializer='he_normal')(conv6)
 
     # 上采样
-    up7 = Conv2D(128, 2, activation=&#039;relu&#039;, padding=&#039;same&#039;, kernel_initializer=&#039;he_normal&#039;)(
+    up7 = Conv2D(128, 2, activation='relu', padding='same', kernel_initializer='he_normal')(
         UpSampling2D(size=(2, 2))(conv6))
     merge7 = concatenate([conv3, up7], axis=3)
-    conv7 = Conv2D(128, 3, activation=&#039;relu&#039;, padding=&#039;same&#039;, kernel_initializer=&#039;he_normal&#039;)(merge7)
-    conv7 = Conv2D(128, 3, activation=&#039;relu&#039;, padding=&#039;same&#039;, kernel_initializer=&#039;he_normal&#039;)(conv7)
+    conv7 = Conv2D(128, 3, activation='relu', padding='same', kernel_initializer='he_normal')(merge7)
+    conv7 = Conv2D(128, 3, activation='relu', padding='same', kernel_initializer='he_normal')(conv7)
 
     # 上采样
-    up8 = Conv2D(64, 2, activation=&#039;relu&#039;, padding=&#039;same&#039;, kernel_initializer=&#039;he_normal&#039;)(
+    up8 = Conv2D(64, 2, activation='relu', padding='same', kernel_initializer='he_normal')(
         UpSampling2D(size=(2, 2))(conv7))
     merge8 = concatenate([conv2, up8], axis=3)
-    conv8 = Conv2D(64, 3, activation=&#039;relu&#039;, padding=&#039;same&#039;, kernel_initializer=&#039;he_normal&#039;)(merge8)
-    conv8 = Conv2D(64, 3, activation=&#039;relu&#039;, padding=&#039;same&#039;, kernel_initializer=&#039;he_normal&#039;)(conv8)
+    conv8 = Conv2D(64, 3, activation='relu', padding='same', kernel_initializer='he_normal')(merge8)
+    conv8 = Conv2D(64, 3, activation='relu', padding='same', kernel_initializer='he_normal')(conv8)
 
     # 上采样
-    up9 = Conv2D(32, 2, activation=&#039;relu&#039;, padding=&#039;same&#039;, kernel_initializer=&#039;he_normal&#039;)(
+    up9 = Conv2D(32, 2, activation='relu', padding='same', kernel_initializer='he_normal')(
         UpSampling2D(size=(2, 2))(conv8))
     merge9 = concatenate([conv1, up9], axis=3)
-    conv9 = Conv2D(32, 3, activation=&#039;relu&#039;, padding=&#039;same&#039;, kernel_initializer=&#039;he_normal&#039;)(merge9)
-    conv9 = Conv2D(32, 3, activation=&#039;relu&#039;, padding=&#039;same&#039;, kernel_initializer=&#039;he_normal&#039;)(conv9)
-    conv9 = Conv2D(2, 3, activation=&#039;relu&#039;, padding=&#039;same&#039;, kernel_initializer=&#039;he_normal&#039;)(conv9)
-    conv10 = Conv2D(1, 1, activation=&#039;sigmoid&#039;)(conv9)
+    conv9 = Conv2D(32, 3, activation='relu', padding='same', kernel_initializer='he_normal')(merge9)
+    conv9 = Conv2D(32, 3, activation='relu', padding='same', kernel_initializer='he_normal')(conv9)
+    conv9 = Conv2D(2, 3, activation='relu', padding='same', kernel_initializer='he_normal')(conv9)
+    conv10 = Conv2D(1, 1, activation='sigmoid')(conv9)
     model = Model(inputs=inputs, outputs=conv10)
     # 优化器为 Adam,损失函数为 binary_crossentropy，评价函数为 accuracy
     model.compile(optimizer=Adam(lr=learning_rate),
-                  loss=&#039;binary_crossentropy&#039;,
-                  metrics=[&#039;accuracy&#039;])
+                  loss='binary_crossentropy',
+                  metrics=['accuracy'])
     return model
 
 def train():
     model = unet(input_shape=(IMG_WIDTH, IMG_HEIGHT, IMG_CHANNELS))
     model.summary()
-    log_dir = &quot;logs/fit/&quot; + datetime.datetime.now().strftime(&quot;%Y%m%d-%H%M%S&quot;)
+    log_dir = "logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
     tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir, histogram_freq=1)
-    modelcheck = ModelCheckpoint(CKPT_PATH, monitor=&#039;val_accuracy&#039;, save_best_only=True, mode=&#039;max&#039;)
+    modelcheck = ModelCheckpoint(CKPT_PATH, monitor='val_accuracy', save_best_only=True, mode='max')
     callable = [modelcheck, tensorboard_callback]
     history = model.fit(x_train,
                         y_train,
@@ -713,33 +713,33 @@ def train():
     # plot the training loss and accuracy
     plt.figure()
     N = EPOCH
-    plt.plot(np.arange(0, N), history.history[&quot;loss&quot;], label=&quot;train_loss&quot;)
-    plt.plot(np.arange(0, N), history.history[&quot;val_loss&quot;], label=&quot;val_loss&quot;)
-    plt.plot(np.arange(0, N), history.history[&quot;accuracy&quot;], label=&quot;train_acc&quot;)
-    plt.plot(np.arange(0, N), history.history[&quot;val_accuracy&quot;], label=&quot;val_acc&quot;)
-    plt.title(&quot;Training Loss and Accuracy on U-Net Satellite Seg&quot;)
-    plt.xlabel(&quot;Epoch #&quot;)
-    plt.ylabel(&quot;Loss/Accuracy&quot;)
-    plt.legend(loc=&quot;lower left&quot;)
-    plt.savefig(&#039;./result.png&#039;)
+    plt.plot(np.arange(0, N), history.history["loss"], label="train_loss")
+    plt.plot(np.arange(0, N), history.history["val_loss"], label="val_loss")
+    plt.plot(np.arange(0, N), history.history["accuracy"], label="train_acc")
+    plt.plot(np.arange(0, N), history.history["val_accuracy"], label="val_acc")
+    plt.title("Training Loss and Accuracy on U-Net Satellite Seg")
+    plt.xlabel("Epoch #")
+    plt.ylabel("Loss/Accuracy")
+    plt.legend(loc="lower left")
+    plt.savefig('./result.png')
 
 def predict():
     # load the trained convolutional neural network
-    print(&quot;[INFO] loading network...&quot;)
+    print("[INFO] loading network...")
     model = load_model(MODEL_PATH)
     for n in range(len(TEST_SET)):
         path = TEST_SET[n]
         # load the image
-        image = cv2.imread(&#039;./test/&#039; + path)
+        image = cv2.imread('./test/' + path)
         image = np.resize(image, (1, 256, 256, 3))
         pred = model.predict(image, verbose=1)
         # # print (np.unique(pred))
         pred = pred.reshape((256, 256)).astype(np.uint8)
-        path = &#039;./predict/pre&#039; + str(n + 1) + &#039;.png&#039;
+        path = './predict/pre' + str(n + 1) + '.png'
         print(path, pred.shape)
         cv2.imwrite(path, pred)
 
-if __name__ == &#039;__main__&#039;:
+if __name__ == '__main__':
     train()
     predict()</code></pre>
 <p>其中的数据处理部分代码如下：</p>
@@ -754,15 +754,15 @@ def process(file_path, has_mask=True):
     datas = []
     labels = []
     for file in tqdm(files):
-        for image in (file/&#039;images&#039;).iterdir():
+        for image in (file/'images').iterdir():
             img = io.imread(image)
             img = np.resize(img, (256, 256, 3))
-        if img.shape[2] &gt; 3:
+        if img.shape[2] > 3:
             assert (img[:, :, 3] != 255).sum() == 0
         img = img[:, :, :3]
 
         if has_mask:
-            mask_files = list((file/&#039;masks&#039;).iterdir())
+            mask_files = list((file/'masks').iterdir())
             masks = None
             for ii, mask in enumerate(mask_files):
                 mask = io.imread(mask)
@@ -782,14 +782,14 @@ def process(file_path, has_mask=True):
     return datas, labels
 
 # save data
-test, _ = process(&#039;./stage1_test/&#039;, False)
+test, _ = process('./stage1_test/', False)
 test = np.array(test)
-np.savez(&#039;test&#039;, datas=test)
-train_data, train_label = process(&#039;./stage1_train/&#039;)
+np.savez('test', datas=test)
+train_data, train_label = process('./stage1_train/')
 train_data = np.array(train_data)
 train_label = np.array(train_label)
-np.savez(&#039;train&#039;, datas=train_data, labels=train_label)</code></pre>
-<p><img src="/media/tangger/资料/文档库/生物医学影像处理PPT/image_segmentation/unet/result.png" alt="result"></p>
+np.savez('train', datas=train_data, labels=train_label)</code></pre>
+<p><img src="/media/tangger/%E8%B5%84%E6%96%99/%E6%96%87%E6%A1%A3%E5%BA%93/%E7%94%9F%E7%89%A9%E5%8C%BB%E5%AD%A6%E5%BD%B1%E5%83%8F%E5%A4%84%E7%90%86PPT/image_segmentation/unet/result.png" alt="result"></p>
 <p><strong>TODO：</strong>笔记本跑起来太慢，并且代码好像有点儿问题，先就这样，后续填坑了放到个人博客上。</p>
 <h2>
 <a name="toc-39"></a>参考资料</h2>
@@ -830,7 +830,7 @@ np.savez(&#039;train&#039;, datas=train_data, labels=train_label)</code></pre>
 <input type="hidden" name="comment_parent" id="comment_parent" value="0">
 </p>
 </form>	</div>
-<!-- #respond -->
+
 	
 </div>	</div>
 </div>
@@ -882,10 +882,10 @@ np.savez(&#039;train&#039;, datas=train_data, labels=train_label)</code></pre>
 <div class="footer">
 	<div class="container w-container">
 		<div class="footer-text">
-			Copyright2021. All Rights Reserved.&nbsp;			
+			Copyright2021. All Rights Reserved. 			
 						
 			
-				&nbsp;<a rel="nofollow" target="_blank" href="https://beian.miit.gov.cn/">渝ICP备19011860号-2</a>
+				 <a rel="nofollow" target="_blank" href="https://beian.miit.gov.cn/">渝ICP备19011860号-2</a>
 
 					</div>
 		

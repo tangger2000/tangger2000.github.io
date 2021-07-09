@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-<title>记录——树莓派搭建内网DNS服务器并实现内网域名解析 &#8211; 翰林木子的笔记本</title>
-<meta name="description" content="前言 我想在内网搭建一个DNS服务器来实现在内网中，用外网不存在的域名后缀网址来访问内网资源。 Dnsmasq工作原理 当接受到一个DNS请求时，Dnsmasq首先会查找/etc/hosts这个文件，然后查找/etc/resolv.conf &hellip;">
+<title>记录——树莓派搭建内网DNS服务器并实现内网域名解析 – 翰林木子的笔记本</title>
+<meta name="description" content="前言 我想在内网搭建一个DNS服务器来实现在内网中，用外网不存在的域名后缀网址来访问内网资源。 Dnsmasq工作原理 当接受到一个DNS请求时，Dnsmasq首先会查找/etc/hosts这个文件，然后查找/etc/resolv.conf …">
 <meta name="keywords" content="DNS,dnsmasq,树莓派">
 <meta name="robots" content="max-image-preview:large">
 <link rel="dns-prefetch" href="//cdn.staticfile.org">
@@ -22,7 +22,7 @@
 <script type="text/javascript" src="/wp-includes/js/jquery/jquery-migrate.min.js?ver=3.3.2" id="jquery-migrate-js"></script>
 <script type="text/javascript" src="/wp-content/themes/sweet/static/js/sweet.js?ver=5.7.2" id="sweet-js"></script>
 <script type="text/javascript" src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js?ver=5.7.2" id="fancybox-js"></script>
-<link rel="canonical" href="/2019/10/build-dnsmasq-server-on-raspberry-pi4/">
+
 <link href="/wp-content/uploads/2021/07/1617196601-favicon-32x32-1.png" rel="shortcut icon" type="image/x-icon">
 <link href="/wp-content/uploads/2021/07/1617196599-apple-touch-icon.png" rel="apple-touch-icon">
 <script type="text/javascript">
@@ -41,7 +41,7 @@
 			<img class="logo" src="/wp-content/uploads/2021/07/1617196599-apple-touch-icon.png">
 		</a>
 				<nav class="nav-menu w-nav-menu">
-			<li id="menu-item-97" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-97"><a href="https://ytlee.cn/">首页</a></li>
+			<li id="menu-item-97" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-97"><a href="https://wp.ytlee.cn/">首页</a></li>
 <li id="menu-item-99" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-99"><a href="/category/note/">笔记本</a></li>
 <li id="menu-item-100" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-100"><a href="/category/draft/">草稿本</a></li>
 <li id="menu-item-103" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-103"><a href="/about-me/">关于我</a></li>
@@ -51,7 +51,7 @@
 			</div>
 		</div>
 		<div class="rightNav">
-			<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-97"><a href="https://ytlee.cn/">首页</a></li>
+			<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-97"><a href="https://wp.ytlee.cn/">首页</a></li>
 <li class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-99"><a href="/category/note/">笔记本</a></li>
 <li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-100"><a href="/category/draft/">草稿本</a></li>
 <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-103"><a href="/about-me/">关于我</a></li>
@@ -199,8 +199,8 @@ iptables -A INPUT -p tcp -m tcp --dport 53 -j ACCEPT
 
 2.转发DNS请求
 # 开启流量转发功能
-echo &#039;1&#039; &gt; /proc/sys/net/ipv4/ip_forward
-echo &#039;1&#039; &gt; /proc/sys/net/ipv6/ip_forward  
+echo '1' > /proc/sys/net/ipv4/ip_forward
+echo '1' > /proc/sys/net/ipv6/ip_forward  
 
 # IPv6 用户选用
 # 添加流量转发规则，将外部到53的端口的请求映射到Dnsmasq服务器的53端口
@@ -271,7 +271,7 @@ resolv-file=/etc/dnsmasq.d/upstream_dns.conf
 
 如果你不想Dnsmasq读取/etc/resolv.conf文件或者其他文件，获得它的servers
 
-# If you don&#039;t want dnsmasq to read /etc/resolv.conf or any other
+# If you don't want dnsmasq to read /etc/resolv.conf or any other
 
 # file, getting its servers from this file instead (see below), then
 
@@ -351,7 +351,7 @@ resolv-file=/etc/dnsmasq.d/upstream_dns.conf
 
 # even when it is listening on only some interfaces. It then discards
 
-# requests that it shouldn&#039;t reply to. This has the advantage of
+# requests that it shouldn't reply to. This has the advantage of
 
 # working even when interfaces come and go and change address. If you
 
@@ -432,7 +432,7 @@ cache-size=150</code></pre>
 <input type="hidden" name="comment_parent" id="comment_parent" value="0">
 </p>
 </form>	</div>
-<!-- #respond -->
+
 	
 </div>	</div>
 </div>
@@ -484,10 +484,10 @@ cache-size=150</code></pre>
 <div class="footer">
 	<div class="container w-container">
 		<div class="footer-text">
-			Copyright2021. All Rights Reserved.&nbsp;			
+			Copyright2021. All Rights Reserved. 			
 						
 			
-				&nbsp;<a rel="nofollow" target="_blank" href="https://beian.miit.gov.cn/">渝ICP备19011860号-2</a>
+				 <a rel="nofollow" target="_blank" href="https://beian.miit.gov.cn/">渝ICP备19011860号-2</a>
 
 					</div>
 		

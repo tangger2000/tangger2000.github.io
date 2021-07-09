@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-<title>记录——os.listdir列表不固定的坑 &#8211; 翰林木子的笔记本</title>
-<meta name="description" content="前言 这段时间跟着老师跑深度神经网络的实验，在学长的带领下，慢慢的熟悉了跑实验的流程。之前在自己手生的时候，模仿read_cifar10.py写了一段数据读取的代码，在跑二分类的时候，没有问题，因为那个时候 &hellip;">
+<title>记录——os.listdir列表不固定的坑 – 翰林木子的笔记本</title>
+<meta name="description" content="前言 这段时间跟着老师跑深度神经网络的实验，在学长的带领下，慢慢的熟悉了跑实验的流程。之前在自己手生的时候，模仿read_cifar10.py写了一段数据读取的代码，在跑二分类的时候，没有问题，因为那个时候 …">
 <meta name="keywords" content="Python">
 <meta name="robots" content="max-image-preview:large">
 <link rel="dns-prefetch" href="//cdn.staticfile.org">
@@ -22,7 +22,7 @@
 <script type="text/javascript" src="/wp-includes/js/jquery/jquery-migrate.min.js?ver=3.3.2" id="jquery-migrate-js"></script>
 <script type="text/javascript" src="/wp-content/themes/sweet/static/js/sweet.js?ver=5.7.2" id="sweet-js"></script>
 <script type="text/javascript" src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js?ver=5.7.2" id="fancybox-js"></script>
-<link rel="canonical" href="/2020/06/os-listdir-will-cause-list-sort-result-to-be-unfixed/">
+
 <link href="/wp-content/uploads/2021/07/1617196601-favicon-32x32-1.png" rel="shortcut icon" type="image/x-icon">
 <link href="/wp-content/uploads/2021/07/1617196599-apple-touch-icon.png" rel="apple-touch-icon">
 <script type="text/javascript">
@@ -41,7 +41,7 @@
 			<img class="logo" src="/wp-content/uploads/2021/07/1617196599-apple-touch-icon.png">
 		</a>
 				<nav class="nav-menu w-nav-menu">
-			<li id="menu-item-97" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-97"><a href="https://ytlee.cn/">首页</a></li>
+			<li id="menu-item-97" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-97"><a href="https://wp.ytlee.cn/">首页</a></li>
 <li id="menu-item-99" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-99"><a href="/category/note/">笔记本</a></li>
 <li id="menu-item-100" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-100"><a href="/category/draft/">草稿本</a></li>
 <li id="menu-item-103" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-103"><a href="/about-me/">关于我</a></li>
@@ -51,7 +51,7 @@
 			</div>
 		</div>
 		<div class="rightNav">
-			<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-97"><a href="https://ytlee.cn/">首页</a></li>
+			<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-97"><a href="https://wp.ytlee.cn/">首页</a></li>
 <li class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-99"><a href="/category/note/">笔记本</a></li>
 <li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-100"><a href="/category/draft/">草稿本</a></li>
 <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-103"><a href="/about-me/">关于我</a></li>
@@ -107,25 +107,25 @@ from PIL import Image
 import numpy as np
 def Load_train_data():
     # 初始化4个用0填充的矩阵（np.zeros)
-    train_fir = np.zeros([1300, 224, 224, 3], dtype=&#039;float32&#039;)
-    train_sec = np.zeros([1300, 224, 224, 3], dtype=&#039;float32&#039;)
-    train_fir_label = np.zeros([1300, 2], dtype=&#039;float32&#039;)
-    train_sec_label = np.zeros([1300, 2], dtype=&#039;float32&#039;)
-    class_fir_path = &#039;./Train/Task1/02397096_pig/&#039;
-    class_sec_path = &#039;./Train/Task1/03100240_car/&#039;
+    train_fir = np.zeros([1300, 224, 224, 3], dtype='float32')
+    train_sec = np.zeros([1300, 224, 224, 3], dtype='float32')
+    train_fir_label = np.zeros([1300, 2], dtype='float32')
+    train_sec_label = np.zeros([1300, 2], dtype='float32')
+    class_fir_path = './Train/Task1/02397096_pig/'
+    class_sec_path = './Train/Task1/03100240_car/'
     # os.listdir 返回路径下的所有文件名，子目录的不返回，也不返回当前目录（./）和上级目录(../)
     cnt = 0
-    label = np.array([1, 0], dtype=&#039;float32&#039;)
+    label = np.array([1, 0], dtype='float32')
     for file in os.listdir(class_fir_path):
-        img = Image.open(class_fir_path + file).convert(&quot;RGB&quot;)  # 将图片格式转化为rgb
+        img = Image.open(class_fir_path + file).convert("RGB")  # 将图片格式转化为rgb
         img = img.resize([224, 224], Image.ANTIALIAS)  # resize，为了防止过度失真，加上参数Image.ANTIALIAS
         train_fir[cnt] = img
         train_fir_label[cnt] = label
         cnt += 1
     cnt = 0
-    label = np.array([0, 1], dtype=&#039;float32&#039;)
+    label = np.array([0, 1], dtype='float32')
     for file in os.listdir(class_sec_path):
-        img = Image.open(class_sec_path + file).convert(&quot;RGB&quot;)
+        img = Image.open(class_sec_path + file).convert("RGB")
         img = img.resize([224, 224], Image.ANTIALIAS)
         train_sec[cnt] = img
         train_sec_label[cnt] = label
@@ -140,25 +140,25 @@ def Load_train_data():
     return train_data, train_label
 def Load_test_data():
     # 初始化4个用0填充的矩阵（np.zeros)
-    test_fir = np.zeros([50, 224, 224, 3], dtype=&#039;float32&#039;)
-    test_sec = np.zeros([50, 224, 224, 3], dtype=&#039;float32&#039;)
-    test_fir_label = np.zeros([50, 2], dtype=&#039;float32&#039;)
-    test_sec_label = np.zeros([50, 2], dtype=&#039;float32&#039;)
-    class_fir_path = &#039;./Test/Task1/02397096_Val/&#039;
-    class_sec_path = &#039;./Test/Task1/03100240_Val/&#039;
+    test_fir = np.zeros([50, 224, 224, 3], dtype='float32')
+    test_sec = np.zeros([50, 224, 224, 3], dtype='float32')
+    test_fir_label = np.zeros([50, 2], dtype='float32')
+    test_sec_label = np.zeros([50, 2], dtype='float32')
+    class_fir_path = './Test/Task1/02397096_Val/'
+    class_sec_path = './Test/Task1/03100240_Val/'
     # os.listdir 返回路径下的所有文件名，子目录的不返回，也不返回当前目录（./）和上级目录(../)
     cnt = 0
-    label = np.array([1, 0], dtype=&#039;float32&#039;)
+    label = np.array([1, 0], dtype='float32')
     for file in os.listdir(class_fir_path):
-        img = Image.open(class_fir_path + file).convert(&quot;RGB&quot;)  # 将图片格式转化为rgb
+        img = Image.open(class_fir_path + file).convert("RGB")  # 将图片格式转化为rgb
         img = img.resize([224, 224], Image.ANTIALIAS)  # resize，为了防止过度失真，加上参数Image.ANTIALIAS
         test_fir[cnt] = img
         test_fir_label[cnt] = label
         cnt += 1
     cnt = 0
-    label = np.array([0, 1], dtype=&#039;float32&#039;)
+    label = np.array([0, 1], dtype='float32')
     for file in os.listdir(class_sec_path):
-        img = Image.open(class_sec_path + file).convert(&quot;RGB&quot;)
+        img = Image.open(class_sec_path + file).convert("RGB")
         img = img.resize([224, 224], Image.ANTIALIAS)
         test_sec[cnt] = img
         test_sec_label[cnt] = label
@@ -168,10 +168,10 @@ def Load_test_data():
     test_label = np.concatenate([test_fir_label, test_sec_label], axis=0)
     return test_data, test_label
 def Get_batchdata(data, labels, batch_size, i):
-    x = np.zeros([batch_size, 224, 224, 3], dtype=&#039;float32&#039;)
-    y = np.zeros([batch_size, 2], dtype=&#039;float32&#039;)
+    x = np.zeros([batch_size, 224, 224, 3], dtype='float32')
+    y = np.zeros([batch_size, 2], dtype='float32')
     size = data.shape[0]
-    if np.random.random() &gt; 0.:
+    if np.random.random() > 0.:
         for i in range(batch_size):
             index = np.random.randint(0, size)
             x[i, ...] = data[index, ...]
@@ -199,7 +199,7 @@ def norm_std_each(data):
         data[i, ...] = (data[i, ...] - mean_i) / std_i
     # data[i,...] = data[i,...] - mean_i
     return data
-if __name__ == &quot;__main__&quot;:
+if __name__ == "__main__":
     Load_train_data()</code></pre>
 <p>这版代码最大的问题在于，不方便，跑二分类是不会碰到os.listdir的问题的，因为他返回的是每个分类下所有图片的路径，图片矩阵和标签矩阵是不会混乱的。后来，我把代码改成了下面这样。</p>
 <h3>
@@ -207,8 +207,8 @@ if __name__ == &quot;__main__&quot;:
 <pre><code class="language-python">import os
 from PIL import Image
 import numpy as np
-train_path = &quot;./Train/Task1/&quot;
-test_path = &quot;./Test/Task1/&quot;
+train_path = "./Train/Task1/"
+test_path = "./Test/Task1/"
 class_num = 4
 def one_hot(cnt):
     return np.eye(class_num)[cnt]
@@ -217,14 +217,14 @@ def Load_data(dir_path, size):
     labels = []
     cnt = 0  # 记录分类数,传入one_hot函数，拿到该类的label
     for paths in os.listdir(dir_path):
-        path = dir_path + paths + &#039;/&#039;
+        path = dir_path + paths + '/'
         _label = one_hot(cnt)  # 每种分类的标签
         # 每一个类图片都新建一个数组存放该类的所有图片
-        data = np.zeros([size, 224, 224, 3], dtype=&#039;float32&#039;)
-        label = np.zeros([size, class_num], dtype=&#039;float32&#039;)
+        data = np.zeros([size, 224, 224, 3], dtype='float32')
+        label = np.zeros([size, class_num], dtype='float32')
         _cnt = 0  # 记录图片数
         for file in os.listdir(path):
-            img = Image.open(path + file).convert(&quot;RGB&quot;)
+            img = Image.open(path + file).convert("RGB")
             img = img.resize([224, 224], Image.ANTIALIAS)
             data[_cnt] = img
             label[_cnt] = _label  # 这个_label就是通过one_hot取到的该类的label,eg.[1,0,0,0]
@@ -252,10 +252,10 @@ def Load_test_data():
     test_labels = np.concatenate(labels, axis=0)
     return test_datas, test_labels
 def Get_batchdata(data, labels, batch_size, i):
-    x = np.zeros([batch_size, 224, 224, 3], dtype=&#039;float32&#039;)
-    y = np.zeros([batch_size, class_num], dtype=&#039;float32&#039;)
+    x = np.zeros([batch_size, 224, 224, 3], dtype='float32')
+    y = np.zeros([batch_size, class_num], dtype='float32')
     size = data.shape[0]
-    if np.random.random() &gt; 0.:
+    if np.random.random() > 0.:
         for i in range(batch_size):
             index = np.random.randint(0, size)
             x[i, ...] = data[index, ...]
@@ -283,21 +283,21 @@ def norm_std_each(data):
         data[i, ...] = (data[i, ...] - mean_i) / std_i
     # data[i,...] = data[i,...] - mean_i
     return data
-if __name__ == &quot;__main__&quot;:
+if __name__ == "__main__":
     Load_train_data()</code></pre>
 <p>看起来，第二版代码比第一版代码在数量上没有什么区别，但，难道我跑四分类或者更多的时候，我在第一版的上面就不断的cv操作吗？那得多麻烦啊。所以，机智如我，就改成了上面的代码（懒得写注释）。<br>
 于是，当他跑起来的时候，训练集的准确率是没有问题的，但是测试集的准确率就有问题了。</p>
 <h2>
 <a name="toc-4"></a>问题</h2>
-<p><img src="https://ytlee.cn/post-images/1596528969434.png" alt="img"></p>
+<p><img src="https://wp.ytlee.cn/post-images/1596528969434.png" alt="img"></p>
 <p>如上图一样，训练集的准确率（train_pr）是ok的。但是，看看test C accuracy（测试集的准确率），低得可怕有木有？<br>
 我和学长一起检测的几次代码，我以为是concatenate的时候的问题。于是我单独测试了上面的代码，在本地跑一下看看，标签和数据是否一一对应，打乱的时候是否正常打乱。</p>
 <h2>
 <a name="toc-5"></a>二分类第一版代码的调试结果</h2>
-<p><img src="https://ytlee.cn/post-images/1596529057680.png" alt="img"></p>
+<p><img src="https://wp.ytlee.cn/post-images/1596529057680.png" alt="img"></p>
 <h2>
 <a name="toc-6"></a>四分类第二版代码的调试结果</h2>
-<p><img src="https://ytlee.cn/post-images/1596529099352.png" alt="img"></p>
+<p><img src="https://wp.ytlee.cn/post-images/1596529099352.png" alt="img"></p>
 <p>我还分别作了二分类第一次代码的调试，但是，没有留存截图。<br>
 分析调试结果，很容易的发现，you know，数据和标签确实是一一对应的。</p>
 <h2>
@@ -305,11 +305,11 @@ if __name__ == &quot;__main__&quot;:
 <p>我思考，既然打标签没有问题，那么究竟是哪儿有问题呢？嗯，说出来可能不信，我猜测了几次后，最后一次我猜测是读取的文件路径不对，什么意思？就是，每一个分类的训练集和测试集的标签要是一样的，这就必须保证，在获取每个分类的测试集和训练集文件路径的顺序是一样的。但是，坑就坑在，os.listdir不是固定的。<br>
 我用下面的代码，获得了下面的结果，进一步的确定的我的猜测</p>
 <pre><code class="language-python">import os
-train_path = &quot;./Train/Task1/&quot;
-test_path = &quot;./Test/Task1/&quot;
+train_path = "./Train/Task1/"
+test_path = "./Test/Task1/"
 def Load_data(dir_path):
     for paths in os.listdir(dir_path):
-        path = dir_path + paths + &#039;/&#039;
+        path = dir_path + paths + '/'
         print(path)
 def Load_train_data():
     # 返回所有训练类的数据、标签列表
@@ -318,15 +318,15 @@ def Load_train_data():
 def Load_test_data():
     Load_data(test_path)
 
-if __name__ == &quot;__main__&quot;:
+if __name__ == "__main__":
     Load_train_data()
     Load_test_data()</code></pre>
 <h3>
 <a name="toc-8"></a>本地结果</h3>
-<p><img src="https://ytlee.cn/post-images/1596529142789.png" alt="img"></p>
+<p><img src="https://wp.ytlee.cn/post-images/1596529142789.png" alt="img"></p>
 <h3>
 <a name="toc-9"></a>服务器结果</h3>
-<p><img src="https://ytlee.cn/post-images/1596529159358.png" alt="img"></p>
+<p><img src="https://wp.ytlee.cn/post-images/1596529159358.png" alt="img"></p>
 <p>果然，如我所猜测的那样。</p>
 <h2>
 <a name="toc-10"></a>解决办法</h2>
@@ -337,8 +337,8 @@ if __name__ == &quot;__main__&quot;:
 <pre><code class="language-python">import os
 from PIL import Image
 import numpy as np
-train_path = &quot;./Train/Task1/&quot;
-test_path = &quot;./Test/Task1/&quot;
+train_path = "./Train/Task1/"
+test_path = "./Test/Task1/"
 class_num = 4
 def one_hot(cnt):
     return np.eye(class_num)[cnt]
@@ -349,14 +349,14 @@ def Load_data(dir_path, size):
     paths = os.listdir(dir_path)
     paths.sort()   # 这行千万别删，删了就gg
     for _path in paths:
-        path = dir_path + _path + &#039;/&#039;
+        path = dir_path + _path + '/'
         _label = one_hot(cnt)  # 每种分类的标签
         # 每一个类图片都新建一个数组存放该类的所有图片
-        data = np.zeros([size, 224, 224, 3], dtype=&#039;float32&#039;)
-        label = np.zeros([size, class_num], dtype=&#039;float32&#039;)
+        data = np.zeros([size, 224, 224, 3], dtype='float32')
+        label = np.zeros([size, class_num], dtype='float32')
         _cnt = 0  # 记录图片数
         for file in os.listdir(path):
-            img = Image.open(path + file).convert(&quot;RGB&quot;)
+            img = Image.open(path + file).convert("RGB")
             img = img.resize([224, 224], Image.ANTIALIAS)
             data[_cnt] = img
             label[_cnt] = _label  # 这个_label就是通过one_hot取到的该类的label,eg.[1,0,0,0]
@@ -384,10 +384,10 @@ def Load_test_data():
     test_labels = np.concatenate(labels, axis=0)
     return test_datas, test_labels
 def Get_batchdata(data, labels, batch_size, i):
-    x = np.zeros([batch_size, 224, 224, 3], dtype=&#039;float32&#039;)
-    y = np.zeros([batch_size, class_num], dtype=&#039;float32&#039;)
+    x = np.zeros([batch_size, 224, 224, 3], dtype='float32')
+    y = np.zeros([batch_size, class_num], dtype='float32')
     size = data.shape[0]
-    if np.random.random() &gt; 0.:
+    if np.random.random() > 0.:
         for i in range(batch_size):
             index = np.random.randint(0, size)
             x[i, ...] = data[index, ...]
@@ -415,7 +415,7 @@ def norm_std_each(data):
         data[i, ...] = (data[i, ...] - mean_i) / std_i
     # data[i,...] = data[i,...] - mean_i
     return data
-if __name__ == &quot;__main__&quot;:
+if __name__ == "__main__":
     Load_train_data()
     Load_test_data()</code></pre>
 <h2>
@@ -451,7 +451,7 @@ if __name__ == &quot;__main__&quot;:
 <input type="hidden" name="comment_parent" id="comment_parent" value="0">
 </p>
 </form>	</div>
-<!-- #respond -->
+
 	
 </div>	</div>
 </div>
@@ -503,10 +503,10 @@ if __name__ == &quot;__main__&quot;:
 <div class="footer">
 	<div class="container w-container">
 		<div class="footer-text">
-			Copyright2021. All Rights Reserved.&nbsp;			
+			Copyright2021. All Rights Reserved. 			
 						
 			
-				&nbsp;<a rel="nofollow" target="_blank" href="https://beian.miit.gov.cn/">渝ICP备19011860号-2</a>
+				 <a rel="nofollow" target="_blank" href="https://beian.miit.gov.cn/">渝ICP备19011860号-2</a>
 
 					</div>
 		

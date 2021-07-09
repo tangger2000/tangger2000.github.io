@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-<title>笔记——C++基础之结构体&#038;指针 &#8211; 翰林木子的笔记本</title>
-<meta name="description" content="C++笔记之结构体 这学期选了C++，刚刚入手，记录了一些关于C++的东西，这篇文章主要是总结的结构体和指针。 结构体 //结构体 #include #include using namespace std; //自定义数据类型，一些类型集合组成 &hellip;">
+<title>笔记——C++基础之结构体&指针 – 翰林木子的笔记本</title>
+<meta name="description" content="C++笔记之结构体 这学期选了C++，刚刚入手，记录了一些关于C++的东西，这篇文章主要是总结的结构体和指针。 结构体 //结构体 #include #include using namespace std; //自定义数据类型，一些类型集合组成 …">
 <meta name="keywords" content="C">
 <meta name="robots" content="max-image-preview:large">
 <link rel="dns-prefetch" href="//cdn.staticfile.org">
@@ -19,7 +19,7 @@
 <script type="text/javascript" src="/wp-includes/js/jquery/jquery-migrate.min.js?ver=3.3.2" id="jquery-migrate-js"></script>
 <script type="text/javascript" src="/wp-content/themes/sweet/static/js/sweet.js?ver=5.7.2" id="sweet-js"></script>
 <script type="text/javascript" src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js?ver=5.7.2" id="fancybox-js"></script>
-<link rel="canonical" href="/2020/03/cpp_structure_and_pointer/">
+
 <link href="/wp-content/uploads/2021/07/1617196601-favicon-32x32-1.png" rel="shortcut icon" type="image/x-icon">
 <link href="/wp-content/uploads/2021/07/1617196599-apple-touch-icon.png" rel="apple-touch-icon">
 <script type="text/javascript">
@@ -38,7 +38,7 @@
 			<img class="logo" src="/wp-content/uploads/2021/07/1617196599-apple-touch-icon.png">
 		</a>
 				<nav class="nav-menu w-nav-menu">
-			<li id="menu-item-97" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-97"><a href="https://ytlee.cn/">首页</a></li>
+			<li id="menu-item-97" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-97"><a href="https://wp.ytlee.cn/">首页</a></li>
 <li id="menu-item-99" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-99"><a href="/category/note/">笔记本</a></li>
 <li id="menu-item-100" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-100"><a href="/category/draft/">草稿本</a></li>
 <li id="menu-item-103" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-103"><a href="/about-me/">关于我</a></li>
@@ -48,7 +48,7 @@
 			</div>
 		</div>
 		<div class="rightNav">
-			<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-97"><a href="https://ytlee.cn/">首页</a></li>
+			<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-97"><a href="https://wp.ytlee.cn/">首页</a></li>
 <li class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-99"><a href="/category/note/">笔记本</a></li>
 <li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-100"><a href="/category/draft/">草稿本</a></li>
 <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-103"><a href="/about-me/">关于我</a></li>
@@ -68,7 +68,7 @@
 				<a href="/category/note/" rel="category tag">笔记本</a>				<div class="blog-post-header">
 					<div class="blog-header-title-wrapper">
 						<div class="blog-post-date">2020-03-01</div>
-						<h1 class="blog-post-title">笔记——C++基础之结构体&#038;指针</h1>
+						<h1 class="blog-post-title">笔记——C++基础之结构体&指针</h1>
 					</div>
 				</div>
 			</div>
@@ -119,10 +119,10 @@ int main() {
     //法1： struct student s1;
     //c++中struct关键字可以省略
     student s1;
-    s1.name = &quot;张三&quot;;
+    s1.name = "张三";
     s1.age = 19;
     s1.score = 99;
-    cout &lt;&lt; &quot;姓名： &quot;&lt;&lt; s1.name &lt;&lt; &quot;年龄：&quot; &lt;&lt; s1.age &lt;&lt; &quot;分数： &quot;&lt;&lt; s1.score &lt;</code></pre>
+    cout << "姓名： "<< s1.name << "年龄：" << s1.age << "分数： "<< s1.score <</code></pre>
 <blockquote>
 <ol>
 <li><code>在c++中，创建结构体变量的时候struct关键字可以省略，但是定义结构的时候不可省略</code></li>
@@ -147,13 +147,13 @@ struct student{
 int main() {
     struct student arr[3]=
             {
-                    {&quot;张三&quot;,19,98},
-                    {&quot;李四&quot;,18,97},
-                    {&quot;王五&quot;,20,89}
+                    {"张三",19,98},
+                    {"李四",18,97},
+                    {"王五",20,89}
             };
 
-    for(struct student &amp;i : arr)
-        cout &lt;&lt; &quot;姓名：&quot; &lt;&lt; i.name &lt;&lt; &quot; 年龄：&quot;&lt;&lt; i.age &lt;&lt; &quot; 成绩:&quot;&lt;&lt; i.score &lt;</code></pre>
+    for(struct student &i : arr)
+        cout << "姓名：" << i.name << " 年龄："<< i.age << " 成绩:"<< i.score <</code></pre>
 <h2>
 <a name="toc-4"></a>结构体指针</h2>
 <pre><code class="language-c++">//结构体指针
@@ -171,15 +171,15 @@ struct student{
 
 int main() {
     //创建结构体变量
-    struct student s = {&quot;张三&quot;,19,99};
+    struct student s = {"张三",19,99};
 
     //通过指针指向结构体变量(结构体类型的指针)
     //c++中，创建结构体变量的时候可以省略struct关键字
-    student *p = &amp;s;
+    student *p = &s;
 
     //利用指针访问结构体变量的内容
-    //通过结构体指针访问结构体内的属性，需要用&quot;-&gt;&quot;运算符来访问
-    cout &lt;&lt; &quot;姓名：&quot; &lt;&lt; p-&gt;name &lt;&lt; &quot; 年龄：&quot;&lt;&lt; p-&gt;age &lt;&lt; &quot; 成绩:&quot;&lt;&lt; p-&gt;score &lt;</code></pre>
+    //通过结构体指针访问结构体内的属性，需要用"->"运算符来访问
+    cout << "姓名：" << p->name << " 年龄："<< p->age << " 成绩:"<< p->score <</code></pre>
 <blockquote>
 <pre><code>通过结构体指针访问结构体内的属性，需要用"->"运算符来访问</code></pre>
 </blockquote>
@@ -212,13 +212,13 @@ int main() {
      //创建老师
      teacher t;
      t.id = 10000;
-     t.name = &quot;老王&quot;;
+     t.name = "老王";
      t.age = 50;
-     t.stu.name = &quot;小王&quot;;
+     t.stu.name = "小王";
      t.stu.age = 18;
      t.stu.score = 90;
 
-     cout &lt;&lt; &quot;老师姓名：&quot;&lt;&lt; t.name &lt;&lt; &quot; 老师编号：&quot;&lt;</code></pre>
+     cout << "老师姓名："<< t.name << " 老师编号："<</code></pre>
 <h2>
 <a name="toc-6"></a>结构体做函数参数</h2>
 <pre><code class="language-c++">//结构体做函数参数
@@ -237,17 +237,17 @@ struct student{
 //值传递
 void printStudent1(struct student s)
 {
-    cout &lt;&lt; &quot;值传递子函数中打印&quot; &lt;name &lt;&lt; &quot; 年龄：&quot; &lt;&lt; p-&gt;age &lt;&lt;&quot; 成绩：&quot;&lt;score&lt;age = 30;
+    cout << "值传递子函数中打印" <name << " 年龄：" << p->age <<" 成绩："<score<age = 30;
 }
 
 int main() {
     //将学生的传入一个参数中，打印学生身上的所有信息
     student stu;
-    stu.name = &quot;张三&quot;;
+    stu.name = "张三";
     stu.age = 20;
     stu.score = 89;
 
-    cout &lt;&lt; &quot;main函数中打印&quot; &lt;</code></pre>
+    cout << "main函数中打印" <</code></pre>
 <h2>
 <a name="toc-7"></a>结构体中const使用场景</h2>
 <blockquote>
@@ -270,8 +270,8 @@ struct student{
 /*
 void printStudent(student s)
 {
-    cout &lt;&lt; &quot;姓名：&quot; &lt;age = 21;
-    cout &lt;&lt; &quot;姓名：&quot; &lt;name &lt;&lt; &quot; 年龄：&quot; &lt;&lt; s-&gt;age &lt;&lt;&quot; 成绩：&quot;&lt;score&lt;</code></pre>
+    cout << "姓名：" <age = 21;
+    cout << "姓名：" <name << " 年龄：" << s->age <<" 成绩："<score<</code></pre>
 <h2>
 <a name="toc-8"></a>案例一</h2>
 <blockquote>
@@ -300,7 +300,7 @@ struct Teacher
 void allocateSpace(struct Teacher tArray[], int len)
 {
     //设立编号种子，后续拼接
-    string nameSeed = &quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;;
+    string nameSeed = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     for(int i=0;i</code></pre>
 <h2>
 <a name="toc-9"></a>案例二</h2>
@@ -350,12 +350,12 @@ using namespace std;
 
 int main() {
     int a = 10;
-    int *p = &amp;a;
-    cout &lt;&lt;&quot;a的地址: &quot; &lt;&lt; &amp;a &lt;&lt; endl;
-    cout &lt;&lt; &quot;p为&quot; &lt;&lt; p &lt;&lt; endl;
-    cout &lt;&lt; &quot;p的地址为: &quot; &lt;&lt; &amp;p &lt;&lt; endl;
-    cout &lt;&lt;&quot;*p为&quot; &lt;&lt; *p &lt;&lt; endl;
-    cout &lt;&lt;&quot;指针的占⽤用空间⼤大⼩小:&quot; &lt;&lt; sizeof(p) &lt;</code></pre>
+    int *p = &a;
+    cout <<"a的地址: " << &a << endl;
+    cout << "p为" << p << endl;
+    cout << "p的地址为: " << &p << endl;
+    cout <<"*p为" << *p << endl;
+    cout <<"指针的占⽤用空间⼤大⼩小:" << sizeof(p) <</code></pre>
 <h2>
 <a name="toc-12"></a><strong>const</strong>指针</h2>
 <pre><code class="language-c++">//指针(2)
@@ -379,8 +379,8 @@ int main() {
 
     //常量指针
     // 常量指针: 可以改变指针的指向，不能改变指针的内容,const限定*p为常量 
-  const int *p = &amp;a;
-    cout &lt;&lt; &quot;改变指针指向前: &quot; &lt;&lt; *p &lt;</code></pre>
+  const int *p = &a;
+    cout << "改变指针指向前: " << *p <</code></pre>
 <h2>
 <a name="toc-13"></a>指针和数组</h2>
 <pre><code class="language-c++">//指针(3)
@@ -392,7 +392,7 @@ int main() { //指针和数组
     //利用指针访问数组中的元素
 
     int arr[10] = {0,1,2,3,4,5,6,7,8,9}; 
-  cout &lt;&lt; &quot;利用数组输出数组&quot; &lt;</code></pre>
+  cout << "利用数组输出数组" <</code></pre>
 <h2>
 <a name="toc-14"></a>指针和函数</h2>
 <pre><code class="language-c++">//指针(4)
@@ -404,7 +404,7 @@ void swap_num(int a, int b) {
     int temp = a;
     a = b;
     b = temp;
-    cout &lt;&lt; &quot;【值传递】交换中的a:&quot; &lt;&lt; a &lt;
+    cout << "【值传递】交换中的a:" << a <
 **值传递不不会改变实参的值**，**地址传递会改变实参的值**</code></pre>
 <h2>
 <a name="toc-15"></a>指针、数组、函数</h2>
@@ -430,13 +430,13 @@ void bubbleSort(int *arr,int len) {
 int main() { //指针、数组、函数
         int arr[10]={4,3,6,9,1,2,10,8,7,5};
 
-    cout &lt;&lt; &quot;排序前&quot; &lt;&lt; endl; 
+    cout << "排序前" << endl; 
     for(int i:arr)
-        cout &lt;&lt; i &lt;&lt; &quot; &quot;;
+        cout << i << " ";
 
     bubbleSort(arr,10);
 
-    cout &lt;
+    cout <
 **数组名就是数组首地址**
 arr[i] = *(arr+i)</code></pre>
 									</div>
@@ -469,7 +469,7 @@ arr[i] = *(arr+i)</code></pre>
 <input type="hidden" name="comment_parent" id="comment_parent" value="0">
 </p>
 </form>	</div>
-<!-- #respond -->
+
 	
 </div>	</div>
 </div>
@@ -521,10 +521,10 @@ arr[i] = *(arr+i)</code></pre>
 <div class="footer">
 	<div class="container w-container">
 		<div class="footer-text">
-			Copyright2021. All Rights Reserved.&nbsp;			
+			Copyright2021. All Rights Reserved. 			
 						
 			
-				&nbsp;<a rel="nofollow" target="_blank" href="https://beian.miit.gov.cn/">渝ICP备19011860号-2</a>
+				 <a rel="nofollow" target="_blank" href="https://beian.miit.gov.cn/">渝ICP备19011860号-2</a>
 
 					</div>
 		

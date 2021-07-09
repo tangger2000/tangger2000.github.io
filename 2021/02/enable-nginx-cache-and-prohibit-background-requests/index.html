@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-<title>NGINX反代配置挡掉WordPress的后台请求并开启NGINX缓存 &#8211; 翰林木子的笔记本</title>
-<meta name="description" content="前言 ​ 先前已经说过，我将整个WordPress主体搬迁到了某小鸡的Docker容器中。然而，此时对于我而言，我并不想暴露我的这台小鸡，且同时我还有个腾讯云的学生机处于闲置状态。综上原因，我在腾讯云的小鸡上 &hellip;">
+<title>NGINX反代配置挡掉WordPress的后台请求并开启NGINX缓存 – 翰林木子的笔记本</title>
+<meta name="description" content="前言 ​ 先前已经说过，我将整个WordPress主体搬迁到了某小鸡的Docker容器中。然而，此时对于我而言，我并不想暴露我的这台小鸡，且同时我还有个腾讯云的学生机处于闲置状态。综上原因，我在腾讯云的小鸡上 …">
 <meta name="keywords" content="Linux,NGINX,WordPress">
 <meta name="robots" content="max-image-preview:large">
 <link rel="dns-prefetch" href="//cdn.staticfile.org">
@@ -22,7 +22,7 @@
 <script type="text/javascript" src="/wp-includes/js/jquery/jquery-migrate.min.js?ver=3.3.2" id="jquery-migrate-js"></script>
 <script type="text/javascript" src="/wp-content/themes/sweet/static/js/sweet.js?ver=5.7.2" id="sweet-js"></script>
 <script type="text/javascript" src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js?ver=5.7.2" id="fancybox-js"></script>
-<link rel="canonical" href="/2021/02/enable-nginx-cache-and-prohibit-background-requests/">
+
 <link href="/wp-content/uploads/2021/07/1617196601-favicon-32x32-1.png" rel="shortcut icon" type="image/x-icon">
 <link href="/wp-content/uploads/2021/07/1617196599-apple-touch-icon.png" rel="apple-touch-icon">
 <script type="text/javascript">
@@ -41,7 +41,7 @@
 			<img class="logo" src="/wp-content/uploads/2021/07/1617196599-apple-touch-icon.png">
 		</a>
 				<nav class="nav-menu w-nav-menu">
-			<li id="menu-item-97" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-97"><a href="https://ytlee.cn/">首页</a></li>
+			<li id="menu-item-97" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-97"><a href="https://wp.ytlee.cn/">首页</a></li>
 <li id="menu-item-99" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-99"><a href="/category/note/">笔记本</a></li>
 <li id="menu-item-100" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-100"><a href="/category/draft/">草稿本</a></li>
 <li id="menu-item-103" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-103"><a href="/about-me/">关于我</a></li>
@@ -51,7 +51,7 @@
 			</div>
 		</div>
 		<div class="rightNav">
-			<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-97"><a href="https://ytlee.cn/">首页</a></li>
+			<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-97"><a href="https://wp.ytlee.cn/">首页</a></li>
 <li class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-99"><a href="/category/note/">笔记本</a></li>
 <li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-100"><a href="/category/draft/">草稿本</a></li>
 <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-103"><a href="/about-me/">关于我</a></li>
@@ -103,7 +103,7 @@
 <a name="toc-3"></a>挡掉*.php的请求</h3>
 <pre><code class="language-nginx">location  ~* \.(php)$
 {
-    rewrite ^ https://ytlee.cn;
+    rewrite ^ https://wp.ytlee.cn;
 }</code></pre>
 <p>​   如上，在反代配置中增改如上配置就可以挡掉所有对php的请求，很明显的，前端全是静态的HTML、JS、CSS、图像这些玩意儿，缓存到反代服务器就好了。</p>
 <h3>
@@ -114,7 +114,7 @@
 </ul>
 <pre><code class="language-nginx">location /wp-admin
 {
-    rewrite ^ https://ytlee.cn;
+    rewrite ^ https://wp.ytlee.cn;
 }</code></pre>
 <p><strong>注意：不要在/wp-admin后面多此一举的添加一个<code>/</code>，路由的意义就变了</strong></p>
 <ul>
@@ -123,7 +123,7 @@
 <pre><code class="language-nginx">location /
 {
 ...
-    sub_filter &quot;wp-admin&quot; &quot;404&quot;;
+    sub_filter "wp-admin" "404";
     sub_filter_once off;
 ...
 }</code></pre>
@@ -288,7 +288,7 @@ proxy_cache WORDPRESS;
 <input type="hidden" name="comment_parent" id="comment_parent" value="0">
 </p>
 </form>	</div>
-<!-- #respond -->
+
 	
 </div>	</div>
 </div>
@@ -340,10 +340,10 @@ proxy_cache WORDPRESS;
 <div class="footer">
 	<div class="container w-container">
 		<div class="footer-text">
-			Copyright2021. All Rights Reserved.&nbsp;			
+			Copyright2021. All Rights Reserved. 			
 						
 			
-				&nbsp;<a rel="nofollow" target="_blank" href="https://beian.miit.gov.cn/">渝ICP备19011860号-2</a>
+				 <a rel="nofollow" target="_blank" href="https://beian.miit.gov.cn/">渝ICP备19011860号-2</a>
 
 					</div>
 		

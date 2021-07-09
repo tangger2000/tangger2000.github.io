@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-<title>记录——树莓派4B通过SD卡辅助USB引导系统 &#8211; 翰林木子的笔记本</title>
-<meta name="description" content="前言 一个多月以前，我入手了一个树莓派4b（4g版）。当时买来主要是打算放在寝室，跑一个linux环境，以及干一些其他的事儿。如果你之前看过我的其他几篇文章一定知道，我还有一个树莓派3B+，但是当时受限于 &hellip;">
+<title>记录——树莓派4B通过SD卡辅助USB引导系统 – 翰林木子的笔记本</title>
+<meta name="description" content="前言 一个多月以前，我入手了一个树莓派4b（4g版）。当时买来主要是打算放在寝室，跑一个linux环境，以及干一些其他的事儿。如果你之前看过我的其他几篇文章一定知道，我还有一个树莓派3B+，但是当时受限于 …">
 <meta name="keywords" content="树莓派">
 <meta name="robots" content="max-image-preview:large">
 <link rel="dns-prefetch" href="//cdn.staticfile.org">
@@ -22,7 +22,7 @@
 <script type="text/javascript" src="/wp-includes/js/jquery/jquery-migrate.min.js?ver=3.3.2" id="jquery-migrate-js"></script>
 <script type="text/javascript" src="/wp-content/themes/sweet/static/js/sweet.js?ver=5.7.2" id="sweet-js"></script>
 <script type="text/javascript" src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js?ver=5.7.2" id="fancybox-js"></script>
-<link rel="canonical" href="/2019/10/raspberry-pi-4b-assists-usb-boot-system-via-sd-card/">
+
 <link href="/wp-content/uploads/2021/07/1617196601-favicon-32x32-1.png" rel="shortcut icon" type="image/x-icon">
 <link href="/wp-content/uploads/2021/07/1617196599-apple-touch-icon.png" rel="apple-touch-icon">
 <script type="text/javascript">
@@ -41,7 +41,7 @@
 			<img class="logo" src="/wp-content/uploads/2021/07/1617196599-apple-touch-icon.png">
 		</a>
 				<nav class="nav-menu w-nav-menu">
-			<li id="menu-item-97" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-97"><a href="https://ytlee.cn/">首页</a></li>
+			<li id="menu-item-97" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-97"><a href="https://wp.ytlee.cn/">首页</a></li>
 <li id="menu-item-99" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-99"><a href="/category/note/">笔记本</a></li>
 <li id="menu-item-100" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-100"><a href="/category/draft/">草稿本</a></li>
 <li id="menu-item-103" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-103"><a href="/about-me/">关于我</a></li>
@@ -51,7 +51,7 @@
 			</div>
 		</div>
 		<div class="rightNav">
-			<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-97"><a href="https://ytlee.cn/">首页</a></li>
+			<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-97"><a href="https://wp.ytlee.cn/">首页</a></li>
 <li class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-99"><a href="/category/note/">笔记本</a></li>
 <li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-100"><a href="/category/draft/">草稿本</a></li>
 <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-103"><a href="/about-me/">关于我</a></li>
@@ -111,7 +111,7 @@
 <li>
 <p>分别找到驱动器:</p>
 <p>通常情况下,blkid命令下的表单会包含 /dev/mmcblk0p<em>以及/dev/sda</em>,这时,我们需要记录下SSD/闪存盘下的rootfs文件系统的PARTUUID.</p>
-<p>如例子:/dev/sda2: LABEL=&quot;rootfs&quot; UUID=&quot;43f2d0bb-83be-464f-94d0-9a751f376c64&quot; TYPE=&quot;ext4&quot; <strong>PARTUUID=&quot;3b18e43a-02&quot;</strong></p>
+<p>如例子:/dev/sda2: LABEL="rootfs" UUID="43f2d0bb-83be-464f-94d0-9a751f376c64" TYPE="ext4" <strong>PARTUUID="3b18e43a-02"</strong></p>
 </li>
 <li>
 <p>编辑/boot/cmdline.txt:</p>
@@ -173,7 +173,7 @@ Last sector, +/-sectors or +/-size{K,M,G,T,P} (540672-500118191, default 5001181
 Created a new partition 2 of type 'Linux' and of size 238.2 GiB.
 Partition #2 contains a ext4 signature.
 Do you want to remove the signature? [Y]es/[N]o: n  （选择否）</code></pre>
-<p>如果上述操作,你确定没有问题了以后,你就可以输入&quot;w&quot;,将修改写入磁盘.否则的话,请输入&quot;q&quot;退出.</p>
+<p>如果上述操作,你确定没有问题了以后,你就可以输入"w",将修改写入磁盘.否则的话,请输入"q"退出.</p>
 <pre><code class="language-bash">最后一步:
 sudo resize2fs /dev/sda2
 稍等一下,有如下信息:
@@ -231,7 +231,7 @@ The filesystem on /dev/sda2 is now 62447190 (4k) blocks long.</code></pre>
 <input type="hidden" name="comment_parent" id="comment_parent" value="0">
 </p>
 </form>	</div>
-<!-- #respond -->
+
 	
 </div>	</div>
 </div>
@@ -283,10 +283,10 @@ The filesystem on /dev/sda2 is now 62447190 (4k) blocks long.</code></pre>
 <div class="footer">
 	<div class="container w-container">
 		<div class="footer-text">
-			Copyright2021. All Rights Reserved.&nbsp;			
+			Copyright2021. All Rights Reserved. 			
 						
 			
-				&nbsp;<a rel="nofollow" target="_blank" href="https://beian.miit.gov.cn/">渝ICP备19011860号-2</a>
+				 <a rel="nofollow" target="_blank" href="https://beian.miit.gov.cn/">渝ICP备19011860号-2</a>
 
 					</div>
 		

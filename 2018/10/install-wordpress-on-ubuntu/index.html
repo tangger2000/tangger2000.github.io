@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-<title>Ubuntu 18 手动部署LNMP环境并安装Wordpress &#8211; 翰林木子的笔记本</title>
-<meta name="description" content="PS:就TMD想吐槽一下，csdn和简书的教程，有时候如果不会查资料真的会误导人。对目前国内某些博客平台的文章不想多做评价，多看几篇文章，互为参考吧。这篇文章有点儿老了，是我大一上的时候弄的东西，当时 &hellip;">
+<title>Ubuntu 18 手动部署LNMP环境并安装Wordpress – 翰林木子的笔记本</title>
+<meta name="description" content="PS:就TMD想吐槽一下，csdn和简书的教程，有时候如果不会查资料真的会误导人。对目前国内某些博客平台的文章不想多做评价，多看几篇文章，互为参考吧。这篇文章有点儿老了，是我大一上的时候弄的东西，当时 …">
 <meta name="keywords" content="LNMP,Ubuntu">
 <meta name="robots" content="max-image-preview:large">
 <link rel="dns-prefetch" href="//cdn.staticfile.org">
@@ -22,7 +22,7 @@
 <script type="text/javascript" src="/wp-includes/js/jquery/jquery-migrate.min.js?ver=3.3.2" id="jquery-migrate-js"></script>
 <script type="text/javascript" src="/wp-content/themes/sweet/static/js/sweet.js?ver=5.7.2" id="sweet-js"></script>
 <script type="text/javascript" src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js?ver=5.7.2" id="fancybox-js"></script>
-<link rel="canonical" href="/2018/10/install-wordpress-on-ubuntu/">
+
 <link href="/wp-content/uploads/2021/07/1617196601-favicon-32x32-1.png" rel="shortcut icon" type="image/x-icon">
 <link href="/wp-content/uploads/2021/07/1617196599-apple-touch-icon.png" rel="apple-touch-icon">
 <script type="text/javascript">
@@ -41,7 +41,7 @@
 			<img class="logo" src="/wp-content/uploads/2021/07/1617196599-apple-touch-icon.png">
 		</a>
 				<nav class="nav-menu w-nav-menu">
-			<li id="menu-item-97" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-97"><a href="https://ytlee.cn/">首页</a></li>
+			<li id="menu-item-97" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-97"><a href="https://wp.ytlee.cn/">首页</a></li>
 <li id="menu-item-99" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-99"><a href="/category/note/">笔记本</a></li>
 <li id="menu-item-100" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-100"><a href="/category/draft/">草稿本</a></li>
 <li id="menu-item-103" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-103"><a href="/about-me/">关于我</a></li>
@@ -51,7 +51,7 @@
 			</div>
 		</div>
 		<div class="rightNav">
-			<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-97"><a href="https://ytlee.cn/">首页</a></li>
+			<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-97"><a href="https://wp.ytlee.cn/">首页</a></li>
 <li class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-99"><a href="/category/note/">笔记本</a></li>
 <li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-100"><a href="/category/draft/">草稿本</a></li>
 <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-103"><a href="/about-me/">关于我</a></li>
@@ -185,11 +185,11 @@ Remove test database and access to it? [Y/n]: （输入） Y<br>
 Reload privilege tables now? [Y/n]: （输入） Y</p>
 </blockquote>
 <p>然后，就进入了管理页。<br>
-现在，我们新建一个数据库（下面的所有命令都应该在mysql里面，你只能在mysql&gt;这个东西后面输入下面的命令）</p>
+现在，我们新建一个数据库（下面的所有命令都应该在mysql里面，你只能在mysql>这个东西后面输入下面的命令）</p>
 <pre><code class="language-mysql">CREATE DATABASE wordpress DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;</code></pre>
 <p>注：上面的wordpress即为数据库名称，注意，你可以修改成任意你想修改的内容，但是在下面的操作中，也要跟着修改哦！</p>
 <p>接下来，创建一个单独的MySQL用户帐户</p>
-<pre><code class="language-mysql">GRANT ALL ON wordpress.* TO &#039;wordpressuser&#039;@&#039;localhost&#039; IDENTIFIED BY &#039;password&#039;;</code></pre>
+<pre><code class="language-mysql">GRANT ALL ON wordpress.* TO 'wordpressuser'@'localhost' IDENTIFIED BY 'password';</code></pre>
 <p>注：wordpress是数据库，wordpressuser是用户名，password是密码。你可以修改，但要记住哦！</p>
 <p>现在您有了一个数据库和用户帐户，每个帐户都是专门为WordPress制作的。我们需要刷新特权，以便MySQL的当前实例知道我们最近所做的更改：</p>
 <pre><code class="language-mysql">FLUSH PRIVILEGES;</code></pre>
@@ -211,13 +211,13 @@ sudo chown -R www-data:www-data /var/www/wordpress（赋读写权）</code></pre
 <a name="toc-9"></a>（2）配置wordpress</h3>
 <p>依次执行下面的命令。</p>
 <pre><code class="language-shell">sudo nano /var/www/wordpress/wp-config.php
-define(&#039;DB_NAME&#039;, &#039;wordpress&#039;);数据库名称
+define('DB_NAME', 'wordpress');数据库名称
 /* MySQL database username /
-define(&#039;DB_USER&#039;, &#039;wordpressuser&#039;);用户名
+define('DB_USER', 'wordpressuser');用户名
 / * MySQL database password /
-define(&#039;DB_PASSWORD&#039;, &#039;password&#039;);密码
+define('DB_PASSWORD', 'password');密码
 . . .
-define(&#039;FS_METHOD&#039;, &#039;direct&#039;);</code></pre>
+define('FS_METHOD', 'direct');</code></pre>
 <p>保存退出！</p>
 <h2>
 <a name="toc-10"></a>总结</h2>
@@ -255,7 +255,7 @@ define(&#039;FS_METHOD&#039;, &#039;direct&#039;);</code></pre>
 <input type="hidden" name="comment_parent" id="comment_parent" value="0">
 </p>
 </form>	</div>
-<!-- #respond -->
+
 	
 </div>	</div>
 </div>
@@ -307,10 +307,10 @@ define(&#039;FS_METHOD&#039;, &#039;direct&#039;);</code></pre>
 <div class="footer">
 	<div class="container w-container">
 		<div class="footer-text">
-			Copyright2021. All Rights Reserved.&nbsp;			
+			Copyright2021. All Rights Reserved. 			
 						
 			
-				&nbsp;<a rel="nofollow" target="_blank" href="https://beian.miit.gov.cn/">渝ICP备19011860号-2</a>
+				 <a rel="nofollow" target="_blank" href="https://beian.miit.gov.cn/">渝ICP备19011860号-2</a>
 
 					</div>
 		

@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-<title>记录——守护进程与后台进程的区别 &#8211; 翰林木子的笔记本</title>
-<meta name="description" content="什么是守护进程 守护进程是运行在后台的一种特殊进程，它独立于控制终端并且周期性地执行某种任务或循环等待处理某些事件的发生； 守护进程一般在系统启动时开始运行，除非强行终止，否则直到系统关机才随 &hellip;">
+<title>记录——守护进程与后台进程的区别 – 翰林木子的笔记本</title>
+<meta name="description" content="什么是守护进程 守护进程是运行在后台的一种特殊进程，它独立于控制终端并且周期性地执行某种任务或循环等待处理某些事件的发生； 守护进程一般在系统启动时开始运行，除非强行终止，否则直到系统关机才随 …">
 <meta name="keywords" content="Linux">
 <meta name="robots" content="max-image-preview:large">
 <link rel="dns-prefetch" href="//cdn.staticfile.org">
@@ -22,7 +22,7 @@
 <script type="text/javascript" src="/wp-includes/js/jquery/jquery-migrate.min.js?ver=3.3.2" id="jquery-migrate-js"></script>
 <script type="text/javascript" src="/wp-content/themes/sweet/static/js/sweet.js?ver=5.7.2" id="sweet-js"></script>
 <script type="text/javascript" src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js?ver=5.7.2" id="fancybox-js"></script>
-<link rel="canonical" href="/2020/05/the-difference-between-daemon-and-background-process/">
+
 <link href="/wp-content/uploads/2021/07/1617196601-favicon-32x32-1.png" rel="shortcut icon" type="image/x-icon">
 <link href="/wp-content/uploads/2021/07/1617196599-apple-touch-icon.png" rel="apple-touch-icon">
 <script type="text/javascript">
@@ -41,7 +41,7 @@
 			<img class="logo" src="/wp-content/uploads/2021/07/1617196599-apple-touch-icon.png">
 		</a>
 				<nav class="nav-menu w-nav-menu">
-			<li id="menu-item-97" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-97"><a href="https://ytlee.cn/">首页</a></li>
+			<li id="menu-item-97" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-97"><a href="https://wp.ytlee.cn/">首页</a></li>
 <li id="menu-item-99" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-99"><a href="/category/note/">笔记本</a></li>
 <li id="menu-item-100" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-100"><a href="/category/draft/">草稿本</a></li>
 <li id="menu-item-103" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-103"><a href="/about-me/">关于我</a></li>
@@ -51,7 +51,7 @@
 			</div>
 		</div>
 		<div class="rightNav">
-			<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-97"><a href="https://ytlee.cn/">首页</a></li>
+			<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-97"><a href="https://wp.ytlee.cn/">首页</a></li>
 <li class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-99"><a href="/category/note/">笔记本</a></li>
 <li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-100"><a href="/category/draft/">草稿本</a></li>
 <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-103"><a href="/about-me/">关于我</a></li>
@@ -134,23 +134,23 @@ int main()
     create_daemon();
     struct sigaction act;
     act.sa_handler = handler;
-    sigemptyset(&amp;act.sa_mask);
+    sigemptyset(&act.sa_mask);
     act.sa_flags = 0;
-    if(sigaction(SIGQUIT, &amp;act, NULL))
+    if(sigaction(SIGQUIT, &act, NULL))
     {
-        printf(&quot;sigaction error.\n&quot;);
+        printf("sigaction error.\n");
         exit(0);
     }
     while(flag)
     {
-        fd = open(&quot;/home/mick/daemon.log&quot;, 
+        fd = open("/home/mick/daemon.log", 
         O_WRONLY | O_CREAT | O_APPEND, 0644);
         if(fd == -1)
         {
-            printf(&quot;open error\n&quot;);
+            printf("open error\n");
         }
         t = time(0);
-        char *buf = asctime(localtime(&amp;t));
+        char *buf = asctime(localtime(&t));
         write(fd, buf, strlen(buf));
         close(fd);
         sleep(60);
@@ -159,7 +159,7 @@ int main()
 }
 void handler(int sig)
 {
-    printf(&quot;I got a signal %d\nI&#039;m quitting.\n&quot;, sig);
+    printf("I got a signal %d\nI'm quitting.\n", sig);
     flag = false;
 }
 void create_daemon()
@@ -169,7 +169,7 @@ void create_daemon()
 
     if(pid == -1)
     {
-        printf(&quot;fork error\n&quot;);
+        printf("fork error\n");
         exit(1);
     }
     else if(pid)
@@ -179,14 +179,14 @@ void create_daemon()
 
     if(-1 == setsid())
     {
-        printf(&quot;setsid error\n&quot;);
+        printf("setsid error\n");
         exit(1);
     }
 
     pid = fork();
     if(pid == -1)
     {
-        printf(&quot;fork error\n&quot;);
+        printf("fork error\n");
         exit(1);
     }
     else if(pid)
@@ -194,9 +194,9 @@ void create_daemon()
         exit(0);
     }
 
-    chdir(&quot;/&quot;);
+    chdir("/");
     int i;
-    for(i = 0; i &lt; 3; ++i)
+    for(i = 0; i < 3; ++i)
     {
         close(i);
     }
@@ -207,9 +207,9 @@ void create_daemon()
 <a name="toc-4"></a>什么是后台进程</h2>
 <p><strong>后台进程</strong>，根据维基百科的定义：<br>
 后台进程（Background Process）是一种在不需用户干预的情况下运行于操作系统后台的计算机进程1<br>
-我们经常在linux（类unix）系统下，用 &amp; 启动一个进程并让其运行于后台，但是我们如果关闭session（终端），程序也会退出。<br>
+我们经常在linux（类unix）系统下，用 & 启动一个进程并让其运行于后台，但是我们如果关闭session（终端），程序也会退出。<br>
 eg：</p>
-<pre><code class="language-bash">firefox &amp;
+<pre><code class="language-bash">firefox &
 // 如上命令就会将firefox运行起来，但，我们如果关闭终端，我们很容易的发现，firefox还是会退出。</code></pre>
 <p>另外，我们发现，我们能在终端里看见有很多的输出，这是因为标准输出流（stdout）和标准错误输出（stderr）没有重定向仍然位于前台（父进程，即终端）输出。我们可以利用命令 bg 将挂起(ctrl+z)的进程转移到后台继续执行，而相对应的，命令fg则可使一个后台进程返回前台（即进程启动时所在的父终端）执行。</p>
 <h2>
@@ -217,7 +217,7 @@ eg：</p>
 <p>从上面的文字中，可以总结出：</p>
 <ul>
 <li>
-<p>运行程序时加上 &amp;</p>
+<p>运行程序时加上 &</p>
 </li>
 <li>
 <p>ctrl+z, bg命令</p>
@@ -236,13 +236,13 @@ Shell有这么一个参数——<strong>huponexit</strong>（hang up on exit,我
 <pre><code class="language-bash">shopt | grep huponexit</code></pre>
 <h2>
 <a name="toc-7"></a>区别</h2>
-<p>我在查资料的时候，发现主要有一些说法。有说法是：<strong>&quot;守护进程&quot;（daemon）就是一直在后台运行的进程（daemon）</strong>。还有说法是：<strong>守护进程是在后台运行不受终端控制的进程。</strong><br>
+<p>我在查资料的时候，发现主要有一些说法。有说法是：<strong>"守护进程"（daemon）就是一直在后台运行的进程（daemon）</strong>。还有说法是：<strong>守护进程是在后台运行不受终端控制的进程。</strong><br>
 我不确定上述两种说法是否足够的严谨以至于能够准确的定义守护进程。<br>
 但是，<strong>我个人觉得</strong>有一种说法一定是错误的——后台进程就是守护进程。<br>
 <strong>最大的区别有几点：</strong></p>
 <ol>
 <li>守护进程已经完全脱离终端控制台了，而后台程序并未完全脱离终端(在终端未关闭前还是会往终端输出结果)</li>
-<li>守护进程在关闭终端控制台时不会受影响，而后台程序会随用户退出而停止，需要在以nohup command &amp; 格式运行才能避免影响;</li>
+<li>守护进程在关闭终端控制台时不会受影响，而后台程序会随用户退出而停止，需要在以nohup command & 格式运行才能避免影响;</li>
 <li>守护进程的会话组和当前目录，文件描述符都是独立的。后台运行只是终端进行了一次fork，让程序在后台执行，这些都没改变;</li>
 </ol>
 <h2>
@@ -290,7 +290,7 @@ Shell有这么一个参数——<strong>huponexit</strong>（hang up on exit,我
 <input type="hidden" name="comment_parent" id="comment_parent" value="0">
 </p>
 </form>	</div>
-<!-- #respond -->
+
 	
 </div>	</div>
 </div>
@@ -342,10 +342,10 @@ Shell有这么一个参数——<strong>huponexit</strong>（hang up on exit,我
 <div class="footer">
 	<div class="container w-container">
 		<div class="footer-text">
-			Copyright2021. All Rights Reserved.&nbsp;			
+			Copyright2021. All Rights Reserved. 			
 						
 			
-				&nbsp;<a rel="nofollow" target="_blank" href="https://beian.miit.gov.cn/">渝ICP备19011860号-2</a>
+				 <a rel="nofollow" target="_blank" href="https://beian.miit.gov.cn/">渝ICP备19011860号-2</a>
 
 					</div>
 		
